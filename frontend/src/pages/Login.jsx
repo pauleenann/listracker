@@ -9,7 +9,7 @@ const Login = () => {
   return (
     <AuthLayout>
       <form 
-      action={()=>console.log('Form submitted')}
+      onSubmit={()=>console.log('Form submitted')}
       className='flex flex-col items-center'>
         <img src={logo} alt="Logo" className='w-14'/>
         <h1 className='text-4xl font-semibold mt-12 text-gray-900'>Welcome to Listracker</h1>
