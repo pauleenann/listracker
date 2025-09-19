@@ -2,6 +2,7 @@ import React from 'react'
 import InputField from '../../../components/form/InputField';
 import Button from '../../../components/ui/Button';
 import { useForm } from "react-hook-form"
+import { signup } from '../services';
 
 const SignupForm = () => {
     const {
@@ -11,8 +12,12 @@ const SignupForm = () => {
         watch
     }=useForm();
     
-    const onSubmit = ()=>{
-        console.log('Form submitted')
+    const onSubmit = async (data)=>{
+        try {
+            await signup(data.email, data.password)
+        } catch (error) {
+           console.error("Signup failed", error); 
+        }
     }
     
     const password = watch("password");
