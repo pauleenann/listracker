@@ -24,21 +24,17 @@ const Login = () => {
       className='flex flex-col items-center'>
         <img src={logo} alt="Logo" className='w-14'/>
         <h1 className='text-4xl font-semibold mt-12 text-gray-900'>Welcome to Listracker</h1>
-        <p className='text-lg text-gray-500 mt-1'>Your simple and reliable online listahan.</p>
+        <p className='text-lg text-gray-500 mt-1'>Your store's simple and reliable online listahan.</p>
 
         <div className='flex flex-col gap-3 w-full mt-8'>
             <InputField
-            id={'email'}
-            label={'Email'}
-            placeholder={'Enter your email'}
+            id={'username'}
+            label={'Username'}
+            placeholder={'Enter your username'}
             register={register}
             rules={
               {
-                required:'Please enter your email',
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
-                  message: "Please enter a valid email address"
-                }
+                required:'Please enter your username',
               }
             }
             errors={errors}/>
