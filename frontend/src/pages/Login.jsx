@@ -51,7 +51,11 @@ const Login = () => {
             register={register}
             rules={
               {
-                required:'Please enter your password'
+                required:'Please enter your password',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters'
+                }
               }
             }
             errors={errors}/>
