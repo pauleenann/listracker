@@ -1,26 +1,14 @@
 import React from 'react'
 import AuthLayout from '../layouts/AuthLayout'
 import logo from '../assets/images/logo.png'
-import InputField from '../components/form/InputField'
-import Button from '../components/ui/Button'
 import { Link } from 'react-router'
-import { useForm } from "react-hook-form"
+import LoginForm from '../features/authentication/components/LoginForm'
+
 
 const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: {errors},
-  }=useForm();
-
-  const onSubmit = ()=>{
-    console.log('Form submitted')
-  }
-
   return (
     <AuthLayout>
-      <form 
-      onSubmit={handleSubmit(onSubmit)}
+      <div 
       className='flex flex-col items-center w-[50%]'>
         <img src={logo} alt="Logo" className='w-10'/>
         
@@ -28,53 +16,9 @@ const Login = () => {
           <h1 className='text-4xl font-semibold text-gray-900'>Welcome to Listracker</h1>
           <p className='text-lg text-gray-500 mt-1'>Your store's simple and reliable online listahan.</p>  
         </header>
-        
-        <div className='flex flex-col gap-3 w-full'>
-            <InputField
-            id={'email'}
-            label={'Email'}
-            placeholder={'Enter your email'}
-            register={register}
-            rules={
-              {
-                required:'Please enter your email',
-                pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
-                    message: "Please enter a valid email address"
-                  }
-              }
-            }
-            errors={errors}/>
 
-            <InputField
-            id={'password'}
-            label={'Password'}
-            type={'password'}
-            placeholder={'Enter your password'}
-            register={register}
-            rules={
-              {
-                required:'Please enter your password',
-                minLength: {
-                  value: 6,
-                  message: 'Password must be at least 6 characters'
-                }
-              }
-            }
-            errors={errors}/>
-        </div>
-        
-        {/* forgot pass */}
-        <div className='w-full text-end mt-2 mb-8'>
-            <a href="" className='font-medium text-sm'>Forgot password?</a>
-        </div>
-
-        {/* login btn */}
-        <Button type={'submit'}>
-            Sign in
-        </Button>
-
-        {/* sign up */}
+        <LoginForm/>        
+      
         <footer className='mt-8'>
             <p className='text-sm font-medium'>
                 Don’t have an account?  
@@ -85,7 +29,7 @@ const Login = () => {
                 </Link>
             </p>
         </footer>
-      </form>
+      </div>
     </AuthLayout>
   )
 }
