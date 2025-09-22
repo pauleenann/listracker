@@ -1,4 +1,4 @@
-import admin from "../config/firebase";
+import admin from "../config/firebase.js";
 
 export const authenticate = async (req, res, next)=>{
     try {
@@ -11,7 +11,13 @@ export const authenticate = async (req, res, next)=>{
             })
         }
 
-        const token = authHeader.subString(7);
+        const token = authHeader.substring(7);
+
+        if(!token){
+            return res.status(500).json({
+                message: 'Token empty'
+            })
+        }
 
         const decoded = await admin.auth().verifyIdToken(token);
 
