@@ -27,6 +27,30 @@ const SignupForm = () => {
     onSubmit={handleSubmit(onSubmit)}
     className='flex flex-col gap-3 w-full mb-8'>
         <InputField
+        id={'firstname'}
+        label={'First name'}
+        placeholder={'Enter your first name'}
+        register={register}
+        rules={
+            {
+                required:'Please enter your first name',
+              }
+        }
+        errors={errors}/>
+
+        <InputField
+        id={'lastname'}
+        label={'Last name'}
+        placeholder={'Enter your last name'}
+        register={register}
+        rules={
+            {
+                required:'Please enter your last name',
+              }
+        }
+        errors={errors}/>
+
+        <InputField
         id={'email'}
         label={'Email'}
         placeholder={'Enter your email'}
