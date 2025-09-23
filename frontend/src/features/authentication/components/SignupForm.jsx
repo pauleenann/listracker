@@ -3,6 +3,8 @@ import InputField from '../../../components/form/InputField';
 import Button from '../../../components/ui/Button';
 import { useForm } from "react-hook-form"
 import { signup } from '../services';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router';
 
 const SignupForm = () => {
     const {
@@ -11,10 +13,19 @@ const SignupForm = () => {
         formState: {errors},
         watch
     }=useForm();
+    const {signIn} = useAuth();
+    const navigate = useNavigate();
     
     const onSubmit = async (data)=>{
         try {
-            await signup(data.firstname, data.lastname, data.email, data.password)
+            const response = await signup(data.firstname, data.lastname, data.email, data.password);
+            const authInfo = response.data;
+            console.log(response)
+
+            if(authInfo){
+                signIn(authInfo.user, authInfo.accessToken)
+                navigate('/dashboard')
+            }
         } catch (error) {
            console.error("Signup failed", error); 
         }

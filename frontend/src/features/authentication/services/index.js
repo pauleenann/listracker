@@ -32,7 +32,7 @@ export const signup = async (fname, lname, email, password)=>{
             }
         )
                     
-        console.log(response)
+        return response
     } catch (error) {
         console.error('Cannot sign up user. An error occurred: ', error)
         throw error;

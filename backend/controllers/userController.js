@@ -28,14 +28,14 @@ export const signup = async (req, res)=>{
         }
 
         // generate tokens
-        const accessTokens = await generateAccessToken(payload)
-        const refreshTokens = await generateRefreshToken(payload)
+        const accessToken = await generateAccessToken(payload)
+        const refreshToken = await generateRefreshToken(payload)
 
         // store refresh tokens in cookies
-        await setRefreshTokenCookie(res, refreshTokens)
+        await setRefreshTokenCookie(res, refreshToken)
 
         return res.status(200).json({
-            accessTokens,
+            accessToken,
             user,
             message: 'User created successfully!'
         })
