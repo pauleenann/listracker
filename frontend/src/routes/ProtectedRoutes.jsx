@@ -3,9 +3,11 @@ import { useAuth } from '../features/authentication/contexts/AuthContext'
 import { Navigate, Outlet } from 'react-router';
 
 const ProtectedRoutes = () => {
-    const {accessToken} = useAuth();
+    const {user} = useAuth();
 
-  return accessToken ? <Outlet/> : <Navigate to='/'/>
+    if (!user) return <Navigate to="/" />;
+
+    return <Outlet/>;
 }
 
 export default ProtectedRoutes

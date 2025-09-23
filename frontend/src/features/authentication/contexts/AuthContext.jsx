@@ -8,6 +8,7 @@ export const AuthProvider = ({children})=>{
     console.log('this is context api')
     const [user, setUser] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate();
 
     const signIn = (user, token)=>{
@@ -31,6 +32,10 @@ export const AuthProvider = ({children})=>{
                 }
             } catch (error) {
                 console.log(error)
+            } finally {
+                setTimeout(()=>{
+                  setLoading(false)  
+                },3000)
             }
         }
 
@@ -40,7 +45,8 @@ export const AuthProvider = ({children})=>{
     let data = {
         user,
         accessToken,
-        signIn
+        signIn,
+        loading
     }
 
     return (
