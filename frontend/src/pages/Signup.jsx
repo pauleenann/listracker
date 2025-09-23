@@ -8,17 +8,16 @@ const Signup = () => {
   return (
     <AuthLayout>
       <div
-      className='flex flex-col items-center w-[50%] overflow-y-auto'>
-        <img src={logo} alt="Logo" className='w-10'/>
-
-        <header className='my-8 text-center w-full'>
+      className=' w-[50%] h-screen py-8 flex flex-col overflow-y-scroll scrollbar-none'>
+        <header className='mb-8 text-center w-full'>
+            <img src={logo} alt="Logo" className='w-10 m-auto mb-5' />
             <h1 className='text-4xl font-semibold text-gray-900'>Create your account</h1>
             <p className='text-lg text-gray-500 mt-1'>Join now and start managing your store’s listahan with ease.</p>    
         </header>
         
         <SignupForm/>
 
-        <footer>
+        <footer className='text-center'>
             <p className='text-sm font-medium'>
                 Already have an account?  
                 <Link 

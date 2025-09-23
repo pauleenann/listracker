@@ -19,10 +19,7 @@ export const authenticate = async (req, res, next)=>{
             })
         }
 
-        const decoded = await admin.auth().verifyIdToken(token);
-
-        //send decoded with request
-        req.decoded = decoded;
+        await admin.auth().verifyIdToken(token);
 
         next();
     } catch (error) {
