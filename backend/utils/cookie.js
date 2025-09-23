@@ -7,7 +7,7 @@ export const setRefreshTokenCookie = (res, refreshToken)=>{
     })
 }
 
-export const clearRefreshTokenCookie = (res, refreshToken)=>{
+export const clearRefreshTokenCookie = (res)=>{
     res.cookie('refreshToken', '', {
         http: true,
         secure: false,

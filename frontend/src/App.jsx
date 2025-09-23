@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import { AuthProvider } from './features/authentication/contexts/AuthContext'
 import Dashboard from './pages/Dashboard'
+import ProtectedRoutes from './routes/ProtectedRoutes'
 AuthProvider
 
 const App = () => {
@@ -22,10 +23,13 @@ const App = () => {
           />
           
           {/* private routes */}
-          <Route 
-            path='/dashboard'
-            element={<Dashboard/>}
-          />
+          <Route element={<ProtectedRoutes/>}>
+            <Route 
+              path='/dashboard'
+              element={<Dashboard/>}
+            />
+          </Route>
+          
         </Routes>    
       </AuthProvider>
     </BrowserRouter>

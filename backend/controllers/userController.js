@@ -1,6 +1,6 @@
 import User from '../models/User.js'
-import { setRefreshTokenCookie } from '../utils/cookie.js';
-import { generateAccessToken, generateRefreshToken } from '../utils/jwt.js';
+import { clearRefreshTokenCookie, setRefreshTokenCookie } from '../utils/cookie.js';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '../utils/jwt.js';
 
 export const signup = async (req, res)=>{
     try {
@@ -16,7 +16,7 @@ export const signup = async (req, res)=>{
                 email: email
             })
         }else{
-            return res.status(500).json({
+            return res.status(400).json({
                 message: 'User already exist!'
             })
         } 
@@ -41,6 +41,63 @@ export const signup = async (req, res)=>{
         })
     } catch (error) {
         console.log(error)
-        return res.status(500)
+        return res.status(500).json({
+            error:error,
+            message: 'Error signing up'
+        })
+    }
+}
+
+export const generateNewAccessToken = async (req, res)=>{
+    try {
+        console.log('generating new access token')
+        console.log('req cookies',req.cookies)
+        const {refreshToken} = req.cookies;
+
+        if(!refreshToken){
+            return res.status(400).json({
+                message: 'No refresh token' 
+            })
+        }
+
+        // verify refresh token
+        const isVerified = await verifyRefreshToken(refreshToken);
+        console.log(isVerified)
+        
+        if(!isVerified){
+            await clearRefreshTokenCookie(res); // clear refresh token
+            return res.status(400).json({
+                message: 'Refresh token expired'
+            })
+        }
+
+        const payload ={
+            id: isVerified.id,
+            email: isVerified.email
+        }
+
+        //get user info
+        const user = await User.findOne({email:isVerified.email});
+
+        if(!user){
+            return res.status(400).json({
+                message: 'User not found'
+            })
+        }
+
+        // generate new access token 
+        const accessToken = await generateAccessToken(payload);
+
+        return res.status(200).json({
+            accessToken,
+            user,
+            message: 'Access token generated successfully!'
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            error:error,
+            message: 'Error generating new access token. Refresh token is expired.'
+        })
     }
 }
