@@ -20,3 +20,11 @@ export const mainMenu = [
         path: '/payments'
     },
 ]
+
+export const accountMenu = [
+    {
+        name: 'Settings',
+        icon: 'fa-solid fa-gear',
+        path: '/settings'
+    },
+]
