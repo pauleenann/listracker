@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Navbar = () => {
+const Navbar = ({menu}) => {
   return (
-    <div>
-      
-    </div>
+    <nav className='p-10'>
+        <h1 className='text-3xl font-semibold text-theme-gray'>{menu}</h1>
+    </nav>
   )
 }
 

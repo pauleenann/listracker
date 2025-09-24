@@ -1,6 +1,5 @@
 import React from 'react'
 import Sidebar from '../components/navigation/Sidebar'
-import Navbar from '../components/navigation/Navbar'
 
 const MainLayout = ({children}) => {
   return (
@@ -8,7 +7,6 @@ const MainLayout = ({children}) => {
         <Sidebar/>
 
         <div className='w-full h-full'>
-            <Navbar/>
             {children}
         </div>
     </div>

@@ -6,7 +6,7 @@ import { accountMenu, mainMenu } from '../../data/sidebarMenu'
 
 const Sidebar = () => {
   return (
-    <nav className='w-full h-full bg-theme-lightest-blue pt-15 pb-5 px-8 flex flex-col justify-between'>
+    <aside className='w-full h-full bg-theme-lightest-blue pt-15 pb-5 px-8 flex flex-col justify-between'>
         <main>
             <header className='flex items-center gap-4'>
                 <img src={logo} alt="Logo" className='h-8'/>
@@ -14,21 +14,21 @@ const Sidebar = () => {
             </header>
 
             {/* main menu */}
-            <div className='mt-12'>
+            <section className='mt-12'>
                 <List
                 items={mainMenu}
                 resourceName={'menu'}
                 itemComponent={SidebarMenuItem}/>    
-            </div>
+            </section>
 
             {/* accounts menu */}
-            <div className='mt-5'>
+            <section className='mt-5'>
                 <p className='text-sm font-semibold text-gray-300'>ACCOUNT</p>
                 <List
                 items={accountMenu}
                 resourceName={'menu'}
                 itemComponent={SidebarMenuItem}/>    
-            </div>    
+            </section>    
         </main>
         
         <footer className='bg-theme-light-blue rounded-xl py-4 px-5 flex items-center justify-between'>
@@ -40,11 +40,13 @@ const Sidebar = () => {
                     <p className='text-gray-500'>UserRole</p>
                 </div>
             </div>
-            <button  className='text-theme-gray cursor-pointer'>
-                <i class="fa-solid fa-ellipsis"></i>
+            <button 
+            className='text-theme-gray cursor-pointer' 
+            aria-label='More options'>
+                <i className="fa-solid fa-ellipsis"></i>
             </button>
         </footer>
-    </nav>
+    </aside>
   )
 }
 
