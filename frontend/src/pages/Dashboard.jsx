@@ -1,10 +1,11 @@
 import React from 'react'
+import MainLayout from '../layouts/MainLayout'
 
 const Dashboard = () => {
   return (
-    <div>
-      Welcome to dashboard
-    </div>
+    <MainLayout>
+      
+    </MainLayout>
   )
 }
 

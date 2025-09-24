@@ -4,6 +4,9 @@
 
 @theme{
     --color-theme-blue: #3938EB;
+    --color-theme-light-blue: #EFEFFF;
+    --color-theme-lightest-blue: #F8F8FF;
+    --color-theme-gray: #515151;
 }
 
 *{
