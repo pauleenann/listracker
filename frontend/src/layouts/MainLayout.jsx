@@ -3,10 +3,10 @@ import Sidebar from '../components/navigation/Sidebar'
 
 const MainLayout = ({children}) => {
   return (
-    <div className='w-screen h-screen grid grid-cols-[350px_1fr]'>
+    <div className='w-screen h-screen flex overflow-x-hidden'>
         <Sidebar/>
 
-        <div className='w-full h-full'>
+        <div className='ms-[350px] w-full '>
             {children}
         </div>
     </div>

@@ -1,12 +1,12 @@
 import React from 'react'
 import logo from '../../assets/images/logo.png'
 import List from '../list/List'
-import SidebarMenuItem from '../list/SidebarMenuItem'
+import SidebarMenuItem from './components/SidebarMenuItem'
 import { accountMenu, mainMenu } from '../../data/sidebarMenu'
 
 const Sidebar = () => {
   return (
-    <aside className='w-full h-full bg-theme-lightest-blue pt-15 pb-5 px-8 flex flex-col justify-between'>
+    <aside className='fixed top-0 bottom-0 w-[350px] bg-theme-lightest-blue pt-15 pb-5 px-8 flex flex-col justify-between'>
         <main>
             <header className='flex items-center gap-4'>
                 <img src={logo} alt="Logo" className='h-8'/>
