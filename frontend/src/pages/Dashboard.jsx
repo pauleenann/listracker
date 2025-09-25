@@ -1,14 +1,14 @@
 import React from 'react'
 import MainLayout from '../layouts/MainLayout'
 import Navbar from '../components/navigation/Navbar'
-import StatCards from '../features/dashboard/components/StatCards'
-import Cards from '../features/dashboard/components/Cards'
 import BiggestDebtHolderItem from '../features/dashboard/components/BiggestDebtHolderItem'
-import { BarChart } from '../features/dashboard/components/charts/Barchart'
-import { DonutChart } from '../features/dashboard/components/charts/DonutChart'
 import Table from '../components/table/Table'
 import { header, sampleData } from '../data/tableData'
 import TrComponent from '../features/dashboard/components/TrComponent'
+import StatCards from '../components/cards/StatCards'
+import Cards from '../components/cards/Cards'
+import { BarChart } from '../components/charts/Barchart'
+import { DonutChart } from '../components/charts/DonutChart'
 
 const Dashboard = () => {
   return (
