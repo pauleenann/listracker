@@ -7,7 +7,7 @@ const DebtTrComponent = ({data}) => {
         <td className='py-3'>{data.id}</td>
         <td className='py-3'>{data.name}</td>
         <td className='py-3'>{data.product}</td>
-        <td className='py-3'>{data.amount}</td>
+        <td className='py-3'>Php {data.amount}</td>
         <td className='py-3'>{data.date}</td>
         <td className='py-3'>
             <span className={`

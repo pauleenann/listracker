@@ -1,0 +1,12 @@
+import React from 'react'
+
+const SearchBar = () => {
+  return (
+    <div className='flex gap-2 items-center border border-gray-200 rounded-full px-4 w-full'>
+      <input type="text" className='p-2 focus:outline-0 w-full' placeholder='Search'/>
+      <i className="fa-solid fa-magnifying-glass text-theme-gray"></i>
+    </div>
+  )
+}
+
+export default SearchBar

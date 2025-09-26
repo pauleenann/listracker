@@ -6,7 +6,7 @@ const TrComponent = ({data}) => {
     <tr className='text-theme-gray font-semibold'>
         <td className='py-2'>{data.name}</td>
         <td className='py-2'>{data.item}</td>
-        <td className='py-2'>{data.amount}</td>
+        <td className='py-2'>Php {data.amount}</td>
         <td className='py-2'>{data.date}</td>
         <td className='py-2'>
             <span className={`
