@@ -5,41 +5,43 @@ import { labels } from '../../data/donutChartLabel';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const data = {
-  labels: labels,
-  datasets: [
-    {
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        '#010073',
-        '#3938EB',
-        '#88ABE8',
-        '#7070FF',
-        '#5151A8',
-      ],
-    },
-  ],
-};
-
-const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      position: 'left',
-      labels: {
-        boxWidth: 20,
-        padding: 10,
+export function DonutChart() {
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        data: [12, 19, 3, 5, 2, 3],
+        backgroundColor: [
+          '#010073',
+          '#3938EB',
+          '#88ABE8',
+          '#7070FF',
+          '#5151A8',
+        ],
+      },
+    ],
+  };
+  
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'left',
+        labels: {
+          boxWidth: 20,
+          padding: 10,
+        },
       },
     },
-  },
-};
+  };
 
-export function DonutChart() {
   return (
     <div className="flex w-full h-60">
       <div className="flex-1 h-full">
-        <Doughnut data={data} options={options} />
+        <Doughnut 
+        data={data} 
+        options={options} />
       </div>
     </div>
   );

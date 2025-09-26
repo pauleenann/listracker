@@ -11,7 +11,7 @@ const TrComponent = ({data}) => {
         <td className='py-2'>
             <span className={`
                 uppercase p-1 text-xs rounded text-white
-                ${data.status=='paid'?'bg-green-500':'bg-red-500'}
+                ${data.status=='paid'?'bg-theme-blue':data.status=='not paid'?'bg-theme-gray':'bg-gray-500'}
             `}>
                 {data.status}
             </span>
