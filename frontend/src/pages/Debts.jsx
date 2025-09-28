@@ -61,6 +61,7 @@ const Debts = () => {
       </main>
 
       <Modal
+      label={'Add Debt'}
       show={show}
       close={closeShow}
       />

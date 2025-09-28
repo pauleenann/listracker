@@ -14,9 +14,11 @@ const Modal = ({
       <div 
       onClick={close}
       className='bg-gray-300/50 w-full h-full flex items-center justify-center'>
-        <article className='min-h-100 min-w-120 bg-white rounded-xl p-8 flex flex-col justify-between'>
+        <article 
+        onClick={(e)=>e.stopPropagation()}
+        className='min-h-100 min-w-120 bg-white rounded-xl p-8 flex flex-col justify-between'>
             <header className='flex items-center justify-between text-theme-gray'>
-                <span className='text-2xl font-semibold'>Modal</span>
+                <span className='text-2xl font-semibold'>{label}</span>
                 <div>
                     <DefaultButton
                     onClick={close}>
