@@ -7,8 +7,12 @@ import DebtTrComponent from '../features/debts/components/DebtTrComponent'
 import Table from '../components/table/Table'
 import SearchBar from '../components/form/SearchBar'
 import Button from '../components/ui/Button'
+import Modal from '../components/modal/Modal'
+import useModal from '../hooks/useModal'
 
 const Debts = () => {
+  const {show, openShow, closeShow} = useModal();
+
   return (
     <MainLayout>
         <Navbar menu={"Debts"}/>
@@ -37,7 +41,8 @@ const Debts = () => {
             </div>
             <div>
               <Button
-              type={'text'}>
+              type={'text'}
+              onClick={openShow}>
                 <div className='flex items-center gap-2'>
                   <i className="fa-solid fa-plus text-sm"></i>
                   <span>Add debt</span>
@@ -54,6 +59,11 @@ const Debts = () => {
             trComponent={DebtTrComponent}/>
           </section>
       </main>
+
+      <Modal
+      show={show}
+      close={closeShow}
+      />
     </MainLayout>
   )
 }
