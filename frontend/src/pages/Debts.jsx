@@ -59,7 +59,7 @@ const Debts = () => {
             data={debtSampleData}
             trComponent={DebtTrComponent}/>
           </section>
-      </main>
+        </main>
 
       {/* modal */}
       <Modal

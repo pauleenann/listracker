@@ -17,6 +17,111 @@ export const debtHeader = [
     ''
 ]
 
+export const debtorHeader = [
+    '#',
+    'Debtor name',
+    'Contact no.',
+    'Total debt',
+    'Total paid',
+    'Balance',
+    'Status',
+    'Last payment',
+    ''
+]
+
+export const debtorSampleData = [
+  {
+    id: 1,
+    name: 'Juan Dela Cruz',
+    totalDebt: 5000,
+    totalPaid: 2500,
+    status: 'pending',
+    lastPayment: '2025-09-15',
+    contactNumber: '09171234567'
+  },
+  {
+    id: 2,
+    name: 'Maria Santos',
+    totalDebt: 3000,
+    totalPaid: 3000,
+    status: 'paid',
+    lastPayment: '2025-09-20',
+    contactNumber: '09179876543'
+  },
+  {
+    id: 3,
+    name: 'Pedro Reyes',
+    totalDebt: 4500,
+    totalPaid: 2500,
+    status: 'pending',
+    lastPayment: '2025-09-10',
+    contactNumber: '09171239876'
+  },
+  {
+    id: 4,
+    name: 'Ana Lopez',
+    totalDebt: 7000,
+    totalPaid: 3500,
+    status: 'pending',
+    lastPayment: '2025-09-12',
+    contactNumber: '09172345678'
+  },
+  {
+    id: 5,
+    name: 'Carlos Ramos',
+    totalDebt: 6000,
+    totalPaid: 3500,
+    status: 'pending',
+    lastPayment: '2025-09-18',
+    contactNumber: '09173456789'
+  },
+  {
+    id: 6,
+    name: 'Liza Navarro',
+    totalDebt: 4000,
+    totalPaid: 0,
+    status: 'pending',
+    lastPayment: null,
+    contactNumber: '09174567890'
+  },
+  {
+    id: 7,
+    name: 'Ramon Cruz',
+    totalDebt: 8000,
+    totalPaid: 4000,
+    status: 'pending',
+    lastPayment: '2025-09-14',
+    contactNumber: '09175678901'
+  },
+  {
+    id: 8,
+    name: 'Gloria Villanueva',
+    totalDebt: 5500,
+    totalPaid: 2500,
+    status: 'pending',
+    lastPayment: '2025-09-16',
+    contactNumber: '09176789012'
+  },
+  {
+    id: 9,
+    name: 'Miguel Tan',
+    totalDebt: 3500,
+    totalPaid: 1500,
+    status: 'pending',
+    lastPayment: '2025-09-13',
+    contactNumber: '09177890123'
+  },
+  {
+    id: 10,
+    name: 'Sofia Bautista',
+    totalDebt: 7500,
+    totalPaid: 5000,
+    status: 'pending',
+    lastPayment: '2025-09-19',
+    contactNumber: '09178901234'
+  }
+];
+
 export const debtSampleData = [
     {
       id: '12adsasfdas',
