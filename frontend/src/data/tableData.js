@@ -31,7 +31,7 @@ export const debtorHeader = [
 
 export const debtorSampleData = [
   {
-    id: 1,
+    id: 1213213,
     name: 'Juan Dela Cruz',
     totalDebt: 5000,
     totalPaid: 2500,
@@ -40,7 +40,7 @@ export const debtorSampleData = [
     contactNumber: '09171234567'
   },
   {
-    id: 2,
+    id: 2324235,
     name: 'Maria Santos',
     totalDebt: 3000,
     totalPaid: 3000,
@@ -49,7 +49,7 @@ export const debtorSampleData = [
     contactNumber: '09179876543'
   },
   {
-    id: 3,
+    id: 3431441,
     name: 'Pedro Reyes',
     totalDebt: 4500,
     totalPaid: 2500,
@@ -58,7 +58,7 @@ export const debtorSampleData = [
     contactNumber: '09171239876'
   },
   {
-    id: 4,
+    id: 44132423,
     name: 'Ana Lopez',
     totalDebt: 7000,
     totalPaid: 3500,
@@ -67,7 +67,7 @@ export const debtorSampleData = [
     contactNumber: '09172345678'
   },
   {
-    id: 5,
+    id: 541324,
     name: 'Carlos Ramos',
     totalDebt: 6000,
     totalPaid: 3500,
@@ -76,7 +76,7 @@ export const debtorSampleData = [
     contactNumber: '09173456789'
   },
   {
-    id: 6,
+    id: 641345,
     name: 'Liza Navarro',
     totalDebt: 4000,
     totalPaid: 0,
@@ -85,7 +85,7 @@ export const debtorSampleData = [
     contactNumber: '09174567890'
   },
   {
-    id: 7,
+    id: 741234,
     name: 'Ramon Cruz',
     totalDebt: 8000,
     totalPaid: 4000,
@@ -94,7 +94,7 @@ export const debtorSampleData = [
     contactNumber: '09175678901'
   },
   {
-    id: 8,
+    id: 876575,
     name: 'Gloria Villanueva',
     totalDebt: 5500,
     totalPaid: 2500,
@@ -103,7 +103,7 @@ export const debtorSampleData = [
     contactNumber: '09176789012'
   },
   {
-    id: 9,
+    id: 934545,
     name: 'Miguel Tan',
     totalDebt: 3500,
     totalPaid: 1500,
@@ -112,7 +112,7 @@ export const debtorSampleData = [
     contactNumber: '09177890123'
   },
   {
-    id: 10,
+    id: 104321,
     name: 'Sofia Bautista',
     totalDebt: 7500,
     totalPaid: 5000,

@@ -6,7 +6,7 @@ const DebtorTrComponent = ({data}) => {
     <tr className='text-theme-gray font-semibold'>
         <td className='py-3'>{data.id}</td>
         <td className='py-3'>{data.name}</td>
-        <td className='py-3'>{data.contactNumber}</td>
+        <td className='py-3'>{data.contactNumber||'N/A'}</td>
         <td className='py-3'>Php {data.totalDebt}</td>
         <td className='py-3'>Php {data.totalPaid}</td>
         <td className='py-3'>Php {data.totalDebt - data.totalPaid}</td>

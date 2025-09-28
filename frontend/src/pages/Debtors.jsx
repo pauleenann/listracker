@@ -8,6 +8,7 @@ import useModal from '../hooks/useModal'
 import Modal from '../components/modal/Modal'
 import { debtorHeader, debtorSampleData } from '../data/tableData'
 import DebtorTrComponent from '../features/debtor/components/DebtorTrComponent'
+import DebtorForm from '../features/debtor/components/DebtorForm'
 
 const Debtors = () => {
   const {show, openShow, closeShow} = useModal();
@@ -49,7 +50,8 @@ const Debtors = () => {
         show={show}
         close={closeShow}
         >
-          
+          <DebtorForm
+          close={closeShow}/>
         </Modal>
     </MainLayout>
   )
