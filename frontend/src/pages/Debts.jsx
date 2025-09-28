@@ -9,6 +9,7 @@ import SearchBar from '../components/form/SearchBar'
 import Button from '../components/ui/Button'
 import Modal from '../components/modal/Modal'
 import useModal from '../hooks/useModal'
+import DebtForm from '../features/debts/components/DebtForm'
 
 const Debts = () => {
   const {show, openShow, closeShow} = useModal();
@@ -60,11 +61,15 @@ const Debts = () => {
           </section>
       </main>
 
+      {/* modal */}
       <Modal
       label={'Add Debt'}
       show={show}
       close={closeShow}
-      />
+      >
+        <DebtForm 
+        close={closeShow}/>
+      </Modal>
     </MainLayout>
   )
 }
