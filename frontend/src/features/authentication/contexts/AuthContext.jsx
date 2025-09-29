@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from '../../../lib/axios'
 import { useNavigate } from "react-router";
+import { initializeAccessToken } from "../../../lib/axios";
+import { setResetFn } from "../services";
 
 const AuthContext = createContext()
 
@@ -13,7 +15,17 @@ export const AuthProvider = ({children})=>{
 
     const signIn = (user, token)=>{
         setUser(user);
-        setAccessToken(token)
+        setAccessToken(token);
+
+        //initialize access token for interceptors
+        initializeAccessToken(token)
+    }
+
+    const resetAuth = ()=>{
+        setUser(null);
+        setAccessToken(null);
+        initializeAccessToken(null);
+        navigate('/')
     }
 
     useEffect(()=>{
@@ -28,10 +40,14 @@ export const AuthProvider = ({children})=>{
                 if(data){
                     setUser(data.user)
                     setAccessToken(data.accessToken)
+
+                    //initialize access token for interceptors
+                    initializeAccessToken(data.accessToken)
+
                     navigate('/dashboard'); //redirect to dashboard
                 }
             } catch (error) {
-                console.log(error)
+                console.log('Cannot refresh token: ',error)
             } finally {
                 setTimeout(()=>{
                   setLoading(false)  
@@ -40,13 +56,17 @@ export const AuthProvider = ({children})=>{
         }
 
         refreshToken();
+
+        //initialize resetFn in js files for signout purposes
+        setResetFn(resetAuth);
     },[])
 
     let data = {
         user,
         accessToken,
         signIn,
-        loading
+        loading,
+        resetAuth
     }
 
     return (

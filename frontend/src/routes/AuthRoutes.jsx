@@ -10,7 +10,6 @@ const AuthRoutes = () => {
     if(loading) return <Loading/>
     
     return user ? <PrivateRoutes/> : <PublicRoutes/>
-  
 }
 
 export default AuthRoutes

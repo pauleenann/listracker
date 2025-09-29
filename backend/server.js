@@ -24,6 +24,7 @@ app.use(cors(corsOptions));
 
 //routes
 app.use('/api/auth', authRoutes)
+app.use('/api/debtors', authRoutes)
 
 app.listen(PORT,()=>{
     console.log('Server running on port ', PORT)

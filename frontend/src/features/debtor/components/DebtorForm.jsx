@@ -3,6 +3,7 @@ import InputField from '../../../components/form/InputField'
 import { useForm } from 'react-hook-form'
 import DefaultButton from '../../../components/ui/DefaultButton';
 import Button from '../../../components/ui/Button';
+import { createDebtor } from '../services';
 
 const DebtorForm = ({close}) => {
     const {
@@ -11,8 +12,13 @@ const DebtorForm = ({close}) => {
         formState: {errors}
     }=useForm();
 
-    const addDebtor = (data)=>{
-        console.log(data)
+    const addDebtor = async (data)=>{
+        try {
+            console.log(data)
+            await createDebtor(data.name, data.contactNumber);
+        } catch (error) {
+            console.log('Cannot add debtor: ', error)
+        }
     }
 
   return (
@@ -40,7 +46,7 @@ const DebtorForm = ({close}) => {
             {
                 required: 'Please enter contact number',
                 pattern: {
-                    value: /^09\d{11}$/,  
+                    value: /^09\d{9}$/,  
                     message: 'Contact number must start with 09 and be 11 digits'
                 }
             }
