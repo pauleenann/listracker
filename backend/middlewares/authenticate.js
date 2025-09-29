@@ -1,4 +1,4 @@
-import { verifyAccessToken } from "../utils/jwt";
+import { verifyAccessToken } from "../utils/jwt.js";
 
 export const authenticateUser = async (req, res, next)=>{
     try {
@@ -24,6 +24,18 @@ export const authenticateUser = async (req, res, next)=>{
         next();
     } catch (error) {
         console.log(error)
+        if(error.name=='TokenExpiredError'){
+            return res.status(401).json({
+                message: 'Access token expired',
+                code: 'ACCESS_TOKEN_EXPIRED'
+            })
+        }
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ 
+              message: 'Invalid access token',
+              code: 'ACCESS_TOKEN_INVALID'
+            });
+        }
         return res.status(401).json({
             error: error,
             message: 'Failed to authenticate user'

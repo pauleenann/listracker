@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import api from '../../../lib/axios'
 import { useNavigate } from "react-router";
 import { initializeAccessToken } from "../../../lib/axios";
-import { setResetFn } from "../services";
+import { setResetFn, setSignInFn } from "../services";
 
 const AuthContext = createContext()
 
@@ -58,8 +58,8 @@ export const AuthProvider = ({children})=>{
 
         refreshToken();
 
-        //initialize resetFn in js files for signout purposes
-        setResetFn(resetAuth);
+        setResetFn(resetAuth); //initialize resetFn in js files for signout purposes
+        setSignInFn(signIn); //initialize sigIn for response interceptor
     },[])
 
     let data = {

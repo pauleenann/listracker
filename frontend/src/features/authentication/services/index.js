@@ -5,10 +5,21 @@ import api from '../../../lib/axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 let resetFn = null;
+let signInFn = null;
 
 //initialize resetFn from context api
 export const setResetFn = (fn)=>{
     resetFn = fn;
+}
+
+export const setSignInFn = (fn)=>{
+    signInFn = fn;
+}
+
+export const updateAuth = (user, token) =>{
+    if(signInFn){
+        signInFn(user, token)
+    }
 }
 
 export const signup = async (fname, lname, email, password)=>{

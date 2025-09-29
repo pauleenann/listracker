@@ -1,6 +1,6 @@
 import express from 'express'
-import { authenticateUser } from '../middlewares/authenticate';
-import { addDebtor } from '../controllers/debtorController';
+import { authenticateUser } from '../middlewares/authenticate.js';
+import { addDebtor } from '../controllers/debtorController.js';
 
 const router = express.Router();
 

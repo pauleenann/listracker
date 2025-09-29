@@ -1,5 +1,5 @@
 import axios from "axios";
-import { signout } from "../features/authentication/services";
+import { signout, updateAuth } from "../features/authentication/services";
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -37,9 +37,32 @@ api.interceptors.response.use(
   }, 
   async (error) =>{
     console.log(error)
-    //logout if refresh token is expired
-    if(error.response.data.error.name=='TokenExpiredError'){
+    const { code } = error.response.data;
+
+    if(code=='REFRESH_TOKEN_EXPIRED'){
+      //logout if refresh token is expired
       await signout();
+    }
+    
+    if(code=='ACCESS_TOKEN_EXPIRED'){
+      try {
+        //refresh token 
+        const {data} = await api.get('/auth/refresh-token');
+        console.log(data)
+        
+        //update user and accesstoken in context api
+        updateAuth(data.user, data.accessToken)
+
+        //update headers
+        //error.config holds your original request's configuration
+        error.config.headers['Authorization']=`Bearer ${data.accessToken}`
+
+        // retry original request 
+        return api.request(error.config) 
+      } catch (error) {
+        await signout();
+        return Promise.reject(error)
+      }
     }
 
     return Promise.reject(error);

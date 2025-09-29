@@ -152,6 +152,12 @@ export const generateNewAccessToken = async (req, res)=>{
         })
     } catch (error) {
         console.log(error)
+        if(error.name=='TokenExpiredError'){
+            return res.status(401).json({
+                message: 'Refresh token expired',
+                code: 'REFRESH_TOKEN_EXPIRED'
+            })
+        }
         return res.status(500).json({
             error:error,
             message: 'Error generating new access token. Refresh token is expired.'
