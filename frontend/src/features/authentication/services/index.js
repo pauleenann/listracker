@@ -1,10 +1,15 @@
 import { auth } from '../../../lib/firebase';
-import { createUserWithEmailAndPassword, signOut } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import axios from 'axios'
 import api from '../../../lib/axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 let resetFn = null;
+
+//initialize resetFn from context api
+export const setResetFn = (fn)=>{
+    resetFn = fn;
+}
 
 export const signup = async (fname, lname, email, password)=>{
     try {
@@ -41,8 +46,39 @@ export const signup = async (fname, lname, email, password)=>{
     }
 }
 
-export const setResetFn = (fn)=>{
-    resetFn = fn;
+export const signin = async (email, password)=>{
+    try {
+        const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+        const user = userCredential.user;
+
+        //get token
+        const token = await user.getIdToken();
+
+        //pass token in authorization header
+        const response = await axios.post(
+            `${API_BASE_URL}/auth/signin`,
+            {
+                email
+            },
+            {
+                headers:{
+                    Authorization: `Bearer ${token}`
+                },
+                withCredentials: true
+            }
+        )
+                    
+        return response
+
+    } catch (error) {
+        console.error('Cannot sign in user. An error occurred: ', error)
+        throw error;
+    }
 }
 
 export const signout = async ()=>{

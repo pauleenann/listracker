@@ -2,6 +2,9 @@ import React from 'react'
 import InputField from '../../../components/form/InputField';
 import Button from '../../../components/ui/Button';
 import { useForm } from "react-hook-form"
+import { signin } from '../services';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router';
 
 const LoginForm = () => {
     const {
@@ -9,9 +12,22 @@ const LoginForm = () => {
         handleSubmit,
         formState: {errors},
     }=useForm();
+    const {signIn} = useAuth();
+    const navigate = useNavigate();
     
-    const onSubmit = ()=>{
-        console.log('Form submitted')
+    const onSubmit = async (data)=>{
+        try {
+            const response = await signin(data.email, data.password);
+            const authInfo = response.data;
+            console.log(response)
+
+            if(authInfo){
+                signIn(authInfo.user, authInfo.accessToken)
+                navigate('/dashboard')
+            }
+        } catch (error) {
+            console.error('Cannot sign in: ', error)
+        }
     }
 
     return (

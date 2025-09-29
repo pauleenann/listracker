@@ -48,6 +48,46 @@ export const signup = async (req, res)=>{
     }
 }
 
+export const signin = async (req, res)=>{
+    try {
+        console.log(req.body)
+        const {email} = req.body;
+
+        let user = await User.findOne({email:email})
+        
+        if(!user){
+            return res.status(400).json({
+                message: 'User already exist!'
+            })
+        }
+
+        // payload
+        const payload = {
+            id: user._id,
+            email: user.email
+        }
+
+        // generate tokens
+        const accessToken = await generateAccessToken(payload)
+        const refreshToken = await generateRefreshToken(payload)
+
+        // store refresh tokens in cookies
+        await setRefreshTokenCookie(res, refreshToken)
+
+        return res.status(200).json({
+            accessToken,
+            user,
+            message: 'User created successfully!'
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            error:error,
+            message: 'Error signing up'
+        })
+    }
+}
+
 export const signout = async (req, res)=>{
     try {
         // clear cookie

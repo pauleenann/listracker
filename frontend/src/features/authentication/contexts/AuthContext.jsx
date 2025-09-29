@@ -21,6 +21,7 @@ export const AuthProvider = ({children})=>{
         initializeAccessToken(token)
     }
 
+    //clears states
     const resetAuth = ()=>{
         setUser(null);
         setAccessToken(null);
