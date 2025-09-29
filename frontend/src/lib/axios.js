@@ -19,7 +19,9 @@ api.interceptors.request.use(
     console.log('this is the request interceptor')
     
     //include access token in authorization headers
-    config.headers.Authorization = `Bearer ${accessToken}`
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }    
     
     return config;
   }, 
@@ -38,6 +40,11 @@ api.interceptors.response.use(
   async (error) =>{
     console.log(error)
     const { code } = error.response.data;
+    
+    // prevent infinite loops is retry also fails
+    if (error.config._retry) {
+      return Promise.reject(error); // already retried, stop here
+    }
 
     if(code=='REFRESH_TOKEN_EXPIRED'){
       //logout if refresh token is expired
@@ -46,9 +53,11 @@ api.interceptors.response.use(
     
     if(code=='ACCESS_TOKEN_EXPIRED'){
       try {
+        // set a flag; mark request as retried
+        error.config._retry = true; 
+
         //refresh token 
         const {data} = await api.get('/auth/refresh-token');
-        console.log(data)
         
         //update user and accesstoken in context api
         updateAuth(data.user, data.accessToken)
@@ -58,6 +67,7 @@ api.interceptors.response.use(
         error.config.headers['Authorization']=`Bearer ${data.accessToken}`
 
         // retry original request 
+        console.log('Retrying request')
         return api.request(error.config) 
       } catch (error) {
         await signout();
