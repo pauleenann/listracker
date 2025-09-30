@@ -6,7 +6,7 @@ const DebtorSchema = new Schema({
         required: true
     },
     contactNumber:{
-        type: Number
+        type: String
     },
     createdAt:{
         type: Date,
