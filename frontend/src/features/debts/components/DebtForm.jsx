@@ -5,12 +5,15 @@ import Dropdown from '../../../components/ui/Dropdown';
 import { status } from '../../../data/statusOptions';
 import DefaultButton from '../../../components/ui/DefaultButton';
 import Button from '../../../components/ui/Button';
+import SearchInput from '../../../components/form/SearchInput';
+import { getDebtorSuggestion } from '../services';
 
 const DebtForm = ({close}) => {
     const {
         register,
         handleSubmit,
         formState: {errors},
+        control
     } = useForm();
 
     const addDebt = (data)=>{
@@ -21,17 +24,12 @@ const DebtForm = ({close}) => {
     <form
     onSubmit={handleSubmit(addDebt)}
     className='flex flex-col gap-2 mt-5'>
-        <InputField
+        <SearchInput
         id={'name'}
         label={'Debtor name'}
         placeholder={'Enter debtor name'}
-        register={register}
-        rules={
-            {
-                required: 'Please enter debtor name'
-            }
-        }
-        errors={errors}/>
+        control={control}
+        searchFn={getDebtorSuggestion}/>
 
         <InputField
         id={'product'}

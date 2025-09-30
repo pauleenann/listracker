@@ -37,3 +37,26 @@ export const addDebtor = async (req,res)=>{
         })
     }
 }
+
+export const getDebtorSuggestion = async (req,res)=>{
+    try {
+        const {debtor} = req.query;
+        
+        const debtors = await Debtor.find(
+            {name: new RegExp(`^${debtor}`, 'i')},
+            {name: 1}
+        )
+
+        console.log(debtors)
+        return res.status(200).json({
+            debtors,
+            message: 'Suggestions retrieved'
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            error: error,
+            message: 'Failed to retrieve suggestions'
+        })
+    }
+}
