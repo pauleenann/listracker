@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import InputField from '../../../components/form/InputField'
 import { useForm } from 'react-hook-form'
 import DefaultButton from '../../../components/ui/DefaultButton';
 import Button from '../../../components/ui/Button';
 import { createDebtor } from '../services';
+import toast from 'react-hot-toast';
 
 const DebtorForm = ({close}) => {
     const {
@@ -11,13 +12,24 @@ const DebtorForm = ({close}) => {
         handleSubmit,
         formState: {errors}
     }=useForm();
+    const [isDisabled, setIsDisabled] = useState(false)
 
     const addDebtor = async (data)=>{
         try {
-            console.log(data)
-            await createDebtor(data.name, data.contactNumber);
+            setIsDisabled(true)
+            await toast.promise(
+                createDebtor(data.name, data.contactNumber),
+                {
+                    loading: 'Adding debtor',
+                    success: 'Debtor added successfully',
+                    error: 'Could not add debtor',
+                }
+            )
         } catch (error) {
             console.log('Cannot add debtor: ', error)
+        } finally{
+            setIsDisabled(false)
+            close();
         }
     }
 
@@ -35,7 +47,8 @@ const DebtorForm = ({close}) => {
                 required: 'Please enter debtor name'
             }
         }
-        errors={errors}/>
+        errors={errors}
+        disabled={isDisabled}/>
       
         <InputField
         id={'contactNumber'}
@@ -51,18 +64,21 @@ const DebtorForm = ({close}) => {
                 }
             }
         }
-        errors={errors}/>
+        errors={errors}
+        disabled={isDisabled}/>
 
         <footer className='flex items-center justify-end gap-2 mt-5'>
             <div>
                 <DefaultButton
-                onClick={close}>
+                onClick={close}
+                disabled={isDisabled}>
                     Cancel
                 </DefaultButton>
             </div>
             <div>
                 <Button
-                type='submit'>
+                type='submit'
+                disabled={isDisabled}>
                     Save
                 </Button>    
             </div>

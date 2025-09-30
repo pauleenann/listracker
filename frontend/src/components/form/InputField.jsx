@@ -8,7 +8,8 @@ const InputField = ({
   placeholder, 
   register, 
   rules, 
-  errors 
+  errors,
+  disabled 
 }) => {
   return (
     <div className='flex flex-col w-full'>
@@ -18,11 +19,14 @@ const InputField = ({
         type={type} 
         className='border border-gray-300 h-12 px-3 rounded focus:outline-theme-blue'
         placeholder={placeholder}
-        {...register(id, rules)}/>
+        {...register(id, rules)}
+        disabled={disabled}/>
+        
         <ErrorMessage 
         errors={errors} 
         name={id}
-        render={({ message }) => <p className='text-red-500 text-sm before:content-["⚠"] before:mr-1 mt-1'>{message}</p>}/>
+        render={({ message }) => <p className='text-red-500 text-sm before:content-["⚠"] before:mr-1 mt-1'>{message}</p>}
+        />
     </div>
   )
 }
