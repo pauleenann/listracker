@@ -25,11 +25,12 @@ const DebtForm = ({close}) => {
     onSubmit={handleSubmit(addDebt)}
     className='flex flex-col gap-2 mt-5'>
         <SearchInput
-        id={'name'}
+        id={'debtor'}
         label={'Debtor name'}
         placeholder={'Enter debtor name'}
         control={control}
-        searchFn={getDebtorSuggestion}/>
+        searchFn={getDebtorSuggestion}
+        errors={errors}/>
 
         <InputField
         id={'product'}

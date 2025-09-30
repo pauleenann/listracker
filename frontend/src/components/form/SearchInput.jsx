@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Controller } from 'react-hook-form';
 import debounce from "lodash.debounce"
+import { ErrorMessage } from '@hookform/error-message';
 
 const SearchInput = ({
   id, 
@@ -8,7 +9,8 @@ const SearchInput = ({
   type='text', 
   placeholder,
   control,
-  searchFn
+  searchFn,
+  errors
 }) => {
   const [open, setOpen] = useState(false);
   const [suggestions, setSuggestions] = useState([])
@@ -27,9 +29,13 @@ const SearchInput = ({
   return (
     <>
       <Controller
-      name='debtor'
+      name={id}
       control={control}
       defaultValue=''
+      rules={{
+        required: 'Input is required',
+        validate: value=>suggestions.find(s=>s.name==value)||"Input does not exist"
+      }}
       render={({field})=>(
         <div className='flex flex-col w-full relative'>
           <label htmlFor={id} className='text-gray-900'>{label}</label>
@@ -47,12 +53,17 @@ const SearchInput = ({
             handleSearch(e.target.value);
           }}/>
 
-          {open&&suggestions.length>0&&<div className='w-full min-h-10 max-h-20 absolute bg-gray-100 border border-gray-100 -bottom-21 rounded overflow-y-scroll scrollbar-none'>
+          {open&&suggestions.length>0&&<div className='absolute top-full w-full max-h-20 bg-gray-100 border border-gray-100 rounded overflow-y-scroll scrollbar-none'>
             <ul>
               {suggestions.map((item)=>(
                 <li 
                 key={item._id}
-                className='p-2 capitalize cursor-pointer'>
+                className='p-2 cursor-pointer hover:bg-theme-blue hover:text-white transition duration-100 ease-in-out'
+                onMouseDown={(e) => {
+                  e.preventDefault(); // Prevent onBlur from firing before onClick
+                  field.onChange(item.name); // Update the input value
+                  setOpen(false); // Close the dropdown
+                }}>
                   {item.name}
                 </li>
               ))}
@@ -61,6 +72,12 @@ const SearchInput = ({
           }
       </div>
       )}/>
+
+      <ErrorMessage 
+          errors={errors} 
+          name={id}
+          render={({ message }) => <p className='text-red-500 text-sm before:content-["⚠"] before:mr-1'>{message}</p>}
+        />
     </>
     
   )
