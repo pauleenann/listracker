@@ -20,7 +20,8 @@ const InputField = ({
         className='border border-gray-300 h-12 px-3 rounded focus:outline-theme-blue'
         placeholder={placeholder}
         {...register(id, rules)}
-        disabled={disabled}/>
+        disabled={disabled}
+        min={1}/>
         
         <ErrorMessage 
         errors={errors} 

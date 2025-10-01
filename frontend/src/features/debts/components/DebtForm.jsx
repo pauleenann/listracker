@@ -1,31 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
 import InputField from '../../../components/form/InputField'
 import { useForm } from 'react-hook-form'
-import Dropdown from '../../../components/ui/Dropdown';
+import Dropdown from '../../../components/form/Dropdown';
 import { status } from '../../../data/statusOptions';
 import DefaultButton from '../../../components/ui/DefaultButton';
 import Button from '../../../components/ui/Button';
 import SearchInput from '../../../components/form/SearchInput';
-import { getDebtorSuggestion } from '../services';
+import { addDebt, getDebtorSuggestion } from '../services';
+import toast from 'react-hot-toast';
 
 const DebtForm = ({close}) => {
     const {
         register,
         handleSubmit,
         formState: {errors},
-        control
+        control,
     } = useForm();
+    const [isDisabled, setIsDisabled] = useState(false)
 
-    const addDebt = (data)=>{
-        console.log(data)
+    const onSubmit = async (data)=>{
+        try {
+            setIsDisabled(true)
+            await toast.promise(
+                addDebt(data),
+                {
+                    loading: 'Adding debtor',
+                    success: 'Debtor added successfully',
+                    error: 'Could not add debtor',
+                }
+            )
+        } catch (error) {
+            console.log(error)
+        } finally{
+            setIsDisabled(false)
+            close();
+        }
     }
 
   return (
     <form
-    onSubmit={handleSubmit(addDebt)}
+    onSubmit={handleSubmit(onSubmit)}
     className='flex flex-col gap-2 mt-5'>
         <SearchInput
-        id={'debtor'}
+        id={'name'}
         label={'Debtor name'}
         placeholder={'Enter debtor name'}
         control={control}
@@ -42,23 +59,39 @@ const DebtForm = ({close}) => {
                 required: 'Please enter product'
             }
         }
-        errors={errors}/>
+        errors={errors}
+        disabled={isDisabled}/>
 
         <InputField
-        id={'amount'}
-        label={'Amount'}
-        type={'number'}
-        placeholder={'Enter amount in peso'}
+        id={'quantity'}
+        type='number'
+        label={'Quantity'}
+        placeholder={'Enter product quantity'}
         register={register}
         rules={
             {
-                required: 'Please enter amount'
+                required: 'Please enter quantity'
             }
         }
-        errors={errors}/>
+        errors={errors}
+        disabled={isDisabled}/>
         
         <InputField
-        id={'duedate'}
+        id={'unitPrice'}
+        type='number'
+        label={'Unit Price'}
+        placeholder={'Enter unit price'}
+        register={register}
+        rules={
+            {
+                required: 'Please enter unit price'
+            }
+        }
+        errors={errors}
+        disabled={isDisabled}/>
+        
+        <InputField
+        id={'dueDate'}
         label={'Due date'}
         type={'date'}
         placeholder={'Enter due date'}
@@ -68,7 +101,8 @@ const DebtForm = ({close}) => {
                 required: 'Please enter due date'
             }
         }
-        errors={errors}/>
+        errors={errors}
+        disabled={isDisabled}/>
 
         <Dropdown
         id={'status'}
@@ -80,7 +114,8 @@ const DebtForm = ({close}) => {
             }
         }
         errors={errors}
-        options={status}/>
+        options={status}
+        disabled={isDisabled}/>
         
         <InputField
         id={'remarks'}
@@ -93,18 +128,21 @@ const DebtForm = ({close}) => {
                 required: false
             }
         }
-        errors={errors}/>
+        errors={errors}
+        disabled={isDisabled}/>
 
         <footer className='flex items-center justify-end gap-2 mt-5'>
             <div>
                 <DefaultButton
-                onClick={close}>
+                onClick={close}
+                disabled={isDisabled}>
                     Cancel
                 </DefaultButton>
             </div>
             <div>
                 <Button
-                type='submit'>
+                type='submit'
+                disabled={isDisabled}>
                     Save
                 </Button>    
             </div>

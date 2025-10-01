@@ -1,4 +1,4 @@
-import Debtor from '../models/Debtors.js' 
+import Debtor from '../models/Debtor.js' 
 
 export const addDebtor = async (req,res)=>{
     try {

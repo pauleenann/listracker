@@ -10,7 +10,8 @@ const SearchInput = ({
   placeholder,
   control,
   searchFn,
-  errors
+  errors,
+  disabled
 }) => {
   const [open, setOpen] = useState(false);
   const [suggestions, setSuggestions] = useState([])
@@ -51,7 +52,8 @@ const SearchInput = ({
           onChange={(e)=>{
             field.onChange(e.target.value);
             handleSearch(e.target.value);
-          }}/>
+          }}
+          disabled={disabled}/>
 
           {open&&suggestions.length>0&&<div className='absolute top-full w-full max-h-20 bg-gray-100 border border-gray-100 rounded overflow-y-scroll scrollbar-none'>
             <ul>
