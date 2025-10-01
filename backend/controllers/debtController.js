@@ -44,3 +44,25 @@ export const addDebt = async (req, res)=>{
         })
     }
 }
+
+export const getDebt = async (req, res)=>{
+    try {
+        const debts = await Debt.find().populate('userId','name');
+
+        if(!debts){
+            return res.status(404).json({
+                message: 'No debts'
+            })
+        }
+
+        return res.status(200).json({
+            data: debts,
+            message: 'Debts successfully retrieved'
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Failed to get debts'
+        })
+    }
+}

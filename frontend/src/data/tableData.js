@@ -10,6 +10,8 @@ export const debtHeader = [
     '#',
     'Debtor name',
     'Product',
+    'Quantity',
+    'Unit Price',
     'Amount',
     'Due date',
     'Status',

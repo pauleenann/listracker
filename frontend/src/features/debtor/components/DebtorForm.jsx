@@ -55,15 +55,6 @@ const DebtorForm = ({close}) => {
         label={'Contact number'}
         placeholder={'Enter contact number'}
         register={register}
-        rules={
-            {
-                required: 'Please enter contact number',
-                pattern: {
-                    value: /^09\d{9}$/,  
-                    message: 'Contact number must start with 09 and be 11 digits'
-                }
-            }
-        }
         errors={errors}
         disabled={isDisabled}/>
 

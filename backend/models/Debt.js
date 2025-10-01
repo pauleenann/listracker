@@ -3,7 +3,7 @@ import mongoose, {Schema, model} from 'mongoose'
 const DebtSchema = new Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        reference: 'User',
+        ref: 'Debtor',
         required: true
     },
     product: {
@@ -31,6 +31,7 @@ const DebtSchema = new Schema({
     },
     remarks: {
         type: String,
+        default: 'n/a'
     },
     dueDate: {
         type: Date,

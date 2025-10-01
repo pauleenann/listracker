@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import InputField from '../../../components/form/InputField'
 import { useForm } from 'react-hook-form'
 import Dropdown from '../../../components/form/Dropdown';
@@ -6,37 +6,20 @@ import { status } from '../../../data/statusOptions';
 import DefaultButton from '../../../components/ui/DefaultButton';
 import Button from '../../../components/ui/Button';
 import SearchInput from '../../../components/form/SearchInput';
-import { addDebt, getDebtorSuggestion } from '../services';
-import toast from 'react-hot-toast';
+import { getDebtorSuggestion } from '../services';
 
-const DebtForm = ({close}) => {
+const DebtForm = ({
+    close, 
+    onSubmit,
+    disabled
+}) => {
     const {
         register,
         handleSubmit,
         formState: {errors},
         control,
     } = useForm();
-    const [isDisabled, setIsDisabled] = useState(false)
-
-    const onSubmit = async (data)=>{
-        try {
-            setIsDisabled(true)
-            await toast.promise(
-                addDebt(data),
-                {
-                    loading: 'Adding debtor',
-                    success: 'Debtor added successfully',
-                    error: 'Could not add debtor',
-                }
-            )
-        } catch (error) {
-            console.log(error)
-        } finally{
-            setIsDisabled(false)
-            close();
-        }
-    }
-
+  
   return (
     <form
     onSubmit={handleSubmit(onSubmit)}
@@ -60,7 +43,7 @@ const DebtForm = ({close}) => {
             }
         }
         errors={errors}
-        disabled={isDisabled}/>
+        disabled={disabled}/>
 
         <InputField
         id={'quantity'}
@@ -74,7 +57,7 @@ const DebtForm = ({close}) => {
             }
         }
         errors={errors}
-        disabled={isDisabled}/>
+        disabled={disabled}/>
         
         <InputField
         id={'unitPrice'}
@@ -88,7 +71,7 @@ const DebtForm = ({close}) => {
             }
         }
         errors={errors}
-        disabled={isDisabled}/>
+        disabled={disabled}/>
         
         <InputField
         id={'dueDate'}
@@ -102,7 +85,7 @@ const DebtForm = ({close}) => {
             }
         }
         errors={errors}
-        disabled={isDisabled}/>
+        disabled={disabled}/>
 
         <Dropdown
         id={'status'}
@@ -115,7 +98,7 @@ const DebtForm = ({close}) => {
         }
         errors={errors}
         options={status}
-        disabled={isDisabled}/>
+        disabled={disabled}/>
         
         <InputField
         id={'remarks'}
@@ -123,26 +106,21 @@ const DebtForm = ({close}) => {
         type={'text'}
         placeholder={'Enter remarks'}
         register={register}
-        rules={
-            {
-                required: false
-            }
-        }
         errors={errors}
-        disabled={isDisabled}/>
+        disabled={disabled}/>
 
         <footer className='flex items-center justify-end gap-2 mt-5'>
             <div>
                 <DefaultButton
                 onClick={close}
-                disabled={isDisabled}>
+                disabled={disabled}>
                     Cancel
                 </DefaultButton>
             </div>
             <div>
                 <Button
                 type='submit'
-                disabled={isDisabled}>
+                disabled={disabled}>
                     Save
                 </Button>    
             </div>

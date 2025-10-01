@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MainLayout from '../layouts/MainLayout'
 import Navbar from '../components/navigation/Navbar'
 import DebtCards from '../features/debts/components/DebtCards'
@@ -8,12 +8,53 @@ import Table from '../components/table/Table'
 import SearchBar from '../components/form/SearchBar'
 import Button from '../components/ui/Button'
 import Modal from '../components/modal/Modal'
-import useModal from '../hooks/useModal'
+import useModal from '../hooks/useModal.js'
 import DebtForm from '../features/debts/components/DebtForm'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { addDebt, fetchDebt } from '../features/debts/services/index.js'
+import toast from 'react-hot-toast'
 
 const Debts = () => {
+  const queryClient = useQueryClient();
   const {show, openShow, closeShow} = useModal();
+  const [disabled, setDisabled] = useState(false);
+  
+  const {
+    isLoading,
+    isError,
+    data,
+  } = useQuery({
+    queryKey:['debts'],
+    queryFn: fetchDebt
+  });
 
+  const mutation = useMutation({
+    mutationFn: async (debt)=>{
+      try {
+        setDisabled(true)
+        await toast.promise(
+            addDebt(debt),
+            {
+                loading: 'Adding debtor',
+                success: 'Debtor added successfully',
+                error: 'Could not add debtor',
+            }
+        )
+      } catch (error) {
+          console.log(error)
+      } finally{
+          setDisabled(false)
+          closeShow();
+      }
+    },
+    onSuccess: ()=>{
+      queryClient.invalidateQueries(['debts'])
+    }
+  })
+
+  const onSubmit = (data)=>{
+    mutation.mutate(data)
+  }
   return (
     <MainLayout>
         <Navbar menu={"Debts"}/>
@@ -53,11 +94,13 @@ const Debts = () => {
           </section>
 
           {/* table */}
-          <section className='mt-3'>
-            <Table
+          <section className='mt-3'> 
+            {isLoading&&<p>Loading</p>}
+            {isError&&<p>Error</p>}
+            {data&&<Table
             header={debtHeader}
-            data={debtSampleData}
-            trComponent={DebtTrComponent}/>
+            data={data}
+            trComponent={DebtTrComponent}/>}
           </section>
         </main>
 
@@ -68,7 +111,9 @@ const Debts = () => {
       close={closeShow}
       >
         <DebtForm 
-        close={closeShow}/>
+        close={closeShow}
+        onSubmit={onSubmit}
+        disabled={disabled}/>
       </Modal>
     </MainLayout>
   )
