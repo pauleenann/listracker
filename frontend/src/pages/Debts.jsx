@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import MainLayout from '../layouts/MainLayout'
 import Navbar from '../components/navigation/Navbar'
 import DebtCards from '../features/debts/components/DebtCards'
-import { debtHeader, debtSampleData } from '../data/tableData'
+import { debtHeader } from '../data/tableData'
 import DebtTrComponent from '../features/debts/components/DebtTrComponent'
 import Table from '../components/table/Table'
 import SearchBar from '../components/form/SearchBar'
@@ -10,51 +10,21 @@ import Button from '../components/ui/Button'
 import Modal from '../components/modal/Modal'
 import useModal from '../hooks/useModal.js'
 import DebtForm from '../features/debts/components/DebtForm'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { addDebt, fetchDebt } from '../features/debts/services/index.js'
-import toast from 'react-hot-toast'
 
-const Debts = () => {
-  const queryClient = useQueryClient();
+const Debts = ({
+  isLoading,
+  isError,
+  data,
+  addDebt,
+  isAddingDebt
+}) => {
   const {show, openShow, closeShow} = useModal();
-  const [disabled, setDisabled] = useState(false);
   
-  const {
-    isLoading,
-    isError,
-    data,
-  } = useQuery({
-    queryKey:['debts'],
-    queryFn: fetchDebt
-  });
-
-  const mutation = useMutation({
-    mutationFn: async (debt)=>{
-      try {
-        setDisabled(true)
-        await toast.promise(
-            addDebt(debt),
-            {
-                loading: 'Adding debtor',
-                success: 'Debtor added successfully',
-                error: 'Could not add debtor',
-            }
-        )
-      } catch (error) {
-          console.log(error)
-      } finally{
-          setDisabled(false)
-          closeShow();
-      }
-    },
-    onSuccess: ()=>{
-      queryClient.invalidateQueries(['debts'])
-    }
-  })
-
-  const onSubmit = (data)=>{
-    mutation.mutate(data)
+  const handleAddDebt = (debt)=>{
+    addDebt(debt)
+    closeShow();
   }
+
   return (
     <MainLayout>
         <Navbar menu={"Debts"}/>
@@ -112,8 +82,8 @@ const Debts = () => {
       >
         <DebtForm 
         close={closeShow}
-        onSubmit={onSubmit}
-        disabled={disabled}/>
+        onSubmit={handleAddDebt}
+        disabled={isAddingDebt}/>
       </Modal>
     </MainLayout>
   )
