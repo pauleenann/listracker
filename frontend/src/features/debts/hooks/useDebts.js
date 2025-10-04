@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react'
-import { addDebt, fetchDebt } from '../services';
+import { addDebt, editDebt, fetchDebt } from '../services';
 import toast from 'react-hot-toast';
 
 const useDebts = () => {
@@ -16,7 +16,7 @@ const useDebts = () => {
         queryFn: fetchDebt,
     });
         
-    const mutation = useMutation({
+    const mutationAdd = useMutation({
         mutationFn: async (debt)=>{
             try {
             await toast.promise(
@@ -25,6 +25,26 @@ const useDebts = () => {
                     loading: 'Adding debt',
                     success: 'Debt added successfully',
                     error: 'Could not add debt',
+                }
+            )
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        onSuccess: ()=>{
+            queryClient.invalidateQueries(['debts'])
+        }
+    })
+
+    const mutationEdit = useMutation({
+        mutationFn: async (debt)=>{
+            try {
+            await toast.promise(
+                editDebt(debt),
+                {
+                    loading: 'Editing debt',
+                    success: 'Debt edited successfully',
+                    error: 'Could not edit debt',
                 }
             )
             } catch (error) {
@@ -46,6 +66,8 @@ const useDebts = () => {
             
             setSelectedData({
                 ...selected,
+                name: selected?.userId?.name,
+                // convert dueDate to YYYY-MM-DD
                 dueDate: selected?.dueDate
                 ? new Date(selected.dueDate).toISOString().split('T')[0]
                 : ''
@@ -58,8 +80,10 @@ const useDebts = () => {
     isLoading,
     isError,
     data,
-    addDebt: mutation.mutate,
-    isAddingDebt:mutation.isLoading,
+    addDebt: mutationAdd.mutate,
+    isAddingDebt:mutationAdd.isLoading,
+    editDebt: mutationEdit.mutate,
+    isEditingDebt:mutationEdit.isLoading,
     filterSelectedData,
     selectedData,
   }

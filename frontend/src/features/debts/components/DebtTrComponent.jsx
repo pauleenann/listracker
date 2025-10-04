@@ -10,7 +10,6 @@ const DebtTrComponent = ({
         filterSelectedData
     } = useDebtContext();
 
-
   return (
     <tr 
     key={index}

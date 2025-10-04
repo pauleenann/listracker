@@ -15,6 +15,12 @@ export const addDebt = async(data)=>{
     return response
 }
 
+export const editDebt = async(data)=>{
+    const response = await api.put('/debts', data)
+    console.log(response)
+    return response
+}
+
 export const fetchDebt = async ()=>{
     const response = await api.get('debts');
     return response.data.data

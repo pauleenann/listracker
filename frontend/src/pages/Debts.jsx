@@ -16,12 +16,27 @@ const Debts = () => {
     isLoading, 
     isError, 
     data, 
+    addDebt,
+    editDebt,
     show, 
     openShow, 
     closeShow, 
     label, 
     filterSelectedData
   } = useDebtContext();
+
+  const handleAddDebt = (debt) => {
+    console.log(debt)
+    if (label === 'view debt') {
+        openShow('edit debt');
+    } else if (label === 'edit debt') {
+        editDebt(debt);
+        closeShow();
+    } else {
+        addDebt(debt);
+        closeShow();
+    }
+  };
 
   return (
     <MainLayout>
@@ -83,7 +98,8 @@ const Debts = () => {
       show={show}
       close={closeShow}
       >
-        <DebtForm/>
+        <DebtForm
+        handleAddDebt={handleAddDebt}/>
       </Modal>
     </MainLayout>
   )

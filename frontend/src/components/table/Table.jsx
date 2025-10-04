@@ -5,7 +5,6 @@ const Table = ({
     data,
     trComponent: TrComponent
 }) => {
-    
   return (
     <table className='w-full'>
       <thead>

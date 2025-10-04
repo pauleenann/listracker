@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import InputField from '../../../components/form/InputField'
 import { useForm } from 'react-hook-form'
 import Dropdown from '../../../components/form/Dropdown';
@@ -9,14 +9,13 @@ import SearchInput from '../../../components/form/SearchInput';
 import { getDebtorSuggestion } from '../services';
 import { useDebtContext } from '../context/DebtContext';
 
-const DebtForm = () => {
+const DebtForm = ({handleAddDebt}) => {
     const {
-        disabled,
-        addDebt,
         selectedData,
-        openShow,
         closeShow,
-        label
+        label,
+        isInputDisabled,
+        isSearchDisabled
     } = useDebtContext();
 
     const {
@@ -28,20 +27,6 @@ const DebtForm = () => {
         defaultValues: selectedData || {}
     });
   
-    const handleAddDebt = (debt)=>{
-        switch(label){
-            case 'view debt':
-                openShow('edit debt')
-                break
-            case 'edit debt':
-                console.log('edited')
-                break
-            default:
-                addDebt(debt)
-                closeShow();
-        }
-        
-    }
 
   return (
     <form
@@ -54,7 +39,7 @@ const DebtForm = () => {
         control={control}
         searchFn={getDebtorSuggestion}
         errors={errors}
-        disabled={disabled}/>
+        disabled={isSearchDisabled}/>
 
         <InputField
         id={'product'}
@@ -67,7 +52,7 @@ const DebtForm = () => {
             }
         }
         errors={errors}
-        disabled={disabled}/>
+        disabled={isInputDisabled}/>
 
         <InputField
         id={'quantity'}
@@ -81,7 +66,7 @@ const DebtForm = () => {
             }
         }
         errors={errors}
-        disabled={disabled}/>
+        disabled={isInputDisabled}/>
         
         <InputField
         id={'unitPrice'}
@@ -95,7 +80,7 @@ const DebtForm = () => {
             }
         }
         errors={errors}
-        disabled={disabled}/>
+        disabled={isInputDisabled}/>
         
         <InputField
         id={'dueDate'}
@@ -109,7 +94,7 @@ const DebtForm = () => {
             }
         }
         errors={errors}
-        disabled={disabled}/>
+        disabled={isInputDisabled}/>
 
         <Dropdown
         id={'status'}
@@ -122,7 +107,7 @@ const DebtForm = () => {
         }
         errors={errors}
         options={status}
-        disabled={disabled}/>
+        disabled={isInputDisabled}/>
         
         <InputField
         id={'remarks'}
@@ -131,7 +116,7 @@ const DebtForm = () => {
         placeholder={'Enter remarks'}
         register={register}
         errors={errors}
-        disabled={disabled}/>
+        disabled={isInputDisabled}/>
 
         <footer className='flex items-center justify-end gap-2 mt-5'>
             {label=='view debt'
@@ -145,19 +130,18 @@ const DebtForm = () => {
                 <div>
                     <DefaultButton
                     onClick={closeShow}
-                    disabled={disabled}>
+                    disabled={isInputDisabled}>
                         Cancel
                     </DefaultButton>
                 </div>
                 <div>
                     <Button
                     type='submit'
-                    disabled={disabled}>
+                    disabled={isInputDisabled}>
                         Save
                     </Button>    
                 </div>
             </>}
-            
         </footer>
     </form>
   )

@@ -1,6 +1,6 @@
 import express from 'express'
 import { authenticateUser } from '../middlewares/authenticate.js';
-import { addDebt, getDebt } from '../controllers/debtController.js';
+import { addDebt, editDebt, getDebt } from '../controllers/debtController.js';
 
 const router = express.Router();
 
@@ -13,6 +13,11 @@ router.post(
     '/',
     authenticateUser,
     addDebt
+);
+router.put(
+    '/',
+    authenticateUser,
+    editDebt
 );
 
 

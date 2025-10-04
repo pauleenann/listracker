@@ -12,10 +12,10 @@ const SearchInput = ({
   control,
   searchFn,
   errors,
+  disabled
 }) => {
   const [open, setOpen] = useState(false);
   const [suggestions, setSuggestions] = useState([])
-  const {selectedData, disabled} = useDebtContext();
 
   const handleSearch = debounce(async (search) => {
     console.log("Searching:", search)
@@ -37,7 +37,6 @@ const SearchInput = ({
       <Controller
       name={id}
       control={control}
-      defaultValue={selectedData?.userId?.name||''}
       rules={{
         required: 'Input is required',
         validate: value=>suggestions.find(s=>s.name==value)||"Input does not exist"

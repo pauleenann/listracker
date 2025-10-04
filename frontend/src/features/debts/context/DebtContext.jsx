@@ -5,7 +5,8 @@ import useModal from "../../../hooks/useModal";
 const DebtContext = createContext();
 
 export const DebtProvider = ({children})=>{
-    const [disabled, setDisabled] = useState(false);
+    const [isInputDisabled, setIsInputDisabled] = useState(false);
+    const [isSearchDisabled, setIsSearchDisabled] = useState(false);
 
     // useDebts hook
     const {
@@ -14,6 +15,8 @@ export const DebtProvider = ({children})=>{
         data,
         addDebt,
         isAddingDebt,
+        editDebt,
+        isEditingDebt,
         filterSelectedData,
         selectedData
     } = useDebts();
@@ -27,8 +30,10 @@ export const DebtProvider = ({children})=>{
     } = useModal();
 
     useEffect(()=>{
-        setDisabled(isAddingDebt||label=='view debt')
+        setIsInputDisabled(isAddingDebt||isEditingDebt||label=='view debt')
+        setIsSearchDisabled(isAddingDebt||isEditingDebt||label!='add debt')
     }, [label, isAddingDebt])
+
 
     let value = {
         // useDebts hook
@@ -36,6 +41,7 @@ export const DebtProvider = ({children})=>{
         isError,
         data,
         addDebt,
+        editDebt,
         filterSelectedData,
         selectedData,
 
@@ -44,8 +50,10 @@ export const DebtProvider = ({children})=>{
         openShow,
         closeShow,
         label,
-        
-        disabled
+
+        // disabled states
+        isInputDisabled,
+        isSearchDisabled
     }
 
     return (
