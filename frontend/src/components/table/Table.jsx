@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const Table = ({
     header, 
     data,
     trComponent: TrComponent
 }) => {
-    console.log(data)
+    
   return (
     <table className='w-full'>
       <thead>
@@ -21,9 +21,11 @@ const Table = ({
       </thead>
       <tbody>
         {data.map((d, i)=>(
-          <TrComponent 
-          key={i}
-          data={d}/>
+          <>
+            <TrComponent 
+            index={i}
+            data={d}/>
+          </> 
         ))}   
       </tbody>
     </table>

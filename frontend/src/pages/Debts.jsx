@@ -8,22 +8,11 @@ import Table from '../components/table/Table'
 import SearchBar from '../components/form/SearchBar'
 import Button from '../components/ui/Button'
 import Modal from '../components/modal/Modal'
-import useModal from '../hooks/useModal.js'
 import DebtForm from '../features/debts/components/DebtForm'
+import { useDebtContext } from '../features/debts/context/DebtContext.jsx'
 
-const Debts = ({
-  isLoading,
-  isError,
-  data,
-  addDebt,
-  isAddingDebt
-}) => {
-  const {show, openShow, closeShow} = useModal();
-  
-  const handleAddDebt = (debt)=>{
-    addDebt(debt)
-    closeShow();
-  }
+const Debts = () => {
+  const {isLoading, isError, data, show, openShow, closeShow, label, setIsOpen} = useDebtContext();
 
   return (
     <MainLayout>
@@ -54,7 +43,10 @@ const Debts = ({
             <div>
               <Button
               type={'text'}
-              onClick={openShow}>
+              onClick={()=>{
+                setIsOpen(false)
+                openShow('Add Debt')
+              }}>
                 <div className='flex items-center gap-2'>
                   <i className="fa-solid fa-plus text-sm"></i>
                   <span>Add debt</span>
@@ -67,23 +59,22 @@ const Debts = ({
           <section className='mt-3'> 
             {isLoading&&<p>Loading</p>}
             {isError&&<p>Error</p>}
-            {data&&<Table
+            {data&&
+            <Table
             header={debtHeader}
             data={data}
-            trComponent={DebtTrComponent}/>}
+            trComponent={DebtTrComponent}/>
+            }
           </section>
         </main>
 
       {/* modal */}
       <Modal
-      label={'Add Debt'}
+      label={label}
       show={show}
       close={closeShow}
       >
-        <DebtForm 
-        close={closeShow}
-        onSubmit={handleAddDebt}
-        disabled={isAddingDebt}/>
+        <DebtForm/>
       </Modal>
     </MainLayout>
   )

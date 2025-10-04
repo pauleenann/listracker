@@ -7,22 +7,29 @@ import DefaultButton from '../../../components/ui/DefaultButton';
 import Button from '../../../components/ui/Button';
 import SearchInput from '../../../components/form/SearchInput';
 import { getDebtorSuggestion } from '../services';
+import { useDebtContext } from '../context/DebtContext';
 
-const DebtForm = ({
-    close, 
-    onSubmit,
-    disabled
-}) => {
+const DebtForm = () => {
     const {
         register,
         handleSubmit,
         formState: {errors},
         control,
     } = useForm();
+    const {
+        isAddingDebt:disabled,
+        closeShow,
+        addDebt
+    } = useDebtContext();
   
+    const handleAddDebt = (debt)=>{
+        addDebt(debt)
+        closeShow();
+    }
+
   return (
     <form
-    onSubmit={handleSubmit(onSubmit)}
+    onSubmit={handleSubmit(handleAddDebt)}
     className='flex flex-col gap-2 mt-5'>
         <SearchInput
         id={'name'}
@@ -112,7 +119,7 @@ const DebtForm = ({
         <footer className='flex items-center justify-end gap-2 mt-5'>
             <div>
                 <DefaultButton
-                onClick={close}
+                onClick={closeShow}
                 disabled={disabled}>
                     Cancel
                 </DefaultButton>

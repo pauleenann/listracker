@@ -6,7 +6,7 @@ import Debts from '../pages/Debts'
 import Debtors from '../pages/Debtors'
 import Payments from '../pages/Payments'
 import Settings from '../pages/Settings'
-import DebtContainer from '../features/debts/container/DebtContainer'
+import { DebtProvider } from '../features/debts/context/DebtContext'
 
 const PrivateRoutes = () => {
   return (
@@ -18,7 +18,9 @@ const PrivateRoutes = () => {
             />
             <Route 
             path='/debts'
-            element={<DebtContainer/>}
+            element={<DebtProvider>
+              <Debts/>  
+            </DebtProvider>}
             />
             <Route 
             path='/debtors'

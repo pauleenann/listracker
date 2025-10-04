@@ -9,7 +9,7 @@ const Modal = ({
     children
 }) => {
   return show && ReactDOM.createPortal(
-    <div className='absolute inset-0'>
+    <div className='absolute inset-0 z-5'>
       <div 
       onClick={close}
       className='bg-gray-300/50 w-full h-full flex items-center justify-center'>
