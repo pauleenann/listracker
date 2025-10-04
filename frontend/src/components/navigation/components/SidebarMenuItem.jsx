@@ -4,9 +4,7 @@ import { Link, useLocation } from 'react-router'
 
 const SidebarMenuItem = ({menu}) => {
     const location = useLocation();
-    console.log(location.pathname)
 
-    console.log(menu)
     return (
         <Link 
         to={menu.path}

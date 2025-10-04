@@ -18,7 +18,7 @@ const Modal = ({
         onClick={(e)=>e.stopPropagation()} 
         className='max-h-130 w-130 bg-white rounded-xl p-8 flex flex-col justify-between'>
             <header className='flex items-center justify-between text-theme-gray'>
-                <span className='text-2xl font-semibold'>{label}</span>
+                <span className='text-2xl font-semibold capitalize'>{label}</span>
                 <div>
                     <DefaultButton
                     onClick={close}>

@@ -5,14 +5,20 @@ import useModal from "../../../hooks/useModal";
 const DebtContext = createContext();
 
 export const DebtProvider = ({children})=>{
+    const [disabled, setDisabled] = useState(false);
+
+    // useDebts hook
     const {
         isLoading,
         isError,
         data,
         addDebt,
-        isAddingDebt
+        isAddingDebt,
+        filterSelectedData,
+        selectedData
     } = useDebts();
 
+    // useModal hook
     const {
         show, 
         openShow, 
@@ -20,27 +26,26 @@ export const DebtProvider = ({children})=>{
         label
     } = useModal();
 
-    const [openKey, setOpenKey] = useState(null);
-    const [isOpen, setIsOpen] = useState(false);
-
     useEffect(()=>{
-        console.log('Show modal: ', show)
-    },[show])
+        setDisabled(isAddingDebt||label=='view debt')
+    }, [label, isAddingDebt])
 
     let value = {
+        // useDebts hook
         isLoading,
         isError,
         data,
         addDebt,
-        isAddingDebt,
+        filterSelectedData,
+        selectedData,
+
+        // modal hook
         show,
         openShow,
         closeShow,
         label,
-        openKey,
-        setOpenKey,
-        isOpen,
-        setIsOpen
+        
+        disabled
     }
 
     return (

@@ -6,16 +6,13 @@ const DebtTrComponent = ({
     data, 
 }) => {
     const {
-        openKey, 
-        setOpenKey, 
-        isOpen, 
-        setIsOpen,
-        openShow
+        openShow,
+        filterSelectedData
     } = useDebtContext();
+
 
   return (
     <tr 
-    onClick={()=>setIsOpen(false)}
     key={index}
     className='text-theme-gray font-semibold capitalize'>
         <td className='py-3'>{data._id.substring(0,10)}</td>
@@ -36,30 +33,14 @@ const DebtTrComponent = ({
         <td className='py-3'>{data.remarks||'N/A'}</td>
         <td 
         className='py-3 relative'>
-            {index==openKey&&isOpen&&<div className='absolute top-full shadow bg-gray-100 z-1 rounded w-15'>
-                <ul className='text-sm'>
-                    <li 
-                    className='cursor-pointer p-2'
-                    onClick={(e)=>{
-                        e.stopPropagation();
-                        console.log('view')
-                        openShow('View Debt');
-                    }}>View</li>
-                </ul>
-            </div>}
             <button
             className='cursor-pointer'
             onClick={(e) => {
                 e.stopPropagation();
-                console.log('clicked');
-                if (openKey === index) {
-                  setIsOpen(!isOpen);
-                } else {
-                  setOpenKey(index);
-                  setIsOpen(true);
-                }
+                filterSelectedData(data._id)
+                openShow('view debt');
             }}>
-                <i className="fa-solid fa-ellipsis"></i>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </button>
         </td>
     </tr>

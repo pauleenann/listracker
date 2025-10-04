@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Controller } from 'react-hook-form';
 import debounce from "lodash.debounce"
 import { ErrorMessage } from '@hookform/error-message';
+import { useDebtContext } from '../../features/debts/context/DebtContext';
 
 const SearchInput = ({
   id, 
@@ -11,10 +12,10 @@ const SearchInput = ({
   control,
   searchFn,
   errors,
-  disabled
 }) => {
   const [open, setOpen] = useState(false);
   const [suggestions, setSuggestions] = useState([])
+  const {selectedData, disabled} = useDebtContext();
 
   const handleSearch = debounce(async (search) => {
     console.log("Searching:", search)
@@ -26,13 +27,17 @@ const SearchInput = ({
       console.log(error)
     }
   }, 500)
+  
+  useEffect(()=>{
+    handleSearch('')
+  },[])
 
   return (
     <>
       <Controller
       name={id}
       control={control}
-      defaultValue=''
+      defaultValue={selectedData?.userId?.name||''}
       rules={{
         required: 'Input is required',
         validate: value=>suggestions.find(s=>s.name==value)||"Input does not exist"

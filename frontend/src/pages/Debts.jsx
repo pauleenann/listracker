@@ -12,7 +12,16 @@ import DebtForm from '../features/debts/components/DebtForm'
 import { useDebtContext } from '../features/debts/context/DebtContext.jsx'
 
 const Debts = () => {
-  const {isLoading, isError, data, show, openShow, closeShow, label, setIsOpen} = useDebtContext();
+  const {
+    isLoading, 
+    isError, 
+    data, 
+    show, 
+    openShow, 
+    closeShow, 
+    label, 
+    filterSelectedData
+  } = useDebtContext();
 
   return (
     <MainLayout>
@@ -44,8 +53,8 @@ const Debts = () => {
               <Button
               type={'text'}
               onClick={()=>{
-                setIsOpen(false)
-                openShow('Add Debt')
+                filterSelectedData(null)
+                openShow('add debt')
               }}>
                 <div className='flex items-center gap-2'>
                   <i className="fa-solid fa-plus text-sm"></i>
