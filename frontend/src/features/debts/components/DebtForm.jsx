@@ -95,19 +95,6 @@ const DebtForm = ({handleAddDebt}) => {
         }
         errors={errors}
         disabled={isInputDisabled}/>
-
-        <Dropdown
-        id={'status'}
-        label={'Status'}
-        register={register}
-        rules={
-            {
-                required: 'Please enter status'
-            }
-        }
-        errors={errors}
-        options={status}
-        disabled={isInputDisabled}/>
         
         <InputField
         id={'remarks'}

@@ -9,7 +9,6 @@ export const addDebt = async (req, res)=>{
             quantity,
             unitPrice,
             dueDate,
-            status,
             remarks
         } = req.body;
         
@@ -28,7 +27,6 @@ export const addDebt = async (req, res)=>{
             quantity: quantity,
             unitPrice: unitPrice,
             amount: unitPrice*quantity,
-            status: status,
             remarks: remarks,
             dueDate: dueDate
         })
