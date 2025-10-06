@@ -7,9 +7,10 @@ import DebtTrComponent from '../features/debts/components/DebtTrComponent'
 import Table from '../components/table/Table'
 import SearchBar from '../components/form/SearchBar'
 import Button from '../components/ui/Button'
-import Modal from '../components/modal/Modal'
+import Modal from '../components/modals/Modal.jsx'
 import DebtForm from '../features/debts/components/DebtForm'
 import { useDebtContext } from '../features/debts/context/DebtContext.jsx'
+import ConfirmationModal from '../components/modals/ConfirmationModal.jsx'
 
 const Debts = () => {
   const {
@@ -18,11 +19,15 @@ const Debts = () => {
     data, 
     addDebt,
     editDebt,
+    deleteDebt,
     show, 
     openShow, 
     closeShow, 
+    showConfirmation,
+    closeConfirmation,
     label, 
-    filterSelectedData
+    filterSelectedData,
+    selectedData
   } = useDebtContext();
 
   const handleAddDebt = (debt) => {
@@ -37,6 +42,11 @@ const Debts = () => {
         closeShow();
     }
   };
+
+  const handleDeleteDebt = ()=>{
+    deleteDebt(selectedData._id)
+    closeConfirmation();
+  }
 
   return (
     <MainLayout>
@@ -101,6 +111,15 @@ const Debts = () => {
         <DebtForm
         handleAddDebt={handleAddDebt}/>
       </Modal>
+
+      {/* confirmation modal */}
+      <ConfirmationModal
+      title={'Delete Debt'}
+      description={`Are you sure you want to delete #${selectedData?._id?.substring(0,10)||'this'} debt?`}
+      show={showConfirmation}
+      close={closeConfirmation}
+      confirmFn={handleDeleteDebt}
+      />
     </MainLayout>
   )
 }

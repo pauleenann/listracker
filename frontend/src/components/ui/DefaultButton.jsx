@@ -2,7 +2,7 @@ import React from 'react'
 
 const DefaultButton = ({
     type='button',
-    disabled, 
+    disabled = false, 
     onClick = ()=>{},
     children
 }) => {

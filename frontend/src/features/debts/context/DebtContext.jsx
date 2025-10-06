@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import useDebts from "../hooks/useDebts";
 import useModal from "../../../hooks/useModal";
+import useConfirmationModal from "../../../hooks/useConfirmationModal";
 
 const DebtContext = createContext();
 
@@ -30,13 +31,20 @@ export const DebtProvider = ({children})=>{
         label
     } = useModal();
 
+    // useConfirmation hook
+    const {
+        showConfirmation,
+        openConfirmation,
+        closeConfirmation
+    } = useConfirmationModal();
+
     useEffect(()=>{
         setIsInputDisabled(isAddingDebt||isEditingDebt||label=='view debt')
 
         // disable search input if adding or editing
         // changing of debtor is not allowed when editing :)
         setIsSearchDisabled(isAddingDebt||isEditingDebt||label!='add debt')
-    }, [label, isAddingDebt])
+    }, [label, isAddingDebt, isEditingDebt])
 
 
     let value = {
@@ -55,6 +63,11 @@ export const DebtProvider = ({children})=>{
         openShow,
         closeShow,
         label,
+
+        // confirmation modal hook
+        showConfirmation,
+        openConfirmation,
+        closeConfirmation,
 
         // disabled states
         isInputDisabled,

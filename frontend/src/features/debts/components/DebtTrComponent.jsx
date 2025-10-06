@@ -8,7 +8,7 @@ const DebtTrComponent = ({
     const {
         openShow,
         filterSelectedData,
-        deleteDebt
+        openConfirmation
     } = useDebtContext();
 
   return (
@@ -44,7 +44,11 @@ const DebtTrComponent = ({
             </button>
             <button
             className='text-red-500 cursor-pointer'
-            onClick={()=>deleteDebt(data._id)}>
+            onClick={(e)=>{
+                e.stopPropagation();
+                filterSelectedData(data._id)
+                openConfirmation();
+            }}>
                 <i className="fa-solid fa-trash"></i>
             </button>
         </td>

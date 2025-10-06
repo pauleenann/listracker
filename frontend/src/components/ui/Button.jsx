@@ -2,7 +2,7 @@ import React from 'react'
 
 const Button = ({
   type='button', 
-  disabled,
+  disabled = false,
   onClick = ()=>{},
   children
 }) => {

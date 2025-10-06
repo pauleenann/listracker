@@ -1,80 +1,49 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import React, { useState } from 'react'
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react'
 import { addDebt, deleteDebt, editDebt, fetchDebt } from '../services';
-import toast from 'react-hot-toast';
+import useToastMutation from '../../../hooks/useToastMutation';
 
 const useDebts = () => {
-    const queryClient = useQueryClient();
     const [selectedData, setSelectedData] = useState(null);
 
     const {
         isLoading,
         isError,
         data,
-        } = useQuery({
+    } = useQuery({
         queryKey:['debts'],
         queryFn: fetchDebt,
     });
         
-    const mutationAdd = useMutation({
-        mutationFn: async (debt)=>{
-            try {
-            await toast.promise(
-                addDebt(debt),
-                {
-                    loading: 'Adding debt',
-                    success: 'Debt added successfully',
-                    error: 'Could not add debt',
-                }
-            )
-            } catch (error) {
-                console.log(error)
-            }
+    const mutationAdd = useToastMutation(
+        addDebt,
+        {
+            loading: 'Adding debt',
+            success: 'Debt added successfully',
+            error: 'Could not add debt',
         },
-        onSuccess: ()=>{
-            queryClient.invalidateQueries(['debts'])
-        }
-    })
+        ['debts']
+    )
 
-    const mutationEdit = useMutation({
-        mutationFn: async (debt)=>{
-            try {
-            await toast.promise(
-                editDebt(debt),
-                {
-                    loading: 'Editing debt',
-                    success: 'Debt edited successfully',
-                    error: 'Could not edit debt',
-                }
-            )
-            } catch (error) {
-                console.log(error)
-            }
+    const mutationEdit = useToastMutation(
+        editDebt,
+        {
+            loading: 'Editing debt',
+            success: 'Debt edited successfully',
+            error: 'Could not edit debt',
         },
-        onSuccess: ()=>{
-            queryClient.invalidateQueries(['debts'])
-        }
-    })
+        ['debts']
+    )
 
-    const mutationDelete = useMutation({
-        mutationFn: async (id)=>{
-            try {
-            await toast.promise(
-                deleteDebt(id),
-                {
-                    loading: 'Deleting debt',
-                    success: 'Debt deleted successfully',
-                    error: 'Could not delete debt',
-                }
-            )
-            } catch (error) {
-                console.log(error)
-            }
+    const mutationDelete = useToastMutation(
+        deleteDebt,
+        {
+            loading: 'Deleting debt',
+            success: 'Debt deleted successfully',
+            error: 'Could not delete debt',
         },
-        onSuccess: ()=>{
-            queryClient.invalidateQueries(['debts'])
-        }
-    })
+        ['debts']
+    )
 
     const filterSelectedData = (id)=>{
         if(!id){
