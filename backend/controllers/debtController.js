@@ -110,3 +110,22 @@ export const getDebt = async (req, res)=>{
         })
     }
 }
+
+export const deleteDebt = async (req, res)=>{
+    try {
+        const {id} = req.params;
+        console.log(id)
+
+        await Debt.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            message: 'Debt deleted successfully'
+        })
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Failed to delete debts'
+        })
+    }
+}

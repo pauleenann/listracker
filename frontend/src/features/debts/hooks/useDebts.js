@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react'
-import { addDebt, editDebt, fetchDebt } from '../services';
+import { addDebt, deleteDebt, editDebt, fetchDebt } from '../services';
 import toast from 'react-hot-toast';
 
 const useDebts = () => {
@@ -56,6 +56,26 @@ const useDebts = () => {
         }
     })
 
+    const mutationDelete = useMutation({
+        mutationFn: async (id)=>{
+            try {
+            await toast.promise(
+                deleteDebt(id),
+                {
+                    loading: 'Deleting debt',
+                    success: 'Debt deleted successfully',
+                    error: 'Could not delete debt',
+                }
+            )
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        onSuccess: ()=>{
+            queryClient.invalidateQueries(['debts'])
+        }
+    })
+
     const filterSelectedData = (id)=>{
         if(!id){
             setSelectedData('')
@@ -84,6 +104,7 @@ const useDebts = () => {
     isAddingDebt:mutationAdd.isLoading,
     editDebt: mutationEdit.mutate,
     isEditingDebt:mutationEdit.isLoading,
+    deleteDebt: mutationDelete.mutate,
     filterSelectedData,
     selectedData,
   }

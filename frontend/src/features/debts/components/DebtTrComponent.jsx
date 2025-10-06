@@ -7,7 +7,8 @@ const DebtTrComponent = ({
 }) => {
     const {
         openShow,
-        filterSelectedData
+        filterSelectedData,
+        deleteDebt
     } = useDebtContext();
 
   return (
@@ -31,7 +32,7 @@ const DebtTrComponent = ({
         </td>
         <td className='py-3'>{data.remarks||'N/A'}</td>
         <td 
-        className='py-3 relative'>
+        className='py-3 relative flex items-center gap-4'>
             <button
             className='cursor-pointer'
             onClick={(e) => {
@@ -40,6 +41,11 @@ const DebtTrComponent = ({
                 openShow('view debt');
             }}>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </button>
+            <button
+            className='text-red-500 cursor-pointer'
+            onClick={()=>deleteDebt(data._id)}>
+                <i className="fa-solid fa-trash"></i>
             </button>
         </td>
     </tr>

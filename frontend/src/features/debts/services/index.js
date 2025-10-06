@@ -21,6 +21,12 @@ export const editDebt = async(data)=>{
     return response
 }
 
+export const deleteDebt = async(id)=>{
+    const response = await api.delete(`/debts/${id}`)
+    console.log(response)
+    return response
+}
+
 export const fetchDebt = async ()=>{
     const response = await api.get('debts');
     return response.data.data

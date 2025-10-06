@@ -17,6 +17,7 @@ export const DebtProvider = ({children})=>{
         isAddingDebt,
         editDebt,
         isEditingDebt,
+        deleteDebt,
         filterSelectedData,
         selectedData
     } = useDebts();
@@ -31,6 +32,9 @@ export const DebtProvider = ({children})=>{
 
     useEffect(()=>{
         setIsInputDisabled(isAddingDebt||isEditingDebt||label=='view debt')
+
+        // disable search input if adding or editing
+        // changing of debtor is not allowed when editing :)
         setIsSearchDisabled(isAddingDebt||isEditingDebt||label!='add debt')
     }, [label, isAddingDebt])
 
@@ -42,6 +46,7 @@ export const DebtProvider = ({children})=>{
         data,
         addDebt,
         editDebt,
+        deleteDebt,
         filterSelectedData,
         selectedData,
 
