@@ -8,7 +8,7 @@ export const addDebt = async (req, res)=>{
             product,
             quantity,
             unitPrice,
-            dueDate,
+            owedDate,
             remarks
         } = req.body;
         
@@ -28,7 +28,7 @@ export const addDebt = async (req, res)=>{
             unitPrice: unitPrice,
             amount: unitPrice*quantity,
             remarks: remarks,
-            dueDate: dueDate
+            owedDate: owedDate
         })
 
         return res.status(200).json({
@@ -50,7 +50,7 @@ export const editDebt = async (req, res)=>{
             product,
             quantity,
             unitPrice,
-            dueDate,
+            owedDate,
             status,
             remarks
         } = req.body;
@@ -73,7 +73,7 @@ export const editDebt = async (req, res)=>{
                 amount: unitPrice*quantity,
                 status: status,
                 remarks: remarks,
-                dueDate: dueDate
+                owedDate: owedDate
             }
         )
 
@@ -89,9 +89,13 @@ export const editDebt = async (req, res)=>{
     }
 }
 
-export const getDebt = async (req, res)=>{
+export const getDebts = async (req, res)=>{
     try {
-        const debts = await Debt.find().populate('userId','name');
+        console.log('fetching debts', req.query)
+        const {page = 1, limit = 3} = req.query;
+        const skip = (page-1)*limit;
+
+        const debts = await Debt.find().populate('userId','name').skip(skip).limit(limit);
 
         if(!debts){
             return res.status(404).json({

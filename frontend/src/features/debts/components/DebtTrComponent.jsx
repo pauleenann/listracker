@@ -21,7 +21,7 @@ const DebtTrComponent = ({
         <td className='py-3'>{data.quantity}</td>
         <td className='py-3'>Php {data.unitPrice}</td>
         <td className='py-3'>Php {data.amount}</td>
-        <td className='py-3'>{new Date(data.dueDate).toLocaleDateString("en-CA")} </td>
+        <td className='py-3'>{new Date(data.owedDate).toLocaleDateString("en-CA")} </td>
         <td className='py-3'>
             <span className={`
                 uppercase py-1 px-2 text-xs rounded text-white

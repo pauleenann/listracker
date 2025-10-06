@@ -20,7 +20,9 @@ export const DebtProvider = ({children})=>{
         isEditingDebt,
         deleteDebt,
         filterSelectedData,
-        selectedData
+        selectedData,
+        nextPage, 
+        prevPage,
     } = useDebts();
 
     // useModal hook
@@ -71,7 +73,11 @@ export const DebtProvider = ({children})=>{
 
         // disabled states
         isInputDisabled,
-        isSearchDisabled
+        isSearchDisabled,
+
+        // pagination state
+        nextPage, 
+        prevPage,
     }
 
     return (

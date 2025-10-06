@@ -83,14 +83,14 @@ const DebtForm = ({handleAddDebt}) => {
         disabled={isInputDisabled}/>
         
         <InputField
-        id={'dueDate'}
-        label={'Due date'}
+        id={'owedDate'}
+        label={'Owed date'}
         type={'date'}
-        placeholder={'Enter due date'}
+        placeholder={'Enter owed date'}
         register={register}
         rules={
             {
-                required: 'Please enter due date'
+                required: 'Please enter owed date'
             }
         }
         errors={errors}

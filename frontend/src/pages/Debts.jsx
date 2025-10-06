@@ -11,6 +11,8 @@ import Modal from '../components/modals/Modal.jsx'
 import DebtForm from '../features/debts/components/DebtForm'
 import { useDebtContext } from '../features/debts/context/DebtContext.jsx'
 import ConfirmationModal from '../components/modals/ConfirmationModal.jsx'
+import Pagination from '../components/pagination/Pagination.jsx'
+import { fetchDebt } from '../features/debts/services/index.js'
 
 const Debts = () => {
   const {
@@ -27,7 +29,9 @@ const Debts = () => {
     closeConfirmation,
     label, 
     filterSelectedData,
-    selectedData
+    selectedData,
+    nextPage, 
+    prevPage,
   } = useDebtContext();
 
   const handleAddDebt = (debt) => {
@@ -100,6 +104,11 @@ const Debts = () => {
             trComponent={DebtTrComponent}/>
             }
           </section>
+
+          {/* pagination */}
+          <Pagination
+          next={nextPage}
+          prev={prevPage}/>
         </main>
 
       {/* modal */}

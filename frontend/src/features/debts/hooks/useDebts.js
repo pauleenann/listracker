@@ -1,18 +1,25 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { addDebt, deleteDebt, editDebt, fetchDebt } from '../services';
 import useToastMutation from '../../../hooks/useToastMutation';
+import usePagination from '../../../hooks/usePagination';
 
 const useDebts = () => {
     const [selectedData, setSelectedData] = useState(null);
+    const {
+        page,
+        nextPage,
+        prevPage,
+        limit
+    } = usePagination();
 
     const {
         isLoading,
         isError,
         data,
     } = useQuery({
-        queryKey:['debts'],
-        queryFn: fetchDebt,
+        queryKey:['debts', page],
+        queryFn: ()=>fetchDebt(page, limit),
     });
         
     const mutationAdd = useToastMutation(
@@ -76,6 +83,8 @@ const useDebts = () => {
     deleteDebt: mutationDelete.mutate,
     filterSelectedData,
     selectedData,
+    nextPage,
+    prevPage
   }
 }
 

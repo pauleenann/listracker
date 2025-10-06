@@ -1,13 +1,13 @@
 import express from 'express'
 import { authenticateUser } from '../middlewares/authenticate.js';
-import { addDebt, deleteDebt, editDebt, getDebt } from '../controllers/debtController.js';
+import { addDebt, deleteDebt, editDebt, getDebts } from '../controllers/debtController.js';
 
 const router = express.Router();
 
 router.get(
     '/',
     authenticateUser,
-    getDebt
+    getDebts
 );
 router.post(
     '/',

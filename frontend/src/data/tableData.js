@@ -13,7 +13,7 @@ export const debtHeader = [
     'Quantity',
     'Unit Price',
     'Amount',
-    'Due date',
+    'Owed date',
     'Status',
     'Remarks',
     ''

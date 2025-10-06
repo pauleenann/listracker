@@ -33,7 +33,7 @@ const DebtSchema = new Schema({
         type: String,
         default: 'n/a'
     },
-    dueDate: {
+    owedDate: {
         type: Date,
         required: true
     },
