@@ -9,7 +9,7 @@ export const addDebtor = async (req,res)=>{
 
         //check if debtor exists
         const debtor = await Debtor.findOne({
-            name: new RegExp(`^${name}$`, 'i')
+            name: { $regex: `^${name}$`, $options: 'i' }
         });
 
         //throw error id debtor is not null
@@ -43,7 +43,7 @@ export const getDebtorSuggestion = async (req,res)=>{
         const {debtor} = req.query;
         
         const debtors = await Debtor.find(
-            {name: new RegExp(`^${debtor}`, 'i')},
+            {name: { $regex: `^${debtor}`, $options: 'i' }},
             {name: 1}
         )
 
