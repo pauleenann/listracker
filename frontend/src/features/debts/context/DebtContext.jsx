@@ -14,6 +14,7 @@ export const DebtProvider = ({children})=>{
         isLoading,
         isError,
         data,
+        totalPages,
         addDebt,
         isAddingDebt,
         editDebt,
@@ -21,6 +22,7 @@ export const DebtProvider = ({children})=>{
         deleteDebt,
         filterSelectedData,
         selectedData,
+        page,
         nextPage, 
         prevPage,
     } = useDebts();
@@ -54,6 +56,7 @@ export const DebtProvider = ({children})=>{
         isLoading,
         isError,
         data,
+        totalPages,
         addDebt,
         editDebt,
         deleteDebt,
@@ -76,6 +79,7 @@ export const DebtProvider = ({children})=>{
         isSearchDisabled,
 
         // pagination state
+        page,
         nextPage, 
         prevPage,
     }

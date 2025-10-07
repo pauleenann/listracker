@@ -30,8 +30,11 @@ const Debts = () => {
     label, 
     filterSelectedData,
     selectedData,
+    page,
     nextPage, 
     prevPage,
+    totalPages,
+    hasMore
   } = useDebtContext();
 
   const handleAddDebt = (debt) => {
@@ -107,6 +110,9 @@ const Debts = () => {
 
           {/* pagination */}
           <Pagination
+          page={page}
+          hasMore={hasMore}
+          totalPages={totalPages}
           next={nextPage}
           prev={prevPage}/>
         </main>

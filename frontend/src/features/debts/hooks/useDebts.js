@@ -20,6 +20,7 @@ const useDebts = () => {
     } = useQuery({
         queryKey:['debts', page],
         queryFn: ()=>fetchDebt(page, limit),
+        keepPreviousData: true // avoid rendering blank page when fetching next data
     });
         
     const mutationAdd = useToastMutation(
@@ -75,7 +76,8 @@ const useDebts = () => {
   return {
     isLoading,
     isError,
-    data,
+    data: data?.debts,
+    totalPages: data?.totalPages,
     addDebt: mutationAdd.mutate,
     isAddingDebt:mutationAdd.isLoading,
     editDebt: mutationEdit.mutate,
@@ -83,6 +85,7 @@ const useDebts = () => {
     deleteDebt: mutationDelete.mutate,
     filterSelectedData,
     selectedData,
+    page,
     nextPage,
     prevPage
   }

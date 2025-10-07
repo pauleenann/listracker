@@ -34,5 +34,6 @@ export const fetchDebt = async (page, limit)=>{
             limit
         }
     });
-    return response.data.data
+    console.log(response.data)
+    return response.data
 }

@@ -92,8 +92,11 @@ export const editDebt = async (req, res)=>{
 export const getDebts = async (req, res)=>{
     try {
         console.log('fetching debts', req.query)
-        const {page = 1, limit = 3} = req.query;
+        const {page = 1, limit = 5} = req.query;
         const skip = (page-1)*limit;
+
+        //fetch total number of debts/documents in Debts
+        const totalDebts = await Debt.countDocuments();
 
         const debts = await Debt.find().populate('userId','name').skip(skip).limit(limit);
 
@@ -103,8 +106,13 @@ export const getDebts = async (req, res)=>{
             })
         }
 
+        const totalPages = Math.ceil(totalDebts/limit);
+        const hasMore = page<totalPages;
+
         return res.status(200).json({
-            data: debts,
+            debts,
+            totalPages,
+            hasMore,
             message: 'Debts successfully retrieved'
         })
     } catch (error) {
