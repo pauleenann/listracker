@@ -16,25 +16,34 @@ import { fetchDebt } from '../features/debts/services/index.js'
 
 const Debts = () => {
   const {
+    // tanstack
     isLoading, 
     isError, 
     data, 
     addDebt,
     editDebt,
     deleteDebt,
+
+    // modal
     show, 
     openShow, 
     closeShow, 
     showConfirmation,
     closeConfirmation,
     label, 
+
+    // selected data
     filterSelectedData,
     selectedData,
+
+    // pagination
     page,
     nextPage, 
     prevPage,
     totalPages,
-    hasMore
+
+    //search input
+    setSearchInput
   } = useDebtContext();
 
   const handleAddDebt = (debt) => {
@@ -79,7 +88,9 @@ const Debts = () => {
           {/* search and other buttons */}
           <section className='flex justify-between items-center mt-8'>
             <div className='w-100'>
-              <SearchBar/>
+              <SearchBar
+              placeholder={'Search by debtor name'}
+              onChange={(e)=>setSearchInput(e.target.value)}/>
             </div>
             <div>
               <Button
@@ -111,7 +122,6 @@ const Debts = () => {
           {/* pagination */}
           <Pagination
           page={page}
-          hasMore={hasMore}
           totalPages={totalPages}
           next={nextPage}
           prev={prevPage}/>

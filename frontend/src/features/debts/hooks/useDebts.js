@@ -3,14 +3,23 @@ import { useEffect, useState } from 'react'
 import { addDebt, deleteDebt, editDebt, fetchDebt } from '../services';
 import useToastMutation from '../../../hooks/useToastMutation';
 import usePagination from '../../../hooks/usePagination';
+import {useDebounce} from 'use-debounce'
 
 const useDebts = () => {
     const [selectedData, setSelectedData] = useState(null);
+
+    const [searchInput, setSearchInput] = useState('');
+    const [debounceSearch] = useDebounce(searchInput, 500)
+
+    useEffect(()=>{
+        console.log(debounceSearch)
+    },[debounceSearch])
+
     const {
         page,
         nextPage,
         prevPage,
-        limit
+        limit,
     } = usePagination();
 
     const {
@@ -18,8 +27,8 @@ const useDebts = () => {
         isError,
         data,
     } = useQuery({
-        queryKey:['debts', page],
-        queryFn: ()=>fetchDebt(page, limit),
+        queryKey:['debts', page, debounceSearch],
+        queryFn: ()=>fetchDebt(page, limit, debounceSearch),
         keepPreviousData: true // avoid rendering blank page when fetching next data
     });
         
@@ -57,7 +66,7 @@ const useDebts = () => {
         if(!id){
             setSelectedData('')
         }else{
-            const selected = data.find(f => f._id === id);
+            const selected = data.debts.find(f => f._id === id);
 
             if(!selected) return;
             
@@ -74,6 +83,7 @@ const useDebts = () => {
     }
 
   return {
+    //tanstack query
     isLoading,
     isError,
     data: data?.debts,
@@ -83,11 +93,18 @@ const useDebts = () => {
     editDebt: mutationEdit.mutate,
     isEditingDebt:mutationEdit.isLoading,
     deleteDebt: mutationDelete.mutate,
+
+    //selected data
     filterSelectedData,
     selectedData,
+
+    //pagination
     page,
     nextPage,
-    prevPage
+    prevPage,
+
+    //search input
+    setSearchInput
   }
 }
 

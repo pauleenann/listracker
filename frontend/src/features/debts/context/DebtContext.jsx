@@ -20,11 +20,15 @@ export const DebtProvider = ({children})=>{
         editDebt,
         isEditingDebt,
         deleteDebt,
+
         filterSelectedData,
         selectedData,
+
         page,
         nextPage, 
         prevPage,
+
+        setSearchInput
     } = useDebts();
 
     // useModal hook
@@ -82,6 +86,9 @@ export const DebtProvider = ({children})=>{
         page,
         nextPage, 
         prevPage,
+
+        //search input 
+        setSearchInput
     }
 
     return (

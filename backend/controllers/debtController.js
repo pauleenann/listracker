@@ -92,13 +92,24 @@ export const editDebt = async (req, res)=>{
 export const getDebts = async (req, res)=>{
     try {
         console.log('fetching debts', req.query)
-        const {page = 1, limit = 5} = req.query;
+        const {page = 1, limit = 5, search = ''} = req.query;
         const skip = (page-1)*limit;
 
-        //fetch total number of debts/documents in Debts
-        const totalDebts = await Debt.countDocuments();
+        //populate and match at the same time
+        let debts = await Debt.find()
+            .populate({
+                path: 'userId',
+                match: search.length>0 ? {name:{$regex: search, $options: 'i'}}:{}
+            })
+            .skip(skip)
+            .limit(limit);
 
-        const debts = await Debt.find().populate('userId','name').skip(skip).limit(limit);
+
+        //filter debts because mongodb does not filter automatically
+        debts = debts.filter(f=>f.userId!=null)
+
+        //fetch total number of debts/documents in Debts
+        const totalDebts = debts.length;
 
         if(!debts){
             return res.status(404).json({
