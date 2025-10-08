@@ -104,12 +104,11 @@ export const getDebts = async (req, res)=>{
             .skip(skip)
             .limit(limit);
 
+        //fetch total number of debts/documents in Debts
+        const totalDebts = await Debt.countDocuments();
 
         //filter debts because mongodb does not filter automatically
-        debts = debts.filter(f=>f.userId!=null)
-
-        //fetch total number of debts/documents in Debts
-        const totalDebts = debts.length;
+        debts = debts?.filter(f=>f.userId!=null)
 
         if(!debts){
             return res.status(404).json({
@@ -130,6 +129,31 @@ export const getDebts = async (req, res)=>{
         console.log(error);
         return res.status(500).json({
             message: 'Failed to get debts'
+        })
+    }
+}
+
+export const getTotalStatus = async (req, res)=>{
+    try {
+        //fetch all debts
+        const allDebts = await Debt.find({});
+
+        // count total
+        const notPaid = allDebts?.filter(f=>f.status=='not paid').length || 0;
+        const pending = allDebts?.filter(f=>f.status=='pending').length || 0;
+        const paid = allDebts?.filter(f=>f.status=='paid').length || 0;
+
+        return res.status(200).json({
+            status:{
+                notPaid,
+                pending, 
+                paid
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Failed to get status'
         })
     }
 }

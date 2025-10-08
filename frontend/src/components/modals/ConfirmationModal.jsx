@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import DefaultButton from '../ui/DefaultButton'
-import Button from '../ui/Button'
+import DefaultButton from '../button/DefaultButton'
+import Button from '../button/Button'
 
 const ConfirmationModal = ({
     title = 'This is the confirmation modal',

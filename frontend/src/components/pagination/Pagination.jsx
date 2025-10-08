@@ -1,5 +1,5 @@
 import React from 'react'
-import DefaultButton from '../ui/DefaultButton'
+import DefaultButton from '../button/DefaultButton'
 
 const Pagination = ({
   page,

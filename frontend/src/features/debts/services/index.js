@@ -28,7 +28,7 @@ export const deleteDebt = async(id)=>{
 }
 
 export const fetchDebt = async (page, limit, search)=>{
-    const response = await api.get('debts',{
+    const response = await api.get('/debts',{
         params: {
             page,
             limit,
@@ -37,4 +37,10 @@ export const fetchDebt = async (page, limit, search)=>{
     });
     console.log(response.data)
     return response.data
+}
+
+export const fetchTotalStatus = async ()=>{
+    const response = await api.get('/debts/status',);
+    console.log(response.data)
+    return response.data.status
 }

@@ -22,7 +22,8 @@ const usePagination = () => {
     page, 
     nextPage,
     prevPage,
-    limit
+    limit,
+    setPage
   }
 }
 

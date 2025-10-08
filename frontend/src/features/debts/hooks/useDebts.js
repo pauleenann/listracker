@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react'
-import { addDebt, deleteDebt, editDebt, fetchDebt } from '../services';
+import { addDebt, deleteDebt, editDebt, fetchDebt, fetchTotalStatus } from '../services';
 import useToastMutation from '../../../hooks/useToastMutation';
 import usePagination from '../../../hooks/usePagination';
 import {useDebounce} from 'use-debounce'
@@ -20,7 +20,16 @@ const useDebts = () => {
         nextPage,
         prevPage,
         limit,
+        setPage
     } = usePagination();
+
+    const {
+        data: status,
+    } = useQuery({
+        queryKey:['debts'],
+        queryFn: fetchTotalStatus,
+        keepPreviousData: true // avoid rendering blank page when fetching next data
+    });
 
     const {
         isLoading,
@@ -79,8 +88,14 @@ const useDebts = () => {
                 : ''
             })  
         }
-        
     }
+
+    useEffect(() => {
+        if (!isLoading && data?.debts?.length === 0 && page > 1) {
+          setPage(page - 1);
+        }
+    }, [data]);
+      
 
   return {
     //tanstack query
@@ -93,6 +108,7 @@ const useDebts = () => {
     editDebt: mutationEdit.mutate,
     isEditingDebt:mutationEdit.isLoading,
     deleteDebt: mutationDelete.mutate,
+    status, 
 
     //selected data
     filterSelectedData,

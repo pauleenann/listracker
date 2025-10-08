@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import DefaultButton from '../ui/DefaultButton'
+import DefaultButton from '../button/DefaultButton'
 
 const Modal = ({
     label, 

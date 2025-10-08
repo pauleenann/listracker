@@ -3,8 +3,8 @@ import InputField from '../../../components/form/InputField'
 import { useForm } from 'react-hook-form'
 import Dropdown from '../../../components/form/Dropdown';
 import { status } from '../../../data/statusOptions';
-import DefaultButton from '../../../components/ui/DefaultButton';
-import Button from '../../../components/ui/Button';
+import DefaultButton from '../../../components/button/DefaultButton';
+import Button from '../../../components/button/Button';
 import SearchInput from '../../../components/form/SearchInput';
 import { getDebtorSuggestion } from '../services';
 import { useDebtContext } from '../context/DebtContext';

@@ -20,6 +20,7 @@ export const DebtProvider = ({children})=>{
         editDebt,
         isEditingDebt,
         deleteDebt,
+        status,
 
         filterSelectedData,
         selectedData,
@@ -66,6 +67,7 @@ export const DebtProvider = ({children})=>{
         deleteDebt,
         filterSelectedData,
         selectedData,
+        status,
 
         // modal hook
         show,

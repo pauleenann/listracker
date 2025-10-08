@@ -1,6 +1,6 @@
 import React from 'react'
 import InputField from '../../../components/form/InputField';
-import Button from '../../../components/ui/Button';
+import Button from '../../../components/button/Button';
 import { useForm } from "react-hook-form"
 import { signin } from '../services';
 import { useAuth } from '../contexts/AuthContext';

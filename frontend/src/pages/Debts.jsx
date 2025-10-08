@@ -6,13 +6,15 @@ import { debtHeader } from '../data/tableData'
 import DebtTrComponent from '../features/debts/components/DebtTrComponent'
 import Table from '../components/table/Table'
 import SearchBar from '../components/form/SearchBar'
-import Button from '../components/ui/Button'
+import Button from '../components/button/Button.jsx'
 import Modal from '../components/modals/Modal.jsx'
 import DebtForm from '../features/debts/components/DebtForm'
 import { useDebtContext } from '../features/debts/context/DebtContext.jsx'
 import ConfirmationModal from '../components/modals/ConfirmationModal.jsx'
 import Pagination from '../components/pagination/Pagination.jsx'
 import { fetchDebt } from '../features/debts/services/index.js'
+import Loading from '../components/loading/Loading.jsx'
+import LoadingData from '../components/loading/LoadingData.jsx'
 
 const Debts = () => {
   const {
@@ -23,6 +25,7 @@ const Debts = () => {
     addDebt,
     editDebt,
     deleteDebt,
+    status,
 
     // modal
     show, 
@@ -73,15 +76,15 @@ const Debts = () => {
           <section className='flex items-center gap-3'>
             <DebtCards
             label='Debts not paid'
-            value={10}
+            value={status?.notPaid}
             color='bg-theme-gray'/>
             <DebtCards
             label='Debts pending'
-            value={10}
+            value={status?.pending}
             color='bg-gray-500'/>
             <DebtCards
             label='Debts paid'
-            value={10}
+            value={status?.paid}
             color='bg-theme-blue'/>  
           </section>
 
@@ -109,7 +112,7 @@ const Debts = () => {
 
           {/* table */}
           <section className='mt-3'> 
-            {isLoading&&<p>Loading</p>}
+            {isLoading&&<LoadingData/>}
             {isError&&<p>Error</p>}
             {data&&
             <Table

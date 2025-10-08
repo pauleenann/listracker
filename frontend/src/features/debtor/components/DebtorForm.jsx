@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import InputField from '../../../components/form/InputField'
 import { useForm } from 'react-hook-form'
-import DefaultButton from '../../../components/ui/DefaultButton';
-import Button from '../../../components/ui/Button';
+import DefaultButton from '../../../components/button/DefaultButton';
+import Button from '../../../components/button/Button';
 import { createDebtor } from '../services';
 import toast from 'react-hot-toast';
 
