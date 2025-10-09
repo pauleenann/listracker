@@ -15,14 +15,14 @@ router.get(
     getDebtors
 );
 router.get(
-    '/:id',
-    authenticateUser,
-    getDebtor
-);
-router.get(
     '/suggestions',
     authenticateUser,
     getDebtorSuggestion
+);
+router.get(
+    '/:id',
+    authenticateUser,
+    getDebtor
 );
 
 

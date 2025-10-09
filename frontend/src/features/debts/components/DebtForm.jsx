@@ -7,7 +7,7 @@ import SearchInput from '../../../components/form/SearchInput';
 import { getDebtorSuggestion } from '../services';
 
 const DebtForm = ({
-    handleAddDebt = ()=>{},
+    handleClick = ()=>{},
     selectedData = {},
     close = ()=>{},
     label = '',
@@ -25,7 +25,7 @@ const DebtForm = ({
   
   return (
     <form
-    onSubmit={handleSubmit(handleAddDebt)}
+    onSubmit={handleSubmit(handleClick)}
     className='flex flex-col gap-2 mt-5'>
         <SearchInput
         id={'name'}

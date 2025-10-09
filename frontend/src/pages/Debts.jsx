@@ -51,7 +51,7 @@ const Debts = () => {
     isSearchDisabled
   } = useDebtContext();
 
-  const handleAddDebt = (debt) => {
+  const handleClick = (debt) => {
     console.log(debt)
     if (label === 'view debt') {
         openShow('edit debt');
@@ -139,7 +139,7 @@ const Debts = () => {
       close={closeShow}
       >
         <DebtForm
-        handleAddDebt={handleAddDebt}
+        handleClick={handleClick}
         selectedData={selectedData}
         close={closeShow}
         label={label}

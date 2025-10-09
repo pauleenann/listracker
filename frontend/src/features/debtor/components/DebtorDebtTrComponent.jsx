@@ -7,6 +7,7 @@ const DebtorDebtTrComponent = ({
 }) => {
     const {
         openShow,
+        initializeSelectedData
     } = useDebtorContext();
   return (
     <tr 
@@ -32,6 +33,7 @@ const DebtorDebtTrComponent = ({
             <button
             className='cursor-pointer'
             onClick={()=>{
+                initializeSelectedData(data)
                 openShow('view debt')
             }}
            >

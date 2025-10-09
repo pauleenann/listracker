@@ -83,8 +83,8 @@ const useDebts = () => {
                 ...selected,
                 name: selected?.userId?.name,
                 // convert dueDate to YYYY-MM-DD
-                dueDate: selected?.dueDate
-                ? new Date(selected.dueDate).toISOString().split('T')[0]
+                owedDate: selected?.owedDate
+                ? new Date(selected.owedDate).toISOString().split('T')[0]
                 : ''
             })  
         }

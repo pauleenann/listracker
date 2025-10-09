@@ -1,10 +1,7 @@
 import React from 'react'
 import MainLayout from '../layouts/MainLayout'
 import Navbar from '../components/navigation/Navbar'
-import { useNavigate, useParams } from 'react-router'
-import { useQuery } from '@tanstack/react-query'
-import { fetchDebtor } from '../features/debtor/services'
-import LoadingData from '../components/loading/LoadingData'
+import { useNavigate } from 'react-router'
 import DefaultButton from '../components/button/DefaultButton'
 import DebtorInfo from '../features/debtor/components/DebtorInfo'
 import Table from '../components/table/Table'
@@ -15,27 +12,38 @@ import { useDebtorContext } from '../features/debtor/context/DebtorContext'
 import DebtForm from '../features/debts/components/DebtForm'
 
 const Debtor = () => {
-    const {id} = useParams();
     const navigate = useNavigate();
-
-    // tanstack query
-    const {
-        isLoading,
-        isError,
-        data
-    } = useQuery({
-        queryKey: ['debtor', id],
-        queryFn: ()=>fetchDebtor(id)
-    });
 
     // debtor context
     const {
+        //tanstack
+        isLoading,
+        isError,
+        data,
+        editDebtorDebt,
+        deleteDebtorDebt,
+        isInputDisabled,
+        isSearchDisabled,
+
+        // modal
         show, 
         openShow,
         closeShow,
-        label
+        label,
+
+        //selected data
+        selectedData
     } = useDebtorContext();
 
+    const handleClick = (debt) => {
+        console.log(debt)
+        if (label === 'view debt') {
+            openShow('edit debt');
+        } else if (label === 'edit debt') {
+            editDebtorDebt(debt);
+            closeShow();
+        }
+    };
 
   return (
     <MainLayout>
@@ -72,7 +80,13 @@ const Debtor = () => {
         label={label}
         show={show}
         close={closeShow}>
-            <DebtForm/>
+            <DebtForm
+            handleClick={handleClick}
+            selectedData={selectedData}
+            close={closeShow}
+            label={label}
+            isInputDisabled={isInputDisabled}
+            isSearchDisabled={isSearchDisabled}/>
         </Modal>
     </MainLayout>
   )
