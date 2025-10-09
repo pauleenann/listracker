@@ -4,14 +4,28 @@ import Navbar from '../components/navigation/Navbar'
 import Table from '../components/table/Table'
 import SearchBar from '../components/form/SearchBar'
 import Button from '../components/button/Button'
-import useModal from '../hooks/useModal.js'
 import Modal from '../components/modals/Modal'
 import { debtorHeader, debtorSampleData } from '../data/tableData'
 import DebtorTrComponent from '../features/debtor/components/DebtorTrComponent'
 import DebtorForm from '../features/debtor/components/DebtorForm'
+import { useDebtorsContext } from '../features/debtor/context/DebtorsContext'
+import LoadingData from '../components/loading/LoadingData'
 
 const Debtors = () => {
-  const {show, openShow, closeShow} = useModal();
+  const {
+    show,
+    openShow,
+    closeShow,
+    isLoading,
+    isError,
+    addDebtor,
+    data
+  } = useDebtorsContext();
+
+  const handleAddDebtor = (debtor)=>{
+    addDebtor(debtor)
+    closeShow();
+  }
 
   return (
     <MainLayout>
@@ -37,10 +51,13 @@ const Debtors = () => {
 
           {/* table */}
           <section className='mt-3'>
-            <Table
+            {isLoading&&<LoadingData/>}
+            {isError&&<p>Error</p>}
+            {data&&<Table
             header={debtorHeader}
-            data={debtorSampleData}
-            trComponent={DebtorTrComponent}/>
+            data={data}
+            trComponent={DebtorTrComponent}/>}
+            
           </section>
         </main>
 
@@ -51,7 +68,7 @@ const Debtors = () => {
         close={closeShow}
         >
           <DebtorForm
-          close={closeShow}/>
+          handleAddDebtor={handleAddDebtor}/>
         </Modal>
     </MainLayout>
   )

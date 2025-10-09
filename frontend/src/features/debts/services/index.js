@@ -1,7 +1,7 @@
 import api from "../../../lib/axios"
 
 export const getDebtorSuggestion = async (debtor)=>{
-    const {data} = await api.get('/debtors',{
+    const {data} = await api.get('/debtors/suggestions',{
         params:{
             debtor
         }

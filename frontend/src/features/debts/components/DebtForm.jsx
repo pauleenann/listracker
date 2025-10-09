@@ -1,23 +1,19 @@
 import React from 'react'
 import InputField from '../../../components/form/InputField'
 import { useForm } from 'react-hook-form'
-import Dropdown from '../../../components/form/Dropdown';
-import { status } from '../../../data/statusOptions';
 import DefaultButton from '../../../components/button/DefaultButton';
 import Button from '../../../components/button/Button';
 import SearchInput from '../../../components/form/SearchInput';
 import { getDebtorSuggestion } from '../services';
-import { useDebtContext } from '../context/DebtContext';
 
-const DebtForm = ({handleAddDebt}) => {
-    const {
-        selectedData,
-        closeShow,
-        label,
-        isInputDisabled,
-        isSearchDisabled
-    } = useDebtContext();
-
+const DebtForm = ({
+    handleAddDebt = ()=>{},
+    selectedData = {},
+    close = ()=>{},
+    label = '',
+    isInputDisabled = false,
+    isSearchDisabled = false
+}) => {
     const {
         register,
         handleSubmit,
@@ -27,7 +23,6 @@ const DebtForm = ({handleAddDebt}) => {
         defaultValues: selectedData || {}
     });
   
-
   return (
     <form
     onSubmit={handleSubmit(handleAddDebt)}
@@ -116,7 +111,7 @@ const DebtForm = ({handleAddDebt}) => {
             :<>
                 <div>
                     <DefaultButton
-                    onClick={closeShow}
+                    onClick={close}
                     disabled={isInputDisabled}>
                         Cancel
                     </DefaultButton>

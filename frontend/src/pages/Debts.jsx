@@ -46,7 +46,9 @@ const Debts = () => {
     totalPages,
 
     //search input
-    setSearchInput
+    setSearchInput,
+    isInputDisabled,
+    isSearchDisabled
   } = useDebtContext();
 
   const handleAddDebt = (debt) => {
@@ -137,7 +139,12 @@ const Debts = () => {
       close={closeShow}
       >
         <DebtForm
-        handleAddDebt={handleAddDebt}/>
+        handleAddDebt={handleAddDebt}
+        selectedData={selectedData}
+        close={closeShow}
+        label={label}
+        isInputDisabled={isInputDisabled}
+        isSearchDisabled={isSearchDisabled}/>
       </Modal>
 
       {/* confirmation modal */}

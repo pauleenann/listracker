@@ -91,6 +91,7 @@ const useDebts = () => {
     }
 
     useEffect(() => {
+        // go to previous page if you deleted all data in current page
         if (!isLoading && data?.debts?.length === 0 && page > 1) {
           setPage(page - 1);
         }

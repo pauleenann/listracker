@@ -19,6 +19,18 @@ export const debtHeader = [
     ''
 ]
 
+export const debtorDebtsHeader = [
+  '#',
+  'Product',
+  'Quantity',
+  'Unit Price',
+  'Amount',
+  'Owed date',
+  'Status',
+  'Remarks',
+  ''
+]
+
 export const debtorHeader = [
     '#',
     'Debtor name',

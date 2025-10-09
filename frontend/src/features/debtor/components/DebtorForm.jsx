@@ -1,41 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react'
 import InputField from '../../../components/form/InputField'
 import { useForm } from 'react-hook-form'
 import DefaultButton from '../../../components/button/DefaultButton';
 import Button from '../../../components/button/Button';
-import { createDebtor } from '../services';
-import toast from 'react-hot-toast';
+import { useDebtorsContext } from '../context/DebtorsContext';
 
-const DebtorForm = ({close}) => {
+const DebtorForm = ({handleAddDebtor}) => {
     const {
         register,
         handleSubmit,
         formState: {errors}
     }=useForm();
-    const [isDisabled, setIsDisabled] = useState(false)
 
-    const addDebtor = async (data)=>{
-        try {
-            setIsDisabled(true)
-            await toast.promise(
-                createDebtor(data.name, data.contactNumber),
-                {
-                    loading: 'Adding debtor',
-                    success: 'Debtor added successfully',
-                    error: 'Could not add debtor',
-                }
-            )
-        } catch (error) {
-            console.log('Cannot add debtor: ', error)
-        } finally{
-            setIsDisabled(false)
-            close();
-        }
-    }
+    const {
+        closeShow,
+        isInputDisabled,
+    } = useDebtorsContext();
 
   return (
     <form 
-    onSubmit={handleSubmit(addDebtor)}
+    onSubmit={handleSubmit(handleAddDebtor)}
     className='flex flex-col gap-2 mt-5'>
         <InputField
         id={'name'}
@@ -48,7 +32,7 @@ const DebtorForm = ({close}) => {
             }
         }
         errors={errors}
-        disabled={isDisabled}/>
+        disabled={isInputDisabled}/>
       
         <InputField
         id={'contactNumber'}
@@ -56,20 +40,20 @@ const DebtorForm = ({close}) => {
         placeholder={'Enter contact number'}
         register={register}
         errors={errors}
-        disabled={isDisabled}/>
+        disabled={isInputDisabled}/>
 
         <footer className='flex items-center justify-end gap-2 mt-5'>
             <div>
                 <DefaultButton
-                onClick={close}
-                disabled={isDisabled}>
+                onClick={closeShow}
+                disabled={isInputDisabled}>
                     Cancel
                 </DefaultButton>
             </div>
             <div>
                 <Button
                 type='submit'
-                disabled={isDisabled}>
+                disabled={isInputDisabled}>
                     Save
                 </Button>    
             </div>

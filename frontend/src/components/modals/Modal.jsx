@@ -5,7 +5,7 @@ import DefaultButton from '../button/DefaultButton'
 const Modal = ({
     label, 
     show = false,
-    close,
+    close = ()=>{},
     children
 }) => {
   return show && ReactDOM.createPortal(
