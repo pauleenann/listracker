@@ -20,6 +20,8 @@ export const DebtorProvider = ({children}) => {
         editDebtorDebt,
         isEditing,
         deleteDebtorDebt,
+        payDebtorDebt,
+        isPaying,
         isDeleting
     } = useDebtor(id);
 
@@ -47,6 +49,7 @@ export const DebtorProvider = ({children}) => {
         data,
         editDebtorDebt,
         deleteDebtorDebt,
+        payDebtorDebt,
         isInputDisabled,
         isSearchDisabled,
 

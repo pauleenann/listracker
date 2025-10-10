@@ -25,6 +25,7 @@ const Debtor = () => {
         data,
         editDebtorDebt,
         deleteDebtorDebt,
+        payDebtorDebt,
         isInputDisabled,
         isSearchDisabled,
 
@@ -59,8 +60,8 @@ const Debtor = () => {
         closeDeleteModal();
     }
 
-    const handlePayModal = () => {
-        //call pay service here
+    const handlePayment = (debt) => {
+        payDebtorDebt({...debt, debtId: selectedData._id});
         closePayModal();
     }
 
@@ -125,7 +126,8 @@ const Debtor = () => {
         label={'Pay Debt'}
         show={showPayModal}
         close={closePayModal}>
-            <PaymentForm/>
+            <PaymentForm
+            handleClick={handlePayment}/>
         </Modal>
     </MainLayout>
   )

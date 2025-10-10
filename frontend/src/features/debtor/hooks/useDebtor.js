@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { fetchDebtor } from '../services';
 import useToastMutation from '../../../hooks/useToastMutation';
 import { deleteDebt, editDebt } from '../../debts/services';
+import { payDebt } from '../../payments/services';
 
 const useDebtor = (id) => {
     const [selectedData, setSelectedData] = useState();
@@ -47,6 +48,16 @@ const useDebtor = (id) => {
         ['debtor']
     )
 
+    const mutationPay = useToastMutation(
+        payDebt,
+        {
+            loading: 'Paying debt',
+            success: 'Debt paid successfully',
+            error: 'Could not pay debt',
+        },
+        ['debtor']
+    )
+
   return {
     isLoading,
     isError,
@@ -57,6 +68,8 @@ const useDebtor = (id) => {
     isEditing: mutationEdit.isLoading,
     deleteDebtorDebt: mutationDelete.mutate,
     isDeleting: mutationDelete.isLoading,
+    payDebtorDebt: mutationPay.mutate,
+    isPaying: mutationPay.isLoading
   }
 }
 

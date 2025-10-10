@@ -8,6 +8,20 @@ const PaymentSchema = new Schema({
         required: true
     },
     amountPaid: {
-        
+        type: Number,
+        required: true
+    },
+    paymentMethod: {
+        type: String,
+        enum: ['cash', 'gcash', 'maya'],
+        required: true
+    },
+    paymentDate: {
+        type: Date,
+        default: Date.now
     }
 })
+
+const Payment = model('Payment', PaymentSchema);
+
+export default Payment;
