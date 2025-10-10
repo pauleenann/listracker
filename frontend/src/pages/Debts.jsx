@@ -12,8 +12,6 @@ import DebtForm from '../features/debts/components/DebtForm'
 import { useDebtContext } from '../features/debts/context/DebtContext.jsx'
 import ConfirmationModal from '../components/modals/ConfirmationModal.jsx'
 import Pagination from '../components/pagination/Pagination.jsx'
-import { fetchDebt } from '../features/debts/services/index.js'
-import Loading from '../components/loading/Loading.jsx'
 import LoadingData from '../components/loading/LoadingData.jsx'
 
 const Debts = () => {

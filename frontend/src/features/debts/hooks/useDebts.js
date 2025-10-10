@@ -26,9 +26,8 @@ const useDebts = () => {
     const {
         data: status,
     } = useQuery({
-        queryKey:['debts'],
+        queryKey:['status'],
         queryFn: fetchTotalStatus,
-        keepPreviousData: true // avoid rendering blank page when fetching next data
     });
 
     const {

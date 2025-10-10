@@ -7,7 +7,9 @@ const DebtorDebtTrComponent = ({
 }) => {
     const {
         openShow,
-        initializeSelectedData
+        initializeSelectedData,
+        openDeleteModal,
+        openPayModal
     } = useDebtorContext();
   return (
     <tr 
@@ -36,13 +38,24 @@ const DebtorDebtTrComponent = ({
                 initializeSelectedData(data)
                 openShow('view debt')
             }}
-           >
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            >
+                <i className="fa-solid fa-arrow-up-right-from-square"></i>
             </button>
             <button
             className='text-red-500 cursor-pointer'
-           >
+            onClick={()=>{
+                initializeSelectedData(data);
+                openDeleteModal();
+            }}>
                 <i className="fa-solid fa-trash"></i>
+            </button>
+            <button
+            className='text-yellow-500 cursor-pointer'
+            onClick={()=>{
+                initializeSelectedData(data);
+                openPayModal();
+            }}>
+                <i className="fa-solid fa-coins"></i>
             </button>
         </td>
     </tr>

@@ -31,7 +31,7 @@ const Table = ({
         <td 
         colSpan={header.length} 
         className='text-center'>
-          <div className='flex flex-col items-center mt-10 text-theme-blue font-semibold gap-1'>
+          <div className='flex flex-col items-center mt-10 text-red-500 font-semibold gap-1'>
             <i className="fa-solid fa-circle-exclamation text-4xl"></i>
             <span>No data available</span>
           </div>

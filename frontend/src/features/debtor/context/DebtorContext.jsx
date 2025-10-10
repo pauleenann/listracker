@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import useModal from '../../../hooks/useModal';
 import { useParams } from 'react-router';
 import useDebtor from '../hooks/useDebtor';
+import useConfirmationModal from '../../../hooks/useConfirmationModal';
 
 const DebtorContext = createContext();
 
@@ -22,12 +23,17 @@ export const DebtorProvider = ({children}) => {
         isDeleting
     } = useDebtor(id);
 
+    // form modal
     const {
         show, 
         openShow,
         closeShow,
         label
     } = useModal();
+
+    //confirmation modal (delete)
+    const deleteModal = useConfirmationModal();
+    const payModal = useConfirmationModal();
 
     useEffect(()=>{
         setIsInputDisabled(isEditing||label=='view debt')
@@ -49,6 +55,14 @@ export const DebtorProvider = ({children}) => {
         openShow,
         closeShow,
         label,
+
+        // confirmation modal
+        showDeleteModal: deleteModal.showConfirmation,
+        openDeleteModal: deleteModal.openConfirmation,
+        closeDeleteModal: deleteModal.closeConfirmation,
+        showPayModal: payModal.showConfirmation,
+        openPayModal: payModal.openConfirmation,
+        closePayModal: payModal.closeConfirmation,
 
         // selectedData
         selectedData,

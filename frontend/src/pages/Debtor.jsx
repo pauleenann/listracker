@@ -10,6 +10,8 @@ import DebtorDebtTrComponent from '../features/debtor/components/DebtorDebtTrCom
 import Modal from '../components/modals/Modal'
 import { useDebtorContext } from '../features/debtor/context/DebtorContext'
 import DebtForm from '../features/debts/components/DebtForm'
+import LoadingData from '../components/loading/LoadingData'
+import ConfirmationModal from '../components/modals/ConfirmationModal'
 
 const Debtor = () => {
     const navigate = useNavigate();
@@ -31,6 +33,12 @@ const Debtor = () => {
         closeShow,
         label,
 
+        // confirmation modal
+        showDeleteModal,
+        closeDeleteModal,
+        showPayModal,
+        closePayModal,
+
         //selected data
         selectedData
     } = useDebtorContext();
@@ -45,6 +53,16 @@ const Debtor = () => {
         }
     };
 
+    const handleDeleteDebt = () => {
+        deleteDebtorDebt(selectedData._id);
+        closeDeleteModal();
+    }
+
+    const handlePayModal = () => {
+        //call pay service here
+        closePayModal();
+    }
+
   return (
     <MainLayout>
         <Navbar menu={'Debtor'}/>
@@ -58,21 +76,24 @@ const Debtor = () => {
                 </DefaultButton>    
             </div>
 
-            {isLoading&&<p>Loading</p>}
-            {isError&&<p>Error</p>}
-            {data&&<section className='w-full'>
-                {/* debtor info */}
-                <DebtorInfo
-                debtor={data.debtor}/>
+            <section className='w-full h-auto flex justify-center'>
+                {isLoading&&<p><LoadingData/></p>}
+                {isError&&<p>Error</p>}
+                {data&&<div className='w-full'>
+                    {/* debtor info */}
+                    <DebtorInfo
+                    debtor={data.debtor}/>
 
-                {/* list of debts */}
-                <div className='mt-4'>
-                    <Table
-                    header={debtorDebtsHeader}
-                    data={data.debts}
-                    trComponent={DebtorDebtTrComponent}/>    
-                </div>
-            </section>}
+                    {/* list of debts */}
+                    <div className='mt-4'>
+                        <Table
+                        header={debtorDebtsHeader}
+                        data={data.debts}
+                        trComponent={DebtorDebtTrComponent}/>    
+                    </div>
+                </div>}    
+            </section>
+            
         </main>
 
         {/* modal */}
@@ -88,6 +109,26 @@ const Debtor = () => {
             isInputDisabled={isInputDisabled}
             isSearchDisabled={isSearchDisabled}/>
         </Modal>
+
+        {/* delete modal */}
+        <ConfirmationModal
+        title={'Delete Debt'}
+        description={`Are you sure you want to delete #${selectedData?._id?.substring(0,10)||'this'} debt?`}
+        show={showDeleteModal}
+        close={closeDeleteModal}
+        confirmFn={handleDeleteDebt}
+        />
+
+        {/* pay modal */}
+        <ConfirmationModal
+        title={'Pay Debt'}
+        description={`Are you sure you want to set #${selectedData?._id?.substring(0,10)||'this'} as paid?`}
+        show={showPayModal}
+        close={closePayModal}
+        confirmFn={handlePayModal}
+        />
+
+    
     </MainLayout>
   )
 }
