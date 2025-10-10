@@ -4,6 +4,7 @@ import { ErrorMessage } from "@hookform/error-message"
 const Dropdown = ({
   id, 
   label, 
+  placeholder,
   register, 
   rules, 
   errors,
@@ -12,11 +13,11 @@ const Dropdown = ({
 }) => {
   return (
     <div className='flex flex-col w-full'>
-        <label htmlFor={id} className='text-gray-900'>{label}</label>
+        <label htmlFor={id} className='text-gray-900 capitalize'>{label}</label>
         <select className='border border-gray-300 h-12 px-3 rounded focus:outline-theme-blue capitalize'
         {...register(id,rules)}
-        disabled={disabled}>
-            <option value="" selected disabled>Select status</option>
+        disabled={disabled}
+        placeholder={placeholder}>
             {options.map((option, index)=>(
                 <option 
                 key={index}

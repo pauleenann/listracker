@@ -12,6 +12,7 @@ import { useDebtorContext } from '../features/debtor/context/DebtorContext'
 import DebtForm from '../features/debts/components/DebtForm'
 import LoadingData from '../components/loading/LoadingData'
 import ConfirmationModal from '../components/modals/ConfirmationModal'
+import PaymentForm from '../features/payments/components/PaymentForm'
 
 const Debtor = () => {
     const navigate = useNavigate();
@@ -120,15 +121,12 @@ const Debtor = () => {
         />
 
         {/* pay modal */}
-        <ConfirmationModal
-        title={'Pay Debt'}
-        description={`Are you sure you want to set #${selectedData?._id?.substring(0,10)||'this'} as paid?`}
+        <Modal
+        label={'Pay Debt'}
         show={showPayModal}
-        close={closePayModal}
-        confirmFn={handlePayModal}
-        />
-
-    
+        close={closePayModal}>
+            <PaymentForm/>
+        </Modal>
     </MainLayout>
   )
 }

@@ -25,7 +25,7 @@ const DebtSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['not paid', 'pending', 'paid'],
+        enum: ['not paid', 'paid'],
         default: 'not paid',
         required: true
     },

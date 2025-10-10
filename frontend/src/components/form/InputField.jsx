@@ -13,7 +13,7 @@ const InputField = ({
 }) => {
   return (
     <div className='flex flex-col w-full'>
-        <label htmlFor={id} className='text-gray-900'>{label}</label>
+        <label htmlFor={id} className='text-gray-900 capitalize'>{label}</label>
         <input 
         id={id}
         type={type} 

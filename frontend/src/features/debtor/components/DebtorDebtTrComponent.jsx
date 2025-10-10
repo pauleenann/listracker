@@ -24,7 +24,7 @@ const DebtorDebtTrComponent = ({
         <td className='py-3'>
             <span className={`
                 uppercase py-1 px-2 text-xs rounded text-white
-                ${data.status=='paid'?'bg-theme-blue':data.status=='not paid'?'bg-theme-gray':'bg-gray-500'}
+                ${data.status=='paid'?'bg-theme-blue': data.status=='not paid' ? 'bg-theme-gray' : 'bg-gray-300'}
             `}>
                 {data.status}
             </span>

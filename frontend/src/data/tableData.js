@@ -36,8 +36,6 @@ export const debtorHeader = [
     'Debtor name',
     'Contact no.',
     'Total debt',
-    'Total paid',
-    'Balance',
     'Status',
     'Last payment',
     ''
