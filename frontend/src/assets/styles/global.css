@@ -21,3 +21,11 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;     /* Firefox */
 }
+
+select {
+    appearance: none;          /* Standard */
+    -webkit-appearance: none;  /* For Safari/Chrome */
+    -moz-appearance: none;     /* For Firefox */
+    background: none;          /* Remove background arrow if any */
+}
+  

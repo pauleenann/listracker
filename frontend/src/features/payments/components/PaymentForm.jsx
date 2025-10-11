@@ -7,7 +7,8 @@ import DefaultButton from '../../../components/button/DefaultButton';
 
 const PaymentForm = ({
     isInputDisabled = false,
-    handleClick = ()=>{}
+    handleClick = ()=>{},
+    close
 }) => {
     const {
         register,
@@ -16,21 +17,7 @@ const PaymentForm = ({
     } = useForm();
   return (
     <form
-    onClick={handleSubmit(handleClick)}
     className='flex flex-col gap-2 mt-5'>
-      <InputField
-      id={'amount'}
-      label={'payment amount'}
-      type={'number'}
-      placeholder={'Enter payment amount'}
-      register={register}
-      rules={
-          {
-              required: 'Please enter payment amount'
-          }
-      }
-      errors={errors}
-      disabled={isInputDisabled}/>
 
       <Dropdown
       id={'paymentMethod'}
@@ -49,13 +36,15 @@ const PaymentForm = ({
       <footer className='flex items-center justify-end gap-2 mt-5'>
         <div>
             <DefaultButton
-            disabled={isInputDisabled}>
+            disabled={isInputDisabled}
+            onClick={close}>
                 Cancel
             </DefaultButton>
         </div>
         <div>
             <Button
-            disabled={isInputDisabled}>
+            disabled={isInputDisabled}
+            onClick={handleSubmit(handleClick)}>
                 Confirm
             </Button>
         </div>

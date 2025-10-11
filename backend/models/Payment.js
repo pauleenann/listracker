@@ -7,10 +7,6 @@ const PaymentSchema = new Schema({
         ref: 'Debt',
         required: true
     },
-    amountPaid: {
-        type: Number,
-        required: true
-    },
     paymentMethod: {
         type: String,
         enum: ['cash', 'gcash', 'maya'],

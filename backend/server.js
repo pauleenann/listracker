@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import authRoutes from './routes/authRoutes.js'
 import debtorRoutes from './routes/debtorRoutes.js'
 import debtRoutes from './routes/debtRoutes.js'
+import paymentRoutes from './routes/paymentRoutes.js'
 import connectDb from './config/db.js'
 
 const PORT = process.env.PORT || 3000
@@ -28,6 +29,7 @@ app.use(cors(corsOptions));
 app.use('/api/auth', authRoutes)
 app.use('/api/debtors', debtorRoutes)
 app.use('/api/debts', debtRoutes)
+app.use('/api/payments', paymentRoutes)
 
 app.listen(PORT,()=>{
     console.log('Server running on port ', PORT)

@@ -127,7 +127,8 @@ const Debtor = () => {
         show={showPayModal}
         close={closePayModal}>
             <PaymentForm
-            handleClick={handlePayment}/>
+            handleClick={handlePayment}
+            close={closePayModal}/>
         </Modal>
     </MainLayout>
   )
