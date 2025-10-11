@@ -13,6 +13,7 @@ import { useDebtContext } from '../features/debts/context/DebtContext.jsx'
 import ConfirmationModal from '../components/modals/ConfirmationModal.jsx'
 import Pagination from '../components/pagination/Pagination.jsx'
 import LoadingData from '../components/loading/LoadingData.jsx'
+import PaymentForm from '../features/payments/components/PaymentForm.jsx'
 
 const Debts = () => {
   const {
@@ -23,15 +24,18 @@ const Debts = () => {
     addDebt,
     editDebt,
     deleteDebt,
+    payDebt,
     status,
 
     // modal
     show, 
     openShow, 
     closeShow, 
-    showConfirmation,
-    closeConfirmation,
     label, 
+    showDeleteModal, 
+    closeDeleteModal,
+    showPayModal,
+    closePayModal,
 
     // selected data
     filterSelectedData,
@@ -64,7 +68,12 @@ const Debts = () => {
 
   const handleDeleteDebt = ()=>{
     deleteDebt(selectedData._id)
-    closeConfirmation();
+    closeDeleteModal();
+  }
+
+  const handlePayment = (debt) => {
+    payDebt({...debt, debtId: selectedData._id});
+    closePayModal();
   }
 
   return (
@@ -145,14 +154,24 @@ const Debts = () => {
         isSearchDisabled={isSearchDisabled}/>
       </Modal>
 
-      {/* confirmation modal */}
+      {/* delete modal */}
       <ConfirmationModal
       title={'Delete Debt'}
       description={`Are you sure you want to delete #${selectedData?._id?.substring(0,10)||'this'} debt?`}
-      show={showConfirmation}
-      close={closeConfirmation}
+      show={showDeleteModal}
+      close={closeDeleteModal}
       confirmFn={handleDeleteDebt}
       />
+
+      {/* pay modal */}
+      <Modal
+      label={'Pay Debt'}
+      show={showPayModal}
+      close={closePayModal}>
+        <PaymentForm
+        handleClick={handlePayment}
+        close={closePayModal}/>
+      </Modal>
     </MainLayout>
   )
 }

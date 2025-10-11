@@ -20,6 +20,8 @@ export const DebtProvider = ({children})=>{
         editDebt,
         isEditingDebt,
         deleteDebt,
+        payDebt,
+        isPayingDebt,
         status,
 
         filterSelectedData,
@@ -41,19 +43,16 @@ export const DebtProvider = ({children})=>{
     } = useModal();
 
     // useConfirmation hook
-    const {
-        showConfirmation,
-        openConfirmation,
-        closeConfirmation
-    } = useConfirmationModal();
+    const deleteModal = useConfirmationModal();
+    const payModal = useConfirmationModal();
 
     useEffect(()=>{
-        setIsInputDisabled(isAddingDebt||isEditingDebt||label=='view debt')
+        setIsInputDisabled(isAddingDebt||isEditingDebt||isPayingDebt||label=='view debt')
 
         // disable search input if adding or editing
         // changing of debtor is not allowed when editing :)
-        setIsSearchDisabled(isAddingDebt||isEditingDebt||label!='add debt')
-    }, [label, isAddingDebt, isEditingDebt])
+        setIsSearchDisabled(isAddingDebt||isEditingDebt||isPayingDebt||label!='add debt')
+    }, [label, isAddingDebt, isEditingDebt, isPayingDebt])
 
 
     let value = {
@@ -65,6 +64,7 @@ export const DebtProvider = ({children})=>{
         addDebt,
         editDebt,
         deleteDebt,
+        payDebt,
         filterSelectedData,
         selectedData,
         status,
@@ -76,9 +76,12 @@ export const DebtProvider = ({children})=>{
         label,
 
         // confirmation modal hook
-        showConfirmation,
-        openConfirmation,
-        closeConfirmation,
+        showDeleteModal: deleteModal.showConfirmation,
+        openDeleteModal: deleteModal.openConfirmation,
+        closeDeleteModal: deleteModal.closeConfirmation,
+        showPayModal: payModal.showConfirmation,
+        openPayModal: payModal.openConfirmation,
+        closePayModal: payModal.closeConfirmation,
 
         // disabled states
         isInputDisabled,

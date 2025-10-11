@@ -8,7 +8,8 @@ const DebtTrComponent = ({
     const {
         openShow,
         filterSelectedData,
-        openConfirmation
+        openDeleteModal,
+        openPayModal
     } = useDebtContext();
 
   return (
@@ -35,8 +36,7 @@ const DebtTrComponent = ({
         className='py-3 relative flex items-center gap-4'>
             <button
             className='cursor-pointer'
-            onClick={(e) => {
-                e.stopPropagation();
+            onClick={() => {
                 filterSelectedData(data._id)
                 openShow('view debt');
             }}>
@@ -44,12 +44,19 @@ const DebtTrComponent = ({
             </button>
             <button
             className='text-red-500 cursor-pointer'
-            onClick={(e)=>{
-                e.stopPropagation();
+            onClick={()=>{
                 filterSelectedData(data._id)
-                openConfirmation();
+                openDeleteModal();
             }}>
                 <i className="fa-solid fa-trash"></i>
+            </button>
+            <button
+            className='text-yellow-500 cursor-pointer'
+            onClick={()=>{
+                filterSelectedData(data._id);
+                openPayModal();
+            }}>
+                <i className="fa-solid fa-coins"></i>
             </button>
         </td>
     </tr>

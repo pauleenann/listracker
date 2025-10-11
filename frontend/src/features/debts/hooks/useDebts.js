@@ -4,6 +4,7 @@ import { addDebt, deleteDebt, editDebt, fetchDebt, fetchTotalStatus } from '../s
 import useToastMutation from '../../../hooks/useToastMutation';
 import usePagination from '../../../hooks/usePagination';
 import {useDebounce} from 'use-debounce'
+import { payDebt } from '../../payments/services';
 
 const useDebts = () => {
     const [selectedData, setSelectedData] = useState(null);
@@ -70,6 +71,16 @@ const useDebts = () => {
         ['debts']
     )
 
+    const mutationPay = useToastMutation(
+        payDebt,
+        {
+            loading: 'Paying debt',
+            success: 'Debt paid successfully',
+            error: 'Could not pay debt',
+        },
+        ['debts']
+    )
+
     const filterSelectedData = (id)=>{
         if(!id){
             setSelectedData('')
@@ -108,6 +119,8 @@ const useDebts = () => {
     editDebt: mutationEdit.mutate,
     isEditingDebt:mutationEdit.isLoading,
     deleteDebt: mutationDelete.mutate,
+    payDebt: mutationPay.mutate,
+    isPayingDebt: mutationPay.isLoading,
     status, 
 
     //selected data
