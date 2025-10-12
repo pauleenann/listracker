@@ -42,16 +42,19 @@ export const addDebtor = async (req,res)=>{
 
 export const getDebtors = async (req, res) => {
     try {
-      const debtors = await Debtor.find({});
+      const debtors = await Debtor.find({}).sort({name: 1});
   
       const results = await Promise.all(
         debtors.map(async (debtor) => {
           // Get ALL debts
-          const debts = await Debt.find({ userId: debtor._id }, { amount: 1 });
+          const debts = await Debt.find({ userId: debtor._id }, { amount: 1, status: 1 });
+          console.log('All debts for', debtor.name, debtor._id, debts);
   
           // Compute total owed only from unpaid debts
-          const unpaidDebts = debts.filter((d) => d.status !== 'paid');
-          const totalOwed = unpaidDebts.reduce((acc, d) => acc + d.amount, 0);
+          const unpaidDebts = debts.filter((d) => d.status != 'paid');
+          console.log('Unpaid debts for', debtor.name, unpaidDebts);
+          const totalOwed = unpaidDebts.length > 0 ? unpaidDebts.reduce((acc, d) => acc + d.amount, 0) : 0;
+          console.log('Total owed for', debtor.name, totalOwed);
   
           // Get all debt IDs (for payment history)
           const debtIds = debts.map((d) => d._id);

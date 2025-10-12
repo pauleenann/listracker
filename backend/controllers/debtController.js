@@ -102,7 +102,8 @@ export const getDebts = async (req, res)=>{
                 match: search.length>0 ? {name:{$regex: search, $options: 'i'}}:{}
             })
             .skip(skip)
-            .limit(limit);
+            .limit(limit)
+            .sort({createdAt: -1});
 
         //fetch total number of debts/documents in Debts
         const totalDebts = await Debt.countDocuments();
