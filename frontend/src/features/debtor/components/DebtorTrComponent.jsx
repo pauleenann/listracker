@@ -8,7 +8,7 @@ const DebtorTrComponent = ({data}) => {
         <td className='py-3'>{data._id.substring(0,10)}</td>
         <td className='py-3 capitalize'>{data.name}</td>
         <td className='py-3'>{data.contactNumber||'N/A'}</td>
-        <td className='py-3'>Php {data.totalDebt}</td>
+        <td className='py-3'>Php {data.totalOwed}</td>
         <td className='py-3'>
             <span className={`
                 uppercase py-1 px-2 text-xs rounded text-white
@@ -17,7 +17,7 @@ const DebtorTrComponent = ({data}) => {
                 {data.status}
             </span>
         </td>
-        <td className='py-3'>{data.lastPayment||'N/A'}</td>
+        <td className='py-3'>{data.lastPayment? new Date(data.lastPayment).toLocaleDateString("en-Ca") : 'N/A'}</td>
         <td className='py-3'>
             <button 
             className='cursor-pointer'

@@ -1,5 +1,6 @@
 import Debtor from '../models/Debtor.js' 
 import Debt from '../models/Debt.js'
+import Payment from '../models/Payment.js'
 
 export const addDebtor = async (req,res)=>{
     try {
@@ -39,22 +40,53 @@ export const addDebtor = async (req,res)=>{
     }
 }
 
-export const getDebtors = async (req, res)=>{
+export const getDebtors = async (req, res) => {
     try {
-        const debtors = await Debtor.find({});
-
-        return res.status(200).json({
-            debtors,
-            message: 'Debtors successfully retrieved'
+      const debtors = await Debtor.find({});
+  
+      const results = await Promise.all(
+        debtors.map(async (debtor) => {
+          // Get ALL debts
+          const debts = await Debt.find({ userId: debtor._id }, { amount: 1 });
+  
+          // Compute total owed only from unpaid debts
+          const unpaidDebts = debts.filter((d) => d.status !== 'paid');
+          const totalOwed = unpaidDebts.reduce((acc, d) => acc + d.amount, 0);
+  
+          // Get all debt IDs (for payment history)
+          const debtIds = debts.map((d) => d._id);
+  
+          // Get latest payment if any debts exist
+          let lastPayment = null;
+          if (debtIds.length > 0) {
+            lastPayment = await Payment.findOne({
+              debtId: { $in: debtIds },
+            }).sort({ paymentDate: -1 });
+          }
+  
+          return {
+            ...debtor.toObject(),
+            totalOwed,
+            status: totalOwed > 0 ? 'unpaid' : 'paid',
+            lastPayment: lastPayment?.paymentDate || null,
+          };
         })
+      );
+  
+      return res.status(200).json({
+        debtors: results,
+        message: 'Debtors successfully retrieved',
+      });
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({
-            error: error,
-            message: 'Failed to fetch debtors'
-        })
+      console.log(error);
+      return res.status(500).json({
+        error,
+        message: 'Failed to fetch debtors',
+      });
     }
-}
+  };
+  
+  
 
 export const getDebtor = async (req, res)=>{
     try {
