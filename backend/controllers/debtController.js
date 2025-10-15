@@ -89,50 +89,68 @@ export const editDebt = async (req, res)=>{
     }
 }
 
-export const getDebts = async (req, res)=>{
+export const getDebts = async (req, res) => {
     try {
-        console.log('fetching debts', req.query)
-        const {page = 1, limit = 5, search = ''} = req.query;
-        const skip = (page-1)*limit;
-
-        //populate and match at the same time
-        let debts = await Debt.find()
-            .populate({
-                path: 'userId',
-                match: search.length>0 ? {name:{$regex: search, $options: 'i'}}:{}
-            })
-            .skip(skip)
-            .limit(limit)
-            .sort({createdAt: -1});
-
-        //fetch total number of debts/documents in Debts
-        const totalDebts = await Debt.countDocuments();
-
-        //filter debts because mongodb does not filter automatically
-        debts = debts?.filter(f=>f.userId!=null)
-
-        if(!debts){
-            return res.status(404).json({
-                message: 'No debts'
-            })
-        }
-
-        const totalPages = Math.ceil(totalDebts/limit);
-        const hasMore = page<totalPages;
-
-        return res.status(200).json({
-            debts,
-            totalPages,
-            hasMore,
-            message: 'Debts successfully retrieved'
-        })
+      const { page = 1, limit = 5, search = '' } = req.query;
+      const skip = (page - 1) * limit;
+  
+      // Build match stage
+      const matchStage = search
+        ? { 'user.name': { $regex: search, $options: 'i' } }
+        : {};
+  
+      const pipeline = [
+        {
+          $lookup: {
+            from: 'debtors',  // the other collection name (in MongoDB, not the model name)         
+            localField: 'userId', // field in Debt collection
+            foreignField: '_id', // field in Debtor collection
+            as: 'user', // output array field
+          },
+        },
+        { $unwind: '$user' }, // Deconstruct the user array field
+        { $match: matchStage },
+        { $sort: { createdAt: -1 } },
+        { $skip: skip },
+        { $limit: Number(limit) },
+      ];
+  
+      // Run main query
+      const debts = await Debt.aggregate(pipeline);
+  
+      // Count total (without skip/limit)
+      const countPipeline = [
+        {
+          $lookup: {
+            from: 'debtors',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'user',
+          },
+        },
+        { $unwind: '$user' },
+        { $match: matchStage },
+        { $count: 'total' },
+      ];
+  
+      const totalResult = await Debt.aggregate(countPipeline);
+      const totalDebts = totalResult[0]?.total || 0;
+  
+      const totalPages = Math.ceil(totalDebts / limit);
+      const hasMore = page < totalPages;
+  
+      res.status(200).json({
+        debts,
+        totalPages,
+        hasMore,
+        message: 'Debts successfully retrieved',
+      });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: 'Failed to get debts'
-        })
+      console.error(error);
+      res.status(500).json({ message: 'Failed to get debts' });
     }
-}
+};
+  
 
 export const getTotalStatus = async (req, res)=>{
     try {
