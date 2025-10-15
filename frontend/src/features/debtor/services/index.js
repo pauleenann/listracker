@@ -9,11 +9,12 @@ export const createDebtor = async (debtor)=>{
     return response
 }
 
-export const fetchDebtors = async (page, limit)=>{
+export const fetchDebtors = async (page, limit, search)=>{
     const response = await api.get('/debtors',{
         params: {
             page: page,
-            limit: limit
+            limit: limit,
+            search: search
         }
     });
     console.log(response.data)

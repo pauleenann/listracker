@@ -27,7 +27,11 @@ const Debtors = () => {
     totalPages,
     nextPage,
     prevPage,
-    page
+    page,
+
+    //search
+    searchInput,
+    setSearchInput
   } = useDebtorsContext();
 
   const handleAddDebtor = (debtor)=>{
@@ -43,7 +47,9 @@ const Debtors = () => {
           {/* search and other buttons */}
           <section className='flex justify-between items-center'>
             <div className='w-100'>
-              <SearchBar/>
+              <SearchBar
+              placeholder={'Search by debtor name'}
+              onChange={(e)=>setSearchInput(e.target.value)}/>
             </div>
             <div>
               <Button

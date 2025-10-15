@@ -42,16 +42,21 @@ export const addDebtor = async (req,res)=>{
 
 export const getDebtors = async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 10, search = '' } = req.query;
         const skip = (page - 1) * limit;
 
-        const totalDebtors = await Debtor.countDocuments();
+        const totalDebtors = await Debtor.countDocuments({
+            name: { $regex: search, $options: 'i' }
+        });
         const totalPages = Math.ceil(totalDebtors / limit);
 
-        const debtors = await Debtor.find({})
+        const debtors = await Debtor.find({
+            name: { $regex: search, $options: 'i' }
+        })
             .sort({name: 1})
             .skip(skip)
             .limit(limit)
+
     
         const results = await Promise.all(
             debtors.map(async (debtor) => {

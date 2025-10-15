@@ -19,7 +19,11 @@ export const DebtorsProvider = ({children}) => {
         totalPages,
         nextPage,
         prevPage,
-        page
+        page,
+
+        //search
+        searchInput,
+        setSearchInput
     } = useDebtors();
 
     useEffect(()=>{
@@ -45,7 +49,11 @@ export const DebtorsProvider = ({children}) => {
         totalPages,
         nextPage,
         prevPage,
-        page
+        page,
+
+        //search
+        searchInput,
+        setSearchInput
     }
     
   return (

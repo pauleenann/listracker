@@ -1,10 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useToastMutation from '../../../hooks/useToastMutation'
 import { createDebtor, fetchDebtors } from '../services'
 import usePagination from '../../../hooks/usePagination'
+import { useDebounce } from 'use-debounce'
 
 const useDebtors = () => {
+    const [searchInput, setSearchInput] = useState('');
+
+    //destructure debounce array
+    const [debounceSearch] = useDebounce(searchInput, 500);
+
     const {
         page, 
         limit,
@@ -17,8 +23,8 @@ const useDebtors = () => {
         isError,
         data
     } = useQuery({
-        queryKey: ['debtors', page],
-        queryFn: ()=>fetchDebtors(page, limit),
+        queryKey: ['debtors', page, debounceSearch],
+        queryFn: ()=>fetchDebtors(page, limit, debounceSearch),
     })
 
     const mutationAdd = useToastMutation(
@@ -45,6 +51,9 @@ const useDebtors = () => {
     prevPage,
     page,
     
+    //search
+    searchInput,
+    setSearchInput
   }
 }
 
