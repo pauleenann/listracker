@@ -5,21 +5,29 @@ import Table from '../components/table/Table'
 import SearchBar from '../components/form/SearchBar'
 import Button from '../components/button/Button'
 import Modal from '../components/modals/Modal'
-import { debtorHeader, debtorSampleData } from '../data/tableData'
+import { debtorHeader } from '../data/tableData'
 import DebtorTrComponent from '../features/debtor/components/DebtorTrComponent'
 import DebtorForm from '../features/debtor/components/DebtorForm'
 import { useDebtorsContext } from '../features/debtor/context/DebtorsContext'
 import LoadingData from '../components/loading/LoadingData'
+import Pagination from '../components/pagination/Pagination'
 
 const Debtors = () => {
   const {
+    //tanstack
     show,
     openShow,
     closeShow,
     isLoading,
     isError,
     addDebtor,
-    data
+    data,
+
+    //pagination
+    totalPages,
+    nextPage,
+    prevPage,
+    page
   } = useDebtorsContext();
 
   const handleAddDebtor = (debtor)=>{
@@ -59,6 +67,13 @@ const Debtors = () => {
             trComponent={DebtorTrComponent}/>}
             
           </section>
+
+          <Pagination
+          page={page}
+          totalPages={totalPages}
+          next={nextPage}
+          prev={prevPage}/>
+          
         </main>
 
         {/* modal */}

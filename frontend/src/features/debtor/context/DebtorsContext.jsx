@@ -13,7 +13,13 @@ export const DebtorsProvider = ({children}) => {
         isError,
         data,
         addDebtor,
-        isAdding
+        isAdding,
+
+        //pagination
+        totalPages,
+        nextPage,
+        prevPage,
+        page
     } = useDebtors();
 
     useEffect(()=>{
@@ -33,7 +39,13 @@ export const DebtorsProvider = ({children}) => {
         // modal
         show,
         openShow,
-        closeShow
+        closeShow,
+
+        //pagination
+        totalPages,
+        nextPage,
+        prevPage,
+        page
     }
     
   return (

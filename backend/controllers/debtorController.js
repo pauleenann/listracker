@@ -42,50 +42,60 @@ export const addDebtor = async (req,res)=>{
 
 export const getDebtors = async (req, res) => {
     try {
-      const debtors = await Debtor.find({}).sort({name: 1});
-  
-      const results = await Promise.all(
-        debtors.map(async (debtor) => {
-          // Get ALL debts
-          const debts = await Debt.find({ userId: debtor._id }, { amount: 1, status: 1 });
-          console.log('All debts for', debtor.name, debtor._id, debts);
-  
-          // Compute total owed only from unpaid debts
-          const unpaidDebts = debts.filter((d) => d.status != 'paid');
-          console.log('Unpaid debts for', debtor.name, unpaidDebts);
-          const totalOwed = unpaidDebts.length > 0 ? unpaidDebts.reduce((acc, d) => acc + d.amount, 0) : 0;
-          console.log('Total owed for', debtor.name, totalOwed);
-  
-          // Get all debt IDs (for payment history)
-          const debtIds = debts.map((d) => d._id);
-  
-          // Get latest payment if any debts exist
-          let lastPayment = null;
-          if (debtIds.length > 0) {
-            lastPayment = await Payment.findOne({
-              debtId: { $in: debtIds },
-            }).sort({ paymentDate: -1 });
-          }
-  
-          return {
-            ...debtor.toObject(),
-            totalOwed,
-            status: totalOwed > 0 ? 'unpaid' : 'paid',
-            lastPayment: lastPayment?.paymentDate || null,
-          };
-        })
-      );
-  
-      return res.status(200).json({
-        debtors: results,
-        message: 'Debtors successfully retrieved',
-      });
+        const { page = 1, limit = 10 } = req.query;
+        const skip = (page - 1) * limit;
+
+        const totalDebtors = await Debtor.countDocuments();
+        const totalPages = Math.ceil(totalDebtors / limit);
+
+        const debtors = await Debtor.find({})
+            .sort({name: 1})
+            .skip(skip)
+            .limit(limit)
+    
+        const results = await Promise.all(
+            debtors.map(async (debtor) => {
+            // Get ALL debts
+            const debts = await Debt.find({ userId: debtor._id }, { amount: 1, status: 1 });
+            console.log('All debts for', debtor.name, debtor._id, debts);
+    
+            // Compute total owed only from unpaid debts
+            const unpaidDebts = debts.filter((d) => d.status != 'paid');
+            console.log('Unpaid debts for', debtor.name, unpaidDebts);
+            const totalOwed = unpaidDebts.length > 0 ? unpaidDebts.reduce((acc, d) => acc + d.amount, 0) : 0;
+            console.log('Total owed for', debtor.name, totalOwed);
+    
+            // Get all debt IDs (for payment history)
+            const debtIds = debts.map((d) => d._id);
+    
+            // Get latest payment if any debts exist
+            let lastPayment = null;
+            if (debtIds.length > 0) {
+                lastPayment = await Payment.findOne({
+                debtId: { $in: debtIds },
+                }).sort({ paymentDate: -1 });
+            }
+    
+            return {
+                ...debtor.toObject(),
+                totalOwed,
+                status: totalOwed > 0 ? 'unpaid' : 'paid',
+                lastPayment: lastPayment?.paymentDate || null,
+            };
+            })
+        );
+    
+        return res.status(200).json({
+            debtors: results,
+            totalPages,
+            message: 'Debtors successfully retrieved',
+        });
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        error,
-        message: 'Failed to fetch debtors',
-      });
+        console.log(error);
+        return res.status(500).json({
+            error,
+            message: 'Failed to fetch debtors',
+        });
     }
   };
   

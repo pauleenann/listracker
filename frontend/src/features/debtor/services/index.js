@@ -9,9 +9,15 @@ export const createDebtor = async (debtor)=>{
     return response
 }
 
-export const fetchDebtors = async ()=>{
-    const response = await api.get('/debtors');
-    return response.data.debtors
+export const fetchDebtors = async (page, limit)=>{
+    const response = await api.get('/debtors',{
+        params: {
+            page: page,
+            limit: limit
+        }
+    });
+    console.log(response.data)
+    return response.data
 }
 
 export const fetchDebtor = async (id)=>{

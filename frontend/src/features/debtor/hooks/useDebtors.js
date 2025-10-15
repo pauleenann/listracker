@@ -2,15 +2,23 @@ import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 import useToastMutation from '../../../hooks/useToastMutation'
 import { createDebtor, fetchDebtors } from '../services'
+import usePagination from '../../../hooks/usePagination'
 
 const useDebtors = () => {
+    const {
+        page, 
+        limit,
+        nextPage,
+        prevPage
+    } = usePagination();
+
     const {
         isLoading,
         isError,
         data
     } = useQuery({
-        queryKey: ['debtors'],
-        queryFn: fetchDebtors
+        queryKey: ['debtors', page],
+        queryFn: ()=>fetchDebtors(page, limit),
     })
 
     const mutationAdd = useToastMutation(
@@ -24,11 +32,19 @@ const useDebtors = () => {
     )
 
   return {
+    //tanstack
     isLoading,
     isError,
-    data,
+    data: data?.debtors,
     isAdding: mutationAdd.isLoading,
-    addDebtor: mutationAdd.mutate
+    addDebtor: mutationAdd.mutate,
+
+    //pagination
+    totalPages: data?.totalPages,
+    nextPage,
+    prevPage,
+    page,
+    
   }
 }
 
