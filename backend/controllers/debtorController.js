@@ -42,68 +42,96 @@ export const addDebtor = async (req,res)=>{
 
 export const getDebtors = async (req, res) => {
     try {
-        const { page = 1, limit = 10, search = '' } = req.query;
-        const skip = (page - 1) * limit;
-
-        const totalDebtors = await Debtor.countDocuments({
-            name: { $regex: search, $options: 'i' }
-        });
-        const totalPages = Math.ceil(totalDebtors / limit);
-
-        const debtors = await Debtor.find({
-            name: { $regex: search, $options: 'i' }
-        })
-            .sort({name: 1})
-            .skip(skip)
-            .limit(limit)
-
-    
-        const results = await Promise.all(
-            debtors.map(async (debtor) => {
-            // Get ALL debts
-            const debts = await Debt.find({ userId: debtor._id }, { amount: 1, status: 1 });
-            console.log('All debts for', debtor.name, debtor._id, debts);
-    
-            // Compute total owed only from unpaid debts
-            const unpaidDebts = debts.filter((d) => d.status != 'paid');
-            console.log('Unpaid debts for', debtor.name, unpaidDebts);
-            const totalOwed = unpaidDebts.length > 0 ? unpaidDebts.reduce((acc, d) => acc + d.amount, 0) : 0;
-            console.log('Total owed for', debtor.name, totalOwed);
-    
-            // Get all debt IDs (for payment history)
-            const debtIds = debts.map((d) => d._id);
-    
-            // Get latest payment if any debts exist
-            let lastPayment = null;
-            if (debtIds.length > 0) {
-                lastPayment = await Payment.findOne({
-                debtId: { $in: debtIds },
-                }).sort({ paymentDate: -1 });
-            }
-    
-            return {
-                ...debtor.toObject(),
-                totalOwed,
-                status: totalOwed > 0 ? 'unpaid' : 'paid',
-                lastPayment: lastPayment?.paymentDate || null,
-            };
-            })
-        );
-    
-        return res.status(200).json({
-            debtors: results,
-            totalPages,
-            message: 'Debtors successfully retrieved',
-        });
+      const { page = 1, limit = 10, search = '' } = req.query;
+      const skip = (page - 1) * limit;
+  
+      const pipeline = [
+        // 1️⃣ Match debtor name
+        { $match: { name: { $regex: search, $options: 'i' } } },
+  
+        // 2️⃣ Lookup debts
+        {
+          $lookup: {
+            from: 'debts',
+            localField: '_id',
+            foreignField: 'userId',
+            as: 'debts',
+          },
+        },
+  
+        // 3️⃣ Add total owed and status fields
+        {
+          $addFields: {
+            totalOwed: {
+              $sum: {
+                $map: {
+                  input: {
+                    $filter: {
+                      input: '$debts',
+                      as: 'd',
+                      cond: { $ne: ['$$d.status', 'paid'] },
+                    },
+                  },
+                  as: 'unpaid',
+                  in: '$$unpaid.amount',
+                },
+              },
+            },
+          },
+        },
+        {
+          $addFields: {
+            status: {
+              $cond: [{ $gt: ['$totalOwed', 0] }, 'unpaid', 'paid'],
+            },
+          },
+        },
+  
+        // 4️⃣ Lookup last payment
+        {
+          $lookup: {
+            from: 'payments',
+            let: { debtIds: '$debts._id' }, 
+            pipeline: [
+              { $match: { $expr: { $in: ['$debtId', '$$debtIds'] } } },
+              { $sort: { paymentDate: -1 } },
+              { $limit: 1 },
+              { $project: { paymentDate: 1 } },
+            ],
+            as: 'lastPayment',
+          },
+        },
+  
+        // 5️⃣ Flatten lastPayment
+        {
+          $addFields: {
+            lastPayment: { $arrayElemAt: ['$lastPayment.paymentDate', 0] },
+          },
+        },
+  
+        // 6️⃣ Sort + Paginate
+        { $sort: { name: 1 } },
+        { $skip: skip },
+        { $limit: Number(limit) },
+      ];
+  
+      const [debtors, totalCount] = await Promise.all([
+        Debtor.aggregate(pipeline),
+        Debtor.countDocuments({ name: { $regex: search, $options: 'i' } }),
+      ]);
+  
+      const totalPages = Math.ceil(totalCount / limit);
+  
+      res.status(200).json({
+        debtors,
+        totalPages,
+        message: 'Debtors successfully retrieved (via pipeline)',
+      });
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            error,
-            message: 'Failed to fetch debtors',
-        });
+      console.error(error);
+      res.status(500).json({ message: 'Failed to fetch debtors', error });
     }
   };
-  
   
 
 export const getDebtor = async (req, res)=>{
