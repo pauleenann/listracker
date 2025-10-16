@@ -1,10 +1,17 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import useModal from '../../../hooks/useModal';
 import useDebtors from '../hooks/useDebtors';
+import useConfirmationModal from '../../../hooks/useConfirmationModal';
 
 const DebtorsContext = createContext();
 
 export const DebtorsProvider = ({children}) => {
+    const [selectedDebtor, setSelectedDebtor] = useState(null); 
+    const {
+      showConfirmation,
+      openConfirmation,
+      closeConfirmation
+    } = useConfirmationModal();
     const {show, openShow, closeShow} = useModal();
     const [isInputDisabled, setIsInputDisabled] = useState();
 
@@ -14,6 +21,8 @@ export const DebtorsProvider = ({children}) => {
         data,
         addDebtor,
         isAdding,
+        deleteDebtor,
+        isDeleting,
 
         //pagination
         totalPages,
@@ -39,11 +48,15 @@ export const DebtorsProvider = ({children}) => {
         isError,
         data,
         addDebtor,
+        deleteDebtor,
 
         // modal
         show,
         openShow,
         closeShow,
+        showConfirmation,
+        openConfirmation,
+        closeConfirmation,
 
         //pagination
         totalPages,
@@ -53,7 +66,11 @@ export const DebtorsProvider = ({children}) => {
 
         //search
         searchInput,
-        setSearchInput
+        setSearchInput,
+
+        //selected debtor
+        selectedDebtor,
+        setSelectedDebtor
     }
     
   return (

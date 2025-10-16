@@ -1,8 +1,14 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
+import { useDebtorsContext } from '../context/DebtorsContext';
+import { set } from 'react-hook-form';
 
 const DebtorTrComponent = ({data}) => {
     const navigate = useNavigate();
+    const { 
+        setSelectedDebtor,
+        openConfirmation
+     } = useDebtorsContext();
   return (
     <tr className='text-theme-gray font-semibold'>
         <td className='py-3'>{data._id.substring(0,10)}</td>
@@ -25,7 +31,11 @@ const DebtorTrComponent = ({data}) => {
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </button>
             <button
-            className='text-red-500 cursor-pointer'>
+            className='text-red-500 cursor-pointer'
+            onClick={()=>{
+                setSelectedDebtor(data);
+                openConfirmation();
+            }}>
                 <i className="fa-solid fa-trash"></i>
             </button>
         </td>

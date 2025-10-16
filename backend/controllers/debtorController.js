@@ -221,3 +221,19 @@ export const getDebtorSuggestion = async (req,res)=>{
         })
     }
 }
+
+export const deleteDebtor = async (req, res)=>{
+  try {
+    const {id} = req.params;
+    await Debtor.findByIdAndDelete(id);
+    return res.status(200).json({
+        message: 'Debtor successfully deleted'
+    }) 
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+        error: error,
+        message: 'Failed to delete debtor'
+    })
+  }
+}

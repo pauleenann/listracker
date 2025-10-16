@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import useToastMutation from '../../../hooks/useToastMutation'
-import { createDebtor, fetchDebtors } from '../services'
+import { createDebtor, deleteDebtor, fetchDebtors } from '../services'
 import usePagination from '../../../hooks/usePagination'
 import { useDebounce } from 'use-debounce'
 
@@ -37,6 +37,17 @@ const useDebtors = () => {
         ['debtor']
     )
 
+    const mutationDelete = useToastMutation(
+        deleteDebtor,
+        {
+            loading: 'Deleting debtor',
+            success: 'Debtor deleted successfully',
+            error: 'Could not delete debt',
+        },
+        ['debtor']
+    )
+        
+
   return {
     //tanstack
     isLoading,
@@ -44,6 +55,8 @@ const useDebtors = () => {
     data: data?.debtors,
     isAdding: mutationAdd.isLoading,
     addDebtor: mutationAdd.mutate,
+    deleteDebtor: mutationDelete.mutate,
+    isDeleting: mutationDelete.isLoading,
 
     //pagination
     totalPages: data?.totalPages,

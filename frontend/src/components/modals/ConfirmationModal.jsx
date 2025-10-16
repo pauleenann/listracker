@@ -7,8 +7,8 @@ const ConfirmationModal = ({
     title = 'This is the confirmation modal',
     description = 'This is confirmation modal description',
     show = false,
-    close,
-    confirmFn
+    close = ()=>{},
+    confirmFn = ()=>{}
 }) => {
   return show && ReactDOM.createPortal(
     <div className='absolute inset-0 z-5'>

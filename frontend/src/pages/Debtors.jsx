@@ -11,17 +11,23 @@ import DebtorForm from '../features/debtor/components/DebtorForm'
 import { useDebtorsContext } from '../features/debtor/context/DebtorsContext'
 import LoadingData from '../components/loading/LoadingData'
 import Pagination from '../components/pagination/Pagination'
+import ConfirmationModal from '../components/modals/ConfirmationModal'
 
 const Debtors = () => {
   const {
     //tanstack
-    show,
-    openShow,
-    closeShow,
     isLoading,
     isError,
     addDebtor,
+    deleteDebtor,
     data,
+
+    //modal
+    show,
+    openShow,
+    closeShow,
+    showConfirmation,
+    closeConfirmation,
 
     //pagination
     totalPages,
@@ -30,13 +36,20 @@ const Debtors = () => {
     page,
 
     //search
-    searchInput,
-    setSearchInput
+    setSearchInput,
+
+    //selected debtor
+    selectedDebtor,
   } = useDebtorsContext();
 
   const handleAddDebtor = (debtor)=>{
     addDebtor(debtor)
     closeShow();
+  }
+
+  const handleDeleteDebtor = ()=>{
+    deleteDebtor(selectedDebtor._id);
+    closeConfirmation();
   }
 
   return (
@@ -91,6 +104,14 @@ const Debtors = () => {
           <DebtorForm
           handleAddDebtor={handleAddDebtor}/>
         </Modal>
+
+        {/* delete modal */}
+        <ConfirmationModal
+        title={'Delete Debtor'}
+        description={`Are you sure you want to delete ${selectedDebtor?selectedDebtor.name:'this debtor'}?`}
+        show={showConfirmation}
+        close={closeConfirmation}
+        confirmFn={handleDeleteDebtor}/>
     </MainLayout>
   )
 }

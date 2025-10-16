@@ -40,3 +40,9 @@ export const fetchDebtor = async (id)=>{
     console.log(response.data)
     return response.data.debtorInfo;
 }
+
+export const deleteDebtor = async (id)=>{
+    const response = await api.delete(`/debtors/${id}`);
+    console.log(response.data)
+    return response.data;
+}

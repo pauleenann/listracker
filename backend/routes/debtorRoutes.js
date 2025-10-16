@@ -1,6 +1,6 @@
 import express from 'express'
 import { authenticateUser } from '../middlewares/authenticate.js';
-import { addDebtor, getDebtor, getDebtorDebts, getDebtors, getDebtorSuggestion } from '../controllers/debtorController.js';
+import { addDebtor, deleteDebtor, getDebtor, getDebtorDebts, getDebtors, getDebtorSuggestion } from '../controllers/debtorController.js';
 
 const router = express.Router();
 
@@ -29,6 +29,11 @@ router.get(
     authenticateUser,
     getDebtor
 );
+router.delete(
+    '/:id',
+    authenticateUser,
+    deleteDebtor
+)
 
 
 export default router
