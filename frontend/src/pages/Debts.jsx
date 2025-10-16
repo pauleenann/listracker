@@ -124,10 +124,10 @@ const Debts = () => {
             {isLoading&&<LoadingData/>}
             {isError&&<p>Error</p>}
             {data&&
-            <Table
-            header={debtHeader}
-            data={data}
-            trComponent={DebtTrComponent}/>
+              <Table
+              header={debtHeader}
+              data={data}
+              trComponent={DebtTrComponent}/>
             }
           </section>
 

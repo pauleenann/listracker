@@ -12,9 +12,12 @@ export const DebtorProvider = ({children}) => {
     const {id} = useParams();
 
     const {
-        isLoading,
-        isError,
+        //tanstack
+        isDebtsError,
+        isDebtsLoading,
         debts,
+        isDebtorError,
+        isDebtorLoading,
         debtor,
         selectedData,
         initializeSelectedData,
@@ -24,6 +27,15 @@ export const DebtorProvider = ({children}) => {
         isEditing,
         deleteDebtorDebt,
         payDebtorDebt,
+
+        //pagination
+        page,
+        nextPage,
+        prevPage,
+        totalPages,
+
+        //search
+        setSearchInput
     } = useDebtor(id);
 
     // form modal
@@ -45,9 +57,11 @@ export const DebtorProvider = ({children}) => {
 
     let value = {
         //tanstack
-        isLoading,
-        isError,
+        isDebtsError,
+        isDebtsLoading,
         debts,
+        isDebtorError,
+        isDebtorLoading,
         debtor,
         addDebtorDebt,
         editDebtorDebt,
@@ -72,7 +86,16 @@ export const DebtorProvider = ({children}) => {
 
         // selectedData
         selectedData,
-        initializeSelectedData
+        initializeSelectedData,
+
+        //pagination
+        page,
+        nextPage,
+        prevPage,
+        totalPages,
+
+        //search
+        setSearchInput,
     }
 
   return (

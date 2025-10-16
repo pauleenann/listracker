@@ -21,8 +21,22 @@ export const fetchDebtors = async (page, limit, search)=>{
     return response.data
 }
 
+export const fetchDebtorDebts = async (id, page, limit, search)=>{
+    console.log('fetching debtor', id)
+    const response = await api.get(`/debtors/debts/${id}`,{
+        params: {
+            page: page,
+            limit: limit,
+            search: search
+        }   
+    });
+
+    console.log(response.data)
+    return response.data;
+}
+
 export const fetchDebtor = async (id)=>{
     const response = await api.get(`/debtors/${id}`);
-    console.log(response)
-    return response.data
+    console.log(response.data)
+    return response.data.debtorInfo;
 }

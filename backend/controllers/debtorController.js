@@ -1,3 +1,4 @@
+import mongoose from 'mongoose'
 import Debtor from '../models/Debtor.js' 
 import Debt from '../models/Debt.js'
 import Payment from '../models/Payment.js'
@@ -144,18 +145,32 @@ export const getDebtors = async (req, res) => {
   };
   
 
-export const getDebtor = async (req, res)=>{
+export const getDebtorDebts = async (req, res)=>{
     try {
         const {id} = req.params;
-        console.log('params', id)
+        const {page = 1, limit = 10, search={}} = req.query;
+        const skip = (page - 1) * limit;
+        console.log('fetching debtor info', id)
 
-        const debtor = await Debtor.findById(id)
-        const debts = await Debt.find({userId: id});
+        const totalCount = await Debt.countDocuments({
+            userId: new mongoose.Types.ObjectId(id),
+            product: { $regex: search, $options: 'i' }  
+        });
+
+        const debts = await Debt.find({
+            userId: new mongoose.Types.ObjectId(id),
+            product: { $regex: search, $options: 'i' }  
+        })        
+        .sort({owedDate: -1})
+        .skip(skip)
+        .limit(Number(limit));
+        
+        const totalPages = Math.ceil(totalCount / limit);
 
         return res.status(200).json({
-            debtor,
-            debts,
-            message: 'Debtor successfully retrieved'
+          debts,
+          totalPages,
+          message: 'Debtor successfully retrieved'
         })
     } catch (error) {
         console.log(error)
@@ -164,6 +179,24 @@ export const getDebtor = async (req, res)=>{
             message: 'Failed to fetch debtor'
         })
     }
+}
+
+export const getDebtor = async (req, res)=>{
+  try {
+    const {id} = req.params;
+    const debtorInfo = await Debtor.findById(id);
+
+    return res.status(200).json({
+      debtorInfo,
+      message: 'Debtor successfully retrieved'
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+        error: error,
+        message: 'Failed to fetch debtor'
+    })
+  }
 }
 
 export const getDebtorSuggestion = async (req,res)=>{

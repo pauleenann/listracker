@@ -15,6 +15,7 @@ import ConfirmationModal from '../components/modals/ConfirmationModal'
 import PaymentForm from '../features/payments/components/PaymentForm'
 import Button from '../components/button/Button'
 import SearchBar from '../components/form/SearchBar'
+import Pagination from '../components/pagination/Pagination'
 
 const Debtor = () => {
     const navigate = useNavigate();
@@ -22,9 +23,11 @@ const Debtor = () => {
     // debtor context
     const {
         //tanstack
-        isLoading,
-        isError,
+        isDebtsError,
+        isDebtsLoading,
         debts,
+        isDebtorError,
+        isDebtorLoading,
         debtor,
         addDebtorDebt,
         editDebtorDebt,
@@ -47,7 +50,16 @@ const Debtor = () => {
 
         //selected data
         selectedData,
-        initializeSelectedData
+        initializeSelectedData,
+
+        //pagination
+        page,
+        nextPage,
+        prevPage,
+        totalPages,
+
+        //search
+        setSearchInput,
     } = useDebtorContext();
 
     const handleClick = (debt) => {
@@ -86,45 +98,53 @@ const Debtor = () => {
                 </DefaultButton>    
             </div>
 
-            <section className='w-full h-auto flex justify-center'>
-                {isLoading&&<p><LoadingData/></p>}
-                {isError&&<p>Error</p>}
-                {debts&&debtor&&<div className='w-full flex flex-col gap-4'>
-                    {/* debtor info */}
-                    <DebtorInfo
-                    debtor={debtor}/>
+            <section className='w-full h-auto flex flex-col gap-4 justify-center'>
+                {/* debtor info */}
+                {isDebtorLoading&&<p><LoadingData/></p>}
+                {isDebtorError&&<p>Error loading debtor info</p>}
+                {debtor&&<DebtorInfo debtor={debtor}/>}
 
-                    {/* search and add debt */}
-                    <div className='flex justify-between items-center'>
-                        <div className='w-100'>
-                            <SearchBar/>
-                        </div>
-                        
-                        <div>
-                            <Button
-                            onClick={()=>{
-                                initializeSelectedData({name: debtor.name});
-                                openShow('add debt');
-                            }}>
-                                Add Debt
-                            </Button>
-                        </div>
-                        
+                {/* search bar and add debts */}
+                <div className='flex justify-between items-center'>
+                    <div className='w-100'>
+                        <SearchBar
+                        placeholder='Search debt by product'
+                        onChange={(e)=>setSearchInput(e.target.value)}/>
                     </div>
-
-                    {/* list of debts */}
+                    
                     <div>
-                        <Table
+                        <Button
+                        onClick={()=>{
+                            initializeSelectedData({name: debtor?.name});
+                            openShow('add debt');
+                        }}>
+                            Add Debt
+                        </Button>
+                    </div>
+                </div>
+
+                {/* debts tabl */}
+                {isDebtsLoading&&<p><LoadingData/></p>}
+                {isDebtsError&&<p>Error</p>}
+                {!isDebtsLoading && debts && (
+                    <Table
                         header={debtorDebtsHeader}
                         data={debts}
-                        trComponent={DebtorDebtTrComponent}/>    
-                    </div>
-                </div>}    
+                        trComponent={DebtorDebtTrComponent}
+                    />
+                )}
+                {/* pagina */}
+                <Pagination
+                page={page}
+                totalPages={totalPages} 
+                next={nextPage}
+                prev={prevPage}/> 
+                
             </section>
             
         </main>
 
-        {/* modal */}
+        {/* form modal */}
         <Modal
         label={label}
         show={show}

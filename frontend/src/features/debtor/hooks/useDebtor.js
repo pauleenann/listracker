@@ -1,27 +1,51 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react'
-import { fetchDebtor } from '../services';
+import { fetchDebtor, fetchDebtorDebts } from '../services';
 import useToastMutation from '../../../hooks/useToastMutation';
 import { addDebt, deleteDebt, editDebt } from '../../debts/services';
 import { payDebt } from '../../payments/services';
+import usePagination from '../../../hooks/usePagination';
+import { useDebounce } from 'use-debounce';
 
 const useDebtor = (id) => {
     const [selectedData, setSelectedData] = useState();
+    const [searchInput, setSearchInput] = useState('');
+    const [debouncedSearch] = useDebounce(searchInput, 500);
+
+    const {
+        page, 
+        nextPage,
+        prevPage,
+        limit,
+    } = usePagination();
 
     // tanstack query
+    //fetch debtor info
     const {
-        isLoading,
-        isError,
-        data
+        isLoading: isDebtorLoading,
+        isError: isDebtorError,
+        data: debtor
     } = useQuery({
         queryKey: ['debtor', id],
-        queryFn: ()=>fetchDebtor(id)
+        queryFn: ()=>fetchDebtor(id),
+        keepPreviousData: true,
     });
+
+    const {
+        isLoading: isDebtsLoading,
+        isError: isDebtsError,
+        data
+    } = useQuery({
+        queryKey: ['debtor-debts', id, page, debouncedSearch],
+        queryFn: ()=>fetchDebtorDebts(id, page, limit, debouncedSearch),
+        keepPreviousData: true,
+    });
+
 
     const initializeSelectedData = (selected)=>{
         setSelectedData({
             ...selected, 
-            name: data?.debtor.name,
+            name: debtor?.name,
             owedDate: selected?.owedDate
             ? new Date(selected.owedDate).toISOString().split('T')[0]
             : ''
@@ -35,7 +59,7 @@ const useDebtor = (id) => {
             success: 'Debt added successfully',
             error: 'Could not add debt',
         },
-        ['debtor']
+        ['debtor-debts']
     )
 
     const mutationEdit = useToastMutation(
@@ -45,7 +69,7 @@ const useDebtor = (id) => {
             success: 'Debt edited successfully',
             error: 'Could not edit debt',
         },
-        ['debtor']
+        ['debtor-debts']
     )
 
     const mutationDelete = useToastMutation(
@@ -55,7 +79,7 @@ const useDebtor = (id) => {
             success: 'Debt deleted successfully',
             error: 'Could not delete debt',
         },
-        ['debtor']
+        ['debtor-debts']
     )
 
     const mutationPay = useToastMutation(
@@ -65,14 +89,16 @@ const useDebtor = (id) => {
             success: 'Debt paid successfully',
             error: 'Could not pay debt',
         },
-        ['debtor']
+        ['debtor-debts']
     )
 
   return {
-    isLoading,
-    isError,
+    isDebtsError,
+    isDebtsLoading,
     debts: data?.debts || [],
-    debtor: data?.debtor || {},
+    isDebtorError,
+    isDebtorLoading,
+    debtor,
     selectedData,
     initializeSelectedData,
     addDebtorDebt: mutationAdd.mutate,
@@ -82,7 +108,16 @@ const useDebtor = (id) => {
     deleteDebtorDebt: mutationDelete.mutate,
     isDeleting: mutationDelete.isLoading,
     payDebtorDebt: mutationPay.mutate,
-    isPaying: mutationPay.isLoading
+    isPaying: mutationPay.isLoading,
+
+    //pagination
+    page,
+    nextPage,
+    prevPage,
+    totalPages: data?.totalPages || 1,
+
+    //search
+    setSearchInput,
   }
 }
 
