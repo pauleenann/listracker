@@ -108,7 +108,7 @@ const Debtors = () => {
         {/* delete modal */}
         <ConfirmationModal
         title={'Delete Debtor'}
-        description={`Are you sure you want to delete ${selectedDebtor?selectedDebtor.name:'this debtor'}?`}
+        description={`Are you sure you want to delete ${selectedDebtor?selectedDebtor.name:'this debtor'}? Deleting a debtor will also delete all associated debts.`}
         show={showConfirmation}
         close={closeConfirmation}
         confirmFn={handleDeleteDebtor}/>

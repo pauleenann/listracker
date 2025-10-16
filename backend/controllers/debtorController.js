@@ -225,7 +225,28 @@ export const getDebtorSuggestion = async (req,res)=>{
 export const deleteDebtor = async (req, res)=>{
   try {
     const {id} = req.params;
+
+    //check first if debtor has debts
+    const debts = await Debt.find({
+      userId: new mongoose.Types.ObjectId(id),
+    })
+
+    const unpaidDebts = debts.filter(debt => debt.status !== 'paid');
+
+    if(unpaidDebts.length > 0){
+      return res.status(400).json({
+        message: 'Cannot delete debtor with unpaid debts'
+      })
+    }
+
+    //delete debtor if no debts
     await Debtor.findByIdAndDelete(id);
+
+    //delete all debts and payments associated with debtor
+    await Debt.deleteMany({userId: new mongoose.Types.ObjectId(id)});
+    await Payment.deleteMany({debtId: {$in: debts.map(debt => debt._id)}})
+
+
     return res.status(200).json({
         message: 'Debtor successfully deleted'
     }) 
