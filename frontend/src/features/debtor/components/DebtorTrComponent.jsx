@@ -18,11 +18,15 @@ const DebtorTrComponent = ({data}) => {
             </span>
         </td>
         <td className='py-3'>{data.lastPayment? new Date(data.lastPayment).toLocaleDateString("en-Ca") : 'N/A'}</td>
-        <td className='py-3'>
+        <td className='py-3 flex items-center gap-4'>
             <button 
             className='cursor-pointer'
             onClick={()=>navigate(`/debtors/${data._id}`)}>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </button>
+            <button
+            className='text-red-500 cursor-pointer'>
+                <i className="fa-solid fa-trash"></i>
             </button>
         </td>
     </tr>

@@ -80,11 +80,21 @@ export const getDebtors = async (req, res) => {
           },
         },
         {
-          $addFields: {
-            status: {
-              $cond: [{ $gt: ['$totalOwed', 0] }, 'unpaid', 'paid'],
-            },
-          },
+            $addFields: {
+              status: {
+                $cond: [
+                  { $eq: [{ $size: '$debts' }, 0] }, // if no debts
+                  'no debts yet',
+                  {
+                    $cond: [
+                      { $gt: ['$totalOwed', 0] }, // if totalOwed > 0
+                      'not paid',
+                      'paid'
+                    ]
+                  }
+                ]
+              }
+            }
         },
   
         // 4️⃣ Lookup last payment

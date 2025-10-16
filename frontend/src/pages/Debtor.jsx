@@ -13,6 +13,8 @@ import DebtForm from '../features/debts/components/DebtForm'
 import LoadingData from '../components/loading/LoadingData'
 import ConfirmationModal from '../components/modals/ConfirmationModal'
 import PaymentForm from '../features/payments/components/PaymentForm'
+import Button from '../components/button/Button'
+import SearchBar from '../components/form/SearchBar'
 
 const Debtor = () => {
     const navigate = useNavigate();
@@ -22,7 +24,9 @@ const Debtor = () => {
         //tanstack
         isLoading,
         isError,
-        data,
+        debts,
+        debtor,
+        addDebtorDebt,
         editDebtorDebt,
         deleteDebtorDebt,
         payDebtorDebt,
@@ -42,7 +46,8 @@ const Debtor = () => {
         closePayModal,
 
         //selected data
-        selectedData
+        selectedData,
+        initializeSelectedData
     } = useDebtorContext();
 
     const handleClick = (debt) => {
@@ -51,6 +56,9 @@ const Debtor = () => {
             openShow('edit debt');
         } else if (label === 'edit debt') {
             editDebtorDebt(debt);
+            closeShow();
+        } else{
+            addDebtorDebt(debt);
             closeShow();
         }
     };
@@ -81,16 +89,34 @@ const Debtor = () => {
             <section className='w-full h-auto flex justify-center'>
                 {isLoading&&<p><LoadingData/></p>}
                 {isError&&<p>Error</p>}
-                {data&&<div className='w-full'>
+                {debts&&debtor&&<div className='w-full flex flex-col gap-4'>
                     {/* debtor info */}
                     <DebtorInfo
-                    debtor={data.debtor}/>
+                    debtor={debtor}/>
+
+                    {/* search and add debt */}
+                    <div className='flex justify-between items-center'>
+                        <div className='w-100'>
+                            <SearchBar/>
+                        </div>
+                        
+                        <div>
+                            <Button
+                            onClick={()=>{
+                                initializeSelectedData({name: debtor.name});
+                                openShow('add debt');
+                            }}>
+                                Add Debt
+                            </Button>
+                        </div>
+                        
+                    </div>
 
                     {/* list of debts */}
-                    <div className='mt-4'>
+                    <div>
                         <Table
                         header={debtorDebtsHeader}
-                        data={data.debts}
+                        data={debts}
                         trComponent={DebtorDebtTrComponent}/>    
                     </div>
                 </div>}    

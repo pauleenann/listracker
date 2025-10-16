@@ -14,15 +14,16 @@ export const DebtorProvider = ({children}) => {
     const {
         isLoading,
         isError,
-        data,
+        debts,
+        debtor,
         selectedData,
         initializeSelectedData,
+        addDebtorDebt,
+        isAdding,
         editDebtorDebt,
         isEditing,
         deleteDebtorDebt,
         payDebtorDebt,
-        isPaying,
-        isDeleting
     } = useDebtor(id);
 
     // form modal
@@ -38,15 +39,17 @@ export const DebtorProvider = ({children}) => {
     const payModal = useConfirmationModal();
 
     useEffect(()=>{
-        setIsInputDisabled(isEditing||label=='view debt')
-        setIsSearchDisabled(isEditing||label!='add debt')
-    },[isEditing, label])
+        setIsInputDisabled(isEditing||isAdding||label=='view debt')
+        setIsSearchDisabled(label=='add debt'||isEditing||isAdding)
+    },[isEditing, isAdding, label])
 
     let value = {
         //tanstack
         isLoading,
         isError,
-        data,
+        debts,
+        debtor,
+        addDebtorDebt,
         editDebtorDebt,
         deleteDebtorDebt,
         payDebtorDebt,

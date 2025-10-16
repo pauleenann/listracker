@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react'
 import { fetchDebtor } from '../services';
 import useToastMutation from '../../../hooks/useToastMutation';
-import { deleteDebt, editDebt } from '../../debts/services';
+import { addDebt, deleteDebt, editDebt } from '../../debts/services';
 import { payDebt } from '../../payments/services';
 
 const useDebtor = (id) => {
@@ -27,6 +27,16 @@ const useDebtor = (id) => {
             : ''
         })
     }
+
+    const mutationAdd = useToastMutation(
+        addDebt,
+        {
+            loading: 'Adding debt',
+            success: 'Debt added successfully',
+            error: 'Could not add debt',
+        },
+        ['debtor']
+    )
 
     const mutationEdit = useToastMutation(
         editDebt,
@@ -61,9 +71,12 @@ const useDebtor = (id) => {
   return {
     isLoading,
     isError,
-    data,
+    debts: data?.debts || [],
+    debtor: data?.debtor || {},
     selectedData,
     initializeSelectedData,
+    addDebtorDebt: mutationAdd.mutate,
+    isAdding: mutationAdd.isLoading,
     editDebtorDebt: mutationEdit.mutate,
     isEditing: mutationEdit.isLoading,
     deleteDebtorDebt: mutationDelete.mutate,
