@@ -50,7 +50,7 @@ export function BarChart() {
   };
   
   return (
-    <div className="h-60">
+    <div className="h-80">
       <Bar options={options} data={data} />
     </div>
   );

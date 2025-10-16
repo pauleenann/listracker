@@ -3,8 +3,10 @@ import logo from '../../assets/images/logo.png'
 import List from '../list/List'
 import SidebarMenuItem from './components/SidebarMenuItem'
 import { accountMenu, mainMenu } from '../../data/sidebarMenu'
+import { useAuth } from '../../features/authentication/contexts/AuthContext'
 
 const Sidebar = () => {
+    const {user} = useAuth();
   return (
     <aside className='fixed top-0 bottom-0 w-[350px] bg-theme-lightest-blue pt-15 pb-5 px-8 flex flex-col justify-between'>
         <main>
@@ -34,10 +36,12 @@ const Sidebar = () => {
         <footer className='bg-theme-light-blue rounded-xl py-4 px-5 flex items-center justify-between'>
             {/* user */}
             <div className='flex items-center gap-3'>
-                <img src="" alt="User Profile Picture" className='border-0 w-10 h-10 rounded-full bg-theme-blue'/>
+                {user&&<div className='w-10 h-10 rounded-full bg-theme-blue flex items-center justify-center text-xl text-white font-semibold'>
+                    {user.firstName.charAt(0).toUpperCase()}
+                </div>}
                 <div className='text-sm'>
-                    <p className='font-semibold text-theme-gray'>Username</p>
-                    <p className='text-gray-500'>UserRole</p>
+                    <p className='font-semibold text-theme-gray capitalize'>{`${user.firstName} ${user.lastName}`}</p>
+                    <p className='text-gray-500'>{user.email}</p>
                 </div>
             </div>
             <button 
