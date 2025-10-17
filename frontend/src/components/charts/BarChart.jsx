@@ -32,7 +32,6 @@ export function BarChart() {
     },
   };
   
-  
   const data = {
     labels,
     datasets: [

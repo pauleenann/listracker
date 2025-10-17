@@ -11,6 +11,7 @@ import { DonutChart } from '../components/charts/DonutChart'
 import StatCards from '../features/dashboard/components/StatCards'
 import { useDashboardContext } from '../features/dashboard/context/DashboardContext'
 import LoadingData from '../components/loading/LoadingData'
+import AIInsights from '../features/dashboard/components/AIInsights'
 
 const Dashboard = () => {
   const {
@@ -26,9 +27,9 @@ const Dashboard = () => {
     <MainLayout>
       <Navbar menu={"Dashboard"}/>
 
-      <main className='px-10 w-full h-full flex flex-col gap-3'>
+      <main className='px-10 w-full mb-10 flex flex-col gap-3'>
         {/* cards, rank, barchart */}
-        <section className='grid grid-cols-[78%_1fr] gap-3'>
+        <section className='grid grid-cols-[75%_1fr] gap-3'>
           {statsLoading&&<LoadingData/>}
           {statsError&&<p>Error</p>}
           {!statsLoading&&!statsError&&<div className='flex flex-col gap-3'>
@@ -48,7 +49,10 @@ const Dashboard = () => {
             </section>
             <Cards
             label={'Outstanding vs Collected'}>
-              <BarChart/>
+              <div className=''>
+                <BarChart/>
+              </div>
+              
             </Cards>
           </div>}
 
@@ -56,17 +60,16 @@ const Dashboard = () => {
             <Cards
             label={'Biggest Debt Holder'}>
               <BiggestDebtHolderItem/>
+              
             </Cards>
           </div>
         </section> 
 
         {/* pie chart and table */}
         <section className='grid grid-cols-[40%_1fr] gap-3'>
-          <Cards
-          label={'Most Owed Products'}>
-            <DonutChart/>
-          </Cards>
-
+          <AIInsights/>
+          
+          {/* overview of list today */}
           <Cards
           label={'Debts Today'}>
             <Table
