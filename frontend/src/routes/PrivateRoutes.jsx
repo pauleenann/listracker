@@ -10,6 +10,7 @@ import { DebtProvider } from '../features/debts/context/DebtContext'
 import { DebtorsProvider } from '../features/debtor/context/DebtorsContext'
 import Debtor from '../pages/Debtor'
 import { DebtorProvider } from '../features/debtor/context/DebtorContext'
+import { DashboardProvider } from '../features/dashboard/context/DashboardContext'
 
 const PrivateRoutes = () => {
   return (
@@ -17,7 +18,9 @@ const PrivateRoutes = () => {
         <Route element={<ProtectedRoutes/>}>
             <Route 
             path='/dashboard'
-            element={<Dashboard/>}
+            element={<DashboardProvider>
+              <Dashboard/>
+            </DashboardProvider>}
             />
             <Route 
             path='/debts'

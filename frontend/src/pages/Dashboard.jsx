@@ -9,8 +9,19 @@ import Cards from '../components/cards/Cards'
 import { BarChart } from '../components/charts/Barchart'
 import { DonutChart } from '../components/charts/DonutChart'
 import StatCards from '../features/dashboard/components/StatCards'
+import { useDashboardContext } from '../features/dashboard/context/DashboardContext'
+import LoadingData from '../components/loading/LoadingData'
 
 const Dashboard = () => {
+  const {
+    statsLoading,
+    statsError,
+    totalDebts,
+    totalCollected,
+    paymentsToday,
+    activeDebtors
+  } = useDashboardContext();
+
   return (
     <MainLayout>
       <Navbar menu={"Dashboard"}/>
@@ -18,26 +29,28 @@ const Dashboard = () => {
       <main className='px-10 w-full h-full flex flex-col gap-3'>
         {/* cards, rank, barchart */}
         <section className='grid grid-cols-[78%_1fr] gap-3'>
-          <div className='flex flex-col gap-3'>
+          {statsLoading&&<LoadingData/>}
+          {statsError&&<p>Error</p>}
+          {!statsLoading&&!statsError&&<div className='flex flex-col gap-3'>
             <section className='grid grid-cols-4 gap-3'>
               <StatCards 
               label={'total debts'}
-              value={`PHP 2,000`}/>
+              value={`PHP ${totalDebts}`}/>
               <StatCards 
               label={'total collected'}
-              value={`PHP 2,000`}/>
+              value={`PHP ${totalCollected}`}/>
               <StatCards
               label={'payments today'}
-              value={`PHP 2,000`}/>
+              value={`PHP ${paymentsToday}`}/>
               <StatCards 
               label={'active debtors'}
-              value={`23`}/>
+              value={`${activeDebtors}`}/>
             </section>
             <Cards
             label={'Outstanding vs Collected'}>
               <BarChart/>
             </Cards>
-          </div>
+          </div>}
 
           <div>
             <Cards

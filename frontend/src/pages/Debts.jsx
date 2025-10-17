@@ -87,10 +87,10 @@ const Debts = () => {
             label='Debts not paid'
             value={status?.notPaid}
             color='bg-theme-gray'/>
-            <DebtCards
+            {/* <DebtCards
             label='Debts pending'
             value={status?.pending}
-            color='bg-gray-500'/>
+            color='bg-gray-500'/> */}
             <DebtCards
             label='Debts paid'
             value={status?.paid}
